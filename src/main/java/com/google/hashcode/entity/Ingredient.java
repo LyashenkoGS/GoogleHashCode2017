@@ -5,11 +5,11 @@ package com.google.hashcode.entity;
  *
  * @author Grigoriy Lyashenko (Grog).
  */
-public enum PizzaCell {
+public enum Ingredient {
     MUSHROOM("M"), TOMATO("T");
     private final String type;
 
-    PizzaCell(final String type) {
+    Ingredient(final String type) {
         this.type = type;
     }
 

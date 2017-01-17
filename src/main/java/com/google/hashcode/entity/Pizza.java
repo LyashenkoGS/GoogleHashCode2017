@@ -12,12 +12,12 @@ import java.io.File;
 public class Pizza {
 
     private final File input;
-    private final PizzaCell[][] pizzaCells;
+    private final Cell[][] cells;
     private final SliceInstruction sliceInstruction;
 
-    public Pizza(File input, PizzaCell[][] pizzaCells, SliceInstruction sliceInstruction) {
+    public Pizza(File input, Cell[][] cells, SliceInstruction sliceInstruction) {
         this.input = input;
-        this.pizzaCells = pizzaCells;
+        this.cells = cells;
         this.sliceInstruction = sliceInstruction;
     }
 
@@ -25,15 +25,15 @@ public class Pizza {
         return input;
     }
 
-    public PizzaCell[][] getPizzaCells() {
-        return pizzaCells;
+    public Cell[][] getCells() {
+        return cells;
     }
 
 
     @Override
     public String toString() {
         return input.toString() +
-                "\n" + IoUtils.convertToHumanReadableTable(pizzaCells) +
+                "\n" + IoUtils.convertToHumanReadableTable(cells) +
                 "\n" + sliceInstruction.toString();
     }
 

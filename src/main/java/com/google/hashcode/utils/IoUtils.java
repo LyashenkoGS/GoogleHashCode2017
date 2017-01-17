@@ -1,6 +1,7 @@
 package com.google.hashcode.utils;
 
-import com.google.hashcode.entity.PizzaCell;
+import com.google.hashcode.entity.Cell;
+import com.google.hashcode.entity.Ingredient;
 import com.google.hashcode.entity.SliceInstruction;
 
 import java.io.BufferedReader;
@@ -19,7 +20,7 @@ public class IoUtils {
      * @return 2d array representing a pizza
      * @throws IOException parsing fail
      */
-    public static PizzaCell[][] parsePizza(String file) throws IOException {
+    public static Cell[][] parsePizza(String file) throws IOException {
         try (FileReader fileReader = new FileReader(file)) {
             BufferedReader br = new BufferedReader(fileReader);
             //parse the first line
@@ -27,21 +28,21 @@ public class IoUtils {
             int rowsCount = Integer.parseInt(headerTokens[0]);
             int columnsCount = Integer.parseInt(headerTokens[1]);
             //declare a pizza cells array
-            PizzaCell[][] pizzaCells = new PizzaCell[rowsCount][columnsCount];
+            Cell[][] ingredients = new Cell[rowsCount][columnsCount];
             int row = 0;
             String fileLine;
             while ((fileLine = br.readLine()) != null) {
-                for (int i = 0; i < fileLine.length(); i++) {
-                    Character literal = fileLine.charAt(i);
-                    if (literal.toString().equals(PizzaCell.TOMATO.toString())) {
-                        pizzaCells[row][i] = PizzaCell.TOMATO;
-                    } else if (literal.toString().equals(PizzaCell.MUSHROOM.toString())) {
-                        pizzaCells[row][i] = PizzaCell.MUSHROOM;
+                for (int column = 0; column < fileLine.length(); column++) {
+                    Character literal = fileLine.charAt(column);
+                    if (literal.toString().equals(Ingredient.TOMATO.toString())) {
+                        ingredients[row][column] = new Cell(column, row, Ingredient.TOMATO);
+                    } else if (literal.toString().equals(Ingredient.MUSHROOM.toString())) {
+                        ingredients[row][column] = new Cell(column, row, Ingredient.MUSHROOM);
                     }
                 }
                 row++;
             }
-            return pizzaCells;
+            return ingredients;
         }
     }
 
@@ -66,13 +67,13 @@ public class IoUtils {
     /**
      * Converts given pizza cells 2d array to human readable string representation
      *
-     * @param pizzaCells given array
+     * @param ingredients given array
      * @return table like String representation
      */
-    public static String convertToHumanReadableTable(PizzaCell[][] pizzaCells) {
+    public static String convertToHumanReadableTable(Cell[][] ingredients) {
         StringBuilder output = new StringBuilder();
-        for (Enum[] row : pizzaCells) {
-            for (Enum cell : row) {
+        for (Cell[] row : ingredients) {
+            for (Cell cell : row) {
                 output.append(cell).append(" ");
             }
             output.append("\n");
