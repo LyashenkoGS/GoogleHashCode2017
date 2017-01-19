@@ -86,14 +86,14 @@ public class IoUtils {
 
 
     /**
-     * this method formats data for output to file
-     * @see issue 1 description
-     * @see task description
-     *
-	 * @author github.com/VadimKlindukhov skype: kv_vadim
-	 * @param list — inner representation of pizza
-	 * @return long String that contains output data
-	 */
+    * this method formats data for output to file
+    * @see issue 1 description
+    * @see task description
+    *
+    * @author github.com/VadimKlindukhov skype: kv_vadim
+    * @param list — inner representation of pizza
+    * @return long String that contains output data
+    */
     public static String outputFormat(List<List<Cell>> list){
     	Comparator<Cell> cellComparator = (Cell c1, Cell c2) ->{
     		if(c1.x != c2.x){
