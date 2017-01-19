@@ -6,9 +6,9 @@ package com.google.hashcode.entity;
  * @author Grigoriy Lyashenko (Grog).
  */
 public class Cell {
-    final int x;
-    final int y;
-    final Ingredient ingredient;
+    public final int x;
+    public final int y;
+    public final Ingredient ingredient;
 
     public Cell(int x, int y, Ingredient ingredient) {
         this.x = x;

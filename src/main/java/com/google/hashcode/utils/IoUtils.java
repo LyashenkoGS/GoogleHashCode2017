@@ -7,6 +7,9 @@ import com.google.hashcode.entity.SliceInstruction;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Comparator;
+import java.util.Formatter;
+import java.util.List;
 
 /**
  * @author Grigoriy Lyashenko (Grog).
@@ -81,4 +84,33 @@ public class IoUtils {
         return output.toString();
     }
 
+
+    /**
+    * this method formats data for output to file
+    * @see issue 1 description
+    * @see task description
+    *
+    * @author github.com/VadimKlindukhov skype: kv_vadim
+    * @param list — inner representation of pizza
+    * @return long String that contains output data
+    */
+    public static String outputFormat(List<List<Cell>> list){
+    	Comparator<Cell> cellComparator = (Cell c1, Cell c2) ->{
+    		if(c1.x != c2.x){
+    			return Integer.compare(c1.x, c2.x);
+    		} else
+    			return Integer.compare(c1.y, c2.y);
+    	};
+    	StringBuffer sb = new StringBuffer();
+    	Formatter textFormatter = new Formatter(sb);
+    	textFormatter.format("%d%n", list.size());
+    	Cell min, max;
+    	for(List<Cell> innerList : list){
+    		min = innerList.stream().min(cellComparator).get();
+    		max = innerList.stream().max(cellComparator).get();
+    		textFormatter.format("%d %d %d %d%n", min.y, min.x, max.y, max.x);
+    	}
+    	textFormatter.close();
+    	return sb.toString();
+    }
 }
