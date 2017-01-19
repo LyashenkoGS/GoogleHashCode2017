@@ -1,3 +1,6 @@
+#Java and Intellij specific
 .idea
 *.iml
 target
+#ignore the archived source code
+*.zip
