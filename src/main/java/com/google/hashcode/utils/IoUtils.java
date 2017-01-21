@@ -2,6 +2,7 @@ package com.google.hashcode.utils;
 
 import com.google.hashcode.entity.Cell;
 import com.google.hashcode.entity.Ingredient;
+import com.google.hashcode.entity.Slice;
 import com.google.hashcode.entity.SliceInstruction;
 
 import java.io.BufferedReader;
@@ -95,7 +96,7 @@ public class IoUtils {
      * @param list inner representation of pizza
      * @return String that contains output data
      */
-    public static String parseSlices(List<List<Cell>> list) {
+    public static String parseSlices(List<Slice> list) {
         Comparator<Cell> cellComparator = (Cell c1, Cell c2) -> {
             if (c1.x != c2.x) {
                 return Integer.compare(c1.x, c2.x);
@@ -106,9 +107,9 @@ public class IoUtils {
         Formatter textFormatter = new Formatter(sb);
         textFormatter.format("%d%n", list.size());
         Cell min, max;
-        for (List<Cell> innerList : list) {
-            min = innerList.stream().min(cellComparator).get();
-            max = innerList.stream().max(cellComparator).get();
+        for (Slice slice : list) {
+            min = slice.cells.stream().min(cellComparator).get();
+            max = slice.cells.stream().max(cellComparator).get();
             textFormatter.format("%d %d %d %d%n", min.y, min.x, max.y, max.x);
         }
         textFormatter.close();
