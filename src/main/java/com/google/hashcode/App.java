@@ -1,7 +1,6 @@
 package com.google.hashcode;
 
 import com.google.hashcode.entity.Cell;
-import com.google.hashcode.entity.Ingredient;
 import com.google.hashcode.entity.Pizza;
 import com.google.hashcode.utils.IoUtils;
 
