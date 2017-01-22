@@ -3,6 +3,8 @@ package com.google.hashcode.entity;
 import com.google.hashcode.utils.IoUtils;
 
 import java.io.File;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 /**
  * Represents an immutable pizza
@@ -21,6 +23,19 @@ public class Pizza {
         this.sliceInstruction = sliceInstruction;
     }
 
+    public int cellsNumber() {
+        return Arrays.stream(this.getCells())
+                .flatMap(Arrays::stream)
+                .collect(Collectors.toList()).size();
+    }
+
+    public int unslicedCellsNumber() {
+        return Arrays.stream(this.getCells())
+                .flatMap(Arrays::stream)
+                .filter(cell -> !cell.sliced)
+                .collect(Collectors.toList()).size();
+    }
+
     public File getInput() {
         return input;
     }
@@ -28,7 +43,6 @@ public class Pizza {
     public Cell[][] getCells() {
         return cells;
     }
-
 
     @Override
     public String toString() {

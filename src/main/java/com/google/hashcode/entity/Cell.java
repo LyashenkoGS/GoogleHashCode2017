@@ -9,6 +9,10 @@ public class Cell {
     public final int x;
     public final int y;
     public final Ingredient ingredient;
+    /**
+     * indicates if given cell has been sliced
+     */
+    public boolean sliced = false;
 
     public Cell(int x, int y, Ingredient ingredient) {
         this.x = x;

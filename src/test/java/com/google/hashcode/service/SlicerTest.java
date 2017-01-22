@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -15,17 +16,16 @@ import static org.junit.Assert.assertTrue;
  */
 public class SlicerTest {
     private static final String EXAMPLE_PIZZA_FILE = "inputDataSets/example.in";
-    Cell[][] cells = IoUtils.parsePizza(EXAMPLE_PIZZA_FILE);
-    SliceInstruction sliceInstruction = IoUtils.parseSliceInstructions(EXAMPLE_PIZZA_FILE);
-    Pizza pizza = new Pizza(new File(EXAMPLE_PIZZA_FILE), cells, sliceInstruction);
-
+    private Cell[][] cells = IoUtils.parsePizza(EXAMPLE_PIZZA_FILE);
+    private SliceInstruction sliceInstruction = IoUtils.parseSliceInstructions(EXAMPLE_PIZZA_FILE);
+    private Pizza pizza = new Pizza(new File(EXAMPLE_PIZZA_FILE), cells, sliceInstruction);
 
     public SlicerTest() throws IOException {
     }
 
     @Test
     public void slicePizza() throws IOException {
-        Slicer.slicePizza(pizza);
+        List<Slice> slices = Slicer.slicePizza(pizza);
     }
 
     @Test
@@ -33,7 +33,7 @@ public class SlicerTest {
         Slice slice = new Slice();
         slice.cells.add(new Cell(0, 0, Ingredient.MUSHROOM));
         slice.cells.add(new Cell(0, 0, Ingredient.TOMATO));
-        assertTrue(Slicer.checkSliceInstructions(slice, new SliceInstruction(1, 2)));
+        assertTrue(Slicer.validateSlice(slice, new SliceInstruction(1, 2)));
     }
 
     @Test
@@ -41,6 +41,12 @@ public class SlicerTest {
         Slice slice = new Slice();
         slice.cells.add(new Cell(0, 0, Ingredient.MUSHROOM));
         slice.cells.add(new Cell(0, 0, Ingredient.MUSHROOM));
-        assertFalse(Slicer.checkSliceInstructions(slice, new SliceInstruction(1, 2)));
+        assertFalse(Slicer.validateSlice(slice, new SliceInstruction(1, 2)));
+    }
+
+    @Test
+    public void canBeSliced() {
+        new Slice().add(pizza.getCells()[0][0]);
+        assertTrue(Slicer.canBeSliced(pizza));
     }
 }

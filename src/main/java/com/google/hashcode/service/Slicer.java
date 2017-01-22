@@ -4,9 +4,12 @@ import com.google.hashcode.entity.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static java.lang.Integer.valueOf;
 
 /**
  * Slice a pizza according to a slice instructions
@@ -16,27 +19,60 @@ import java.util.stream.Collectors;
 public class Slicer {
     private static final Logger LOGGER = LoggerFactory.getLogger(Slicer.class);
 
+    private Slicer() {
+    }
+
     public static List<Slice> slicePizza(Pizza pizza) {
-        LOGGER.info("Pizza to slice :" + pizza.toString());
-        //iterate from the top-left cell
         Cell[][] pizzaCells = pizza.getCells();
-        SliceInstruction sliceInstruction = pizza.getSliceInstruction();
-        //get smallest possible slice
-        Slice slice = new Slice();
-        slice.cells.add(pizzaCells[0][0]);
-        slice.cells.add(pizzaCells[0][1]);
-        slice.cells.add(pizzaCells[1][0]);
-        slice.cells.add(pizzaCells[1][1]);
-        //check instruction
-        checkSliceInstructions(slice, sliceInstruction);
-        //if pass add slice to results
         List<Slice> pizzaSlices = new LinkedList<>();
-        pizzaSlices.add(slice);
+        while (canBeSliced(pizza)) {
+            Slice slice = step(pizzaCells);
+            if (validateSlice(slice, pizza.getSliceInstruction())) {
+                pizzaSlices.add(slice);
+            }
+        }
         LOGGER.info("slices:" + pizzaSlices);
+        LOGGER.info("pizza slicing finished" +
+                "\ntotal cells:" + pizza.cellsNumber() +
+                "\nsliced cells :" + pizzaSlices.stream()
+                .map(Slice::cellsNumber)
+                .reduce(Integer::sum)
+                .get() +
+                "\nunsliced cells :" + pizza.unslicedCellsNumber());
         return pizzaSlices;
     }
 
-    static boolean checkSliceInstructions(Slice slice, SliceInstruction sliceInstruction) {
+
+    private static Slice step(Cell[][] pizzaCells) {
+        Slice slice = new Slice();
+        //find the top-left unused cell
+        Cell startPosition = findStartPosition(pizzaCells);
+        LOGGER.info("\nstart position: "
+                + "\ny: " + startPosition.y
+                + "\nx: " + startPosition.x);
+        slice.add(pizzaCells[startPosition.y][startPosition.x]);
+        slice.add(pizzaCells[startPosition.y][valueOf(startPosition.x) + 1]);
+        slice.add(pizzaCells[valueOf(startPosition.y) + 1][startPosition.x]);
+        slice.add(pizzaCells[valueOf(startPosition.y) + 1][valueOf(startPosition.x) + 1]);
+        return slice;
+    }
+
+    private static Cell findStartPosition(Cell[][] pizzaCells) {
+        for (int row = 0; row < pizzaCells.length; row++) {
+            Cell[] pizzaRow = pizzaCells[row];
+            for (int column = 0; column < pizzaRow.length; column++) {
+                Cell cell = pizzaRow[column];
+                if (!cell.sliced) {
+                    //get it as a start
+                    return cell;
+                }
+            }
+        }
+        //default return
+        return pizzaCells[0][0];
+    }
+
+    static boolean validateSlice(Slice slice, SliceInstruction sliceInstruction) {
         int mushroomsNumber = slice.cells.stream()
                 .filter(cell -> cell.ingredient.equals(Ingredient.MUSHROOM))
                 .collect(Collectors.toList())
@@ -50,7 +86,31 @@ public class Slicer {
                 && mushroomsNumber >= sliceInstruction.getMinNumberOfIngredientPerSlice();
         LOGGER.info("\n" + sliceInstruction +
                 "\nSlice :" + slice +
-                "\nresult: " + passSliceInstructions);
+                "\npass validation: " + passSliceInstructions);
         return passSliceInstructions;
+    }
+
+    static boolean canBeSliced(Pizza pizza) {
+        final List<Cell> unusedCells = Arrays.stream(pizza.getCells())
+                .flatMap(Arrays::stream)
+                .filter(cell -> !cell.sliced)
+                .collect(Collectors.toList());
+        int mushroomsNumber = unusedCells.stream()
+                .filter(cell -> cell.ingredient.equals(Ingredient.MUSHROOM))
+                .collect(Collectors.toList())
+                .size();
+        int tomatoesNumber = unusedCells.stream()
+                .filter(cell -> cell.ingredient.equals(Ingredient.TOMATO))
+                .collect(Collectors.toList())
+                .size();
+        SliceInstruction sliceInstruction = pizza.getSliceInstruction();
+        boolean canBeSliced = unusedCells.size() > sliceInstruction.getMinNumberOfIngredientPerSlice() * 2
+                && tomatoesNumber > sliceInstruction.getMinNumberOfIngredientPerSlice()
+                && mushroomsNumber > sliceInstruction.getMinNumberOfIngredientPerSlice();
+        LOGGER.info(
+                "\ncells suitable for slicing :" + unusedCells.size() +
+                        "\n :" + unusedCells +
+                        "\ncan be sliced: " + canBeSliced);
+        return canBeSliced;
     }
 }
