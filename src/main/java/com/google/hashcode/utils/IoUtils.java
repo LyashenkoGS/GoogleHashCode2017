@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Formatter;
 import java.util.List;
@@ -30,29 +31,27 @@ public class IoUtils {
      * @return 2d array representing a pizza
      * @throws IOException parsing fail
      */
-    public static Cell[][] parsePizza(String file) throws IOException {
+    public static List<Cell> parsePizza(String file) throws IOException {
         try (FileReader fileReader = new FileReader(file)) {
             BufferedReader br = new BufferedReader(fileReader);
-            //parse the first line
-            String[] headerTokens = br.readLine().split(" ");
-            int rowsCount = Integer.parseInt(headerTokens[0]);
-            int columnsCount = Integer.parseInt(headerTokens[1]);
+            //skip a line with slice instructions
+            br.readLine();
             //declare a pizza cells array
-            Cell[][] ingredients = new Cell[rowsCount][columnsCount];
+            List<Cell> cells = new ArrayList<>();
             int row = 0;
             String fileLine;
             while ((fileLine = br.readLine()) != null) {
                 for (int column = 0; column < fileLine.length(); column++) {
                     Character literal = fileLine.charAt(column);
                     if (literal.toString().equals(Ingredient.TOMATO.toString())) {
-                        ingredients[row][column] = new Cell(column, row, Ingredient.TOMATO);
+                        cells.add(new Cell(column, row, Ingredient.TOMATO));
                     } else if (literal.toString().equals(Ingredient.MUSHROOM.toString())) {
-                        ingredients[row][column] = new Cell(column, row, Ingredient.MUSHROOM);
+                        cells.add(new Cell(column, row, Ingredient.MUSHROOM));
                     }
                 }
                 row++;
             }
-            return ingredients;
+            return cells;
         }
     }
 

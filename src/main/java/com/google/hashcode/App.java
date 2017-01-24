@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 
 public class App {
@@ -16,10 +17,11 @@ public class App {
 
     public static void main(String[] args) throws IOException {
         String exampleInputFile = "inputDataSets/example.in";
-        Cell[][] ingredients = IoUtils.parsePizza(exampleInputFile);
+        List<Cell> ingredients = IoUtils.parsePizza(exampleInputFile);
         Pizza pizza = new Pizza(new File(exampleInputFile), ingredients, IoUtils.parseSliceInstructions(exampleInputFile));
-        IoUtils.writeToFile("outputDataSet/example.txt", IoUtils.parseSlices(Slicer.slicePizza(pizza)));
+        //  IoUtils.writeToFile("outputDataSet/example.txt", IoUtils.parseSlices(Slicer.slicePizza(pizza)));
         LOGGER.info("GoogleHashCode2017! Pizza task");
+        LOGGER.info(pizza.toString());
 
     }
 

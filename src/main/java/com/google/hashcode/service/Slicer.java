@@ -17,13 +17,13 @@ import static java.lang.Integer.valueOf;
  * @author Grigoriy Lyashenko (Grog).
  */
 public class Slicer {
-    private static final Logger LOGGER = LoggerFactory.getLogger(Slicer.class);
+   /* private static final Logger LOGGER = LoggerFactory.getLogger(Slicer.class);
 
     private Slicer() {
     }
 
     public static List<Slice> slicePizza(Pizza pizza) {
-        Cell[][] pizzaCells = pizza.getCells();
+        List<Cell> pizzaCells = pizza.getCells();
         List<Slice> pizzaSlices = new LinkedList<>();
         while (canBeSliced(pizza)) {
             Slice slice = step(pizzaCells);
@@ -43,7 +43,7 @@ public class Slicer {
     }
 
 
-    private static Slice step(Cell[][] pizzaCells) {
+    private static Slice step(List<Cell> pizzaCells) {
         Slice slice = new Slice();
         //find the top-left unused cell
         Cell startPosition = findStartPosition(pizzaCells);
@@ -57,8 +57,8 @@ public class Slicer {
         return slice;
     }
 
-    private static Cell findStartPosition(Cell[][] pizzaCells) {
-        for (int row = 0; row < pizzaCells.length; row++) {
+    private static Cell findStartPosition(List<Cell> pizzaCells) {
+        for (int row = 0; row < pizzaCells.size(); row++) {
             Cell[] pizzaRow = pizzaCells[row];
             for (int column = 0; column < pizzaRow.length; column++) {
                 Cell cell = pizzaRow[column];
@@ -112,5 +112,5 @@ public class Slicer {
                         "\n :" + unusedCells +
                         "\ncan be sliced: " + canBeSliced);
         return canBeSliced;
-    }
+    }*/
 }
