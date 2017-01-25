@@ -2,11 +2,38 @@ package com.google.hashcode;
 
 public class DFSMethods {
 	
+	public int amoluntOfValidCellsAroundSlice(List<Cell> slice, List<Cell> pizza){
+		int cellsAroundSlice = 0;
+		//found coordinates of slice angles.
+		int minX = findMinX(slice);
+		int minY = findMinY(slice);
+		int maxX = findMaxX(slice);
+		int maxY = findMaxY(slice);
+
+		//generate arrays of x and y coordinates for this slice.
+		List<Integer> differenceXCoordinates = fillArrayWithIntValues(minX, maxX);
+		List<Integer> differenceYCoordinates = fillArrayWithIntValues(minY, maxY);
+
+		//checking top cells.
+		if(didPizzaContainsAllNeededHorizontalCells(pizza, differenceXCoordinates, minY - 1)) cellsAroundSlice += differenceXCoordinates.size();
+		
+		//checking left cells.
+		if(didPizzaContainsAllNeededVerticalCells(pizza, differenceYCoordinates, maxX + 1)) cellsAroundSlice += differenceYCoordinates.size();
+		
+		//checking bottom cells.
+		if(didPizzaContainsAllNeededHorizontalCells(pizza, differenceXCoordinates, maxY + 1)) cellsAroundSlice += differenceXCoordinates.size();
+		
+		//checking rirht cells.
+		if(didPizzaContainsAllNeededVerticalCells(pizza, differenceYCoordinates, minX - 1)) cellsAroundSlice += differenceYCoordinates.size();
+		
+		return cellsAroundSlice;
+	}
+	
     public boolean stepUp(List<Cell> slice, List<Cell> pizza, int maxCellsInSlice){
-    	// empty list difference X coordinates in slice for using it further. 
-    	List<Integer> differenceXCoordinates = new ArrayList<Integer>();
+    	
     	// finding min y coordinate in slice and fill values to differenceXCoordinates.
-    	Integer minYCoordInSlice = findMinYAndFillAllDifferenceX(slice, differenceXCoordinates);
+    	Integer minYCoordInSlice = findMinY(slice);
+    	List<Integer> differenceXCoordinates = fillAllDifferenceX(slice);
     	
     	//prevent this method for cutting too big slice.
     	if(slice.size() + differenceXCoordinates.size() > maxCellsInSlice) return false;
@@ -30,8 +57,8 @@ public class DFSMethods {
     
     public boolean stepRight(List<Cell> slice, List<Cell> pizza, int maxCellsInSlice){
     	
-    	List<Integer> differenceYCoordinates = new ArrayList<Integer>();
-    	Integer maxXCoordInSlice = findMaxXAndFillAllDifferenceY(slice, differenceYCoordinates);
+    	Integer maxXCoordInSlice = findMaxX(slice);
+    	List<Integer> differenceYCoordinates = fillAllDifferenceY(slice);;
     	
     	if(slice.size() + differenceYCoordinates.size() > maxCellsInSlice) return false;
     	
@@ -50,8 +77,8 @@ public class DFSMethods {
     
     public boolean stepDown(List<Cell> slice, List<Cell> pizza, int maxCellsInSlice){
     	
-    	List<Integer> differenceXCoordinates = new ArrayList<Integer>();
-    	Integer maxYCoordInSlice = findMaxYAndFillAllDifferenceX(slice, differenceXCoordinates);
+    	Integer maxYCoordInSlice = findMaxY(slice);
+    	List<Integer> differenceXCoordinates = fillAllDifferenceX(slice);
     	
     	if(slice.size() + differenceXCoordinates.size() > maxCellsInSlice) return false;
     	
@@ -70,8 +97,8 @@ public class DFSMethods {
     
     public boolean stepLeft(List<Cell> slice, List<Cell> pizza, int maxCellsInSlice){
     	
-    	List<Integer> differenceYCoordinates = new ArrayList<Integer>();
-    	Integer minXCoordInSlice = findMinXAndFillAllDifferenceY(slice, differenceYCoordinates);
+    	Integer minXCoordInSlice = findMinX(slice);
+    	List<Integer> differenceYCoordinates = fillAllDifferenceY(slice);
     	
     	if(slice.size() + differenceYCoordinates.size() > maxCellsInSlice) return false;
     	
@@ -88,12 +115,29 @@ public class DFSMethods {
     	
     }
     
-    private int findMinYAndFillAllDifferenceX(List<Cell> slice, List<Integer> diffX){
-    	Integer minYCoord = null;
+    private List<Integer> fillAllDifferenceX(List<Cell> slice){
+    	List<Integer> diffX = new ArrayList<Integer>();
     	for(Cell cell: slice){
     		if(!diffX.contains(cell.x)){
     			diffX.add(cell.x);
     		}
+    	}
+    	return diffX;
+    }
+    
+    private List<integer> fillAllDifferenceY(List<Cell> slice){
+    	List<Integer> diffY = new ArrayList<Integer>();
+    	for(Cell cell: slice){
+    		if(!diffX.contains(cell.y)){
+    			diffX.add(cell.y);
+    		}
+    	}
+    	return diffY;
+    }
+    
+    private int findMinY(List<Cell> slice){
+    	Integer minYCoord = null;
+    	for(Cell cell: slice){
     		if(minYCoord != null){
     			if(cell.y < minYCoord){
     				minYCoord = cell.y; 
@@ -105,12 +149,9 @@ public class DFSMethods {
     	return minYCoord;
     }
     
-    private int findMaxYAndFillAllDifferenceX(List<Cell> slice, List<Integer> diffX){
+    private int findMaxY(List<Cell> slice){
     	Integer maxYCoord = null;
     	for(Cell cell: slice){
-    		if(!diffX.contains(cell.x)){
-    			diffX.add(cell.x);
-    		}
     		if(maxYCoord != null){
     			if(cell.y > minYCoord){
     				maxYCoord = cell.y; 
@@ -122,12 +163,9 @@ public class DFSMethods {
     	return maxYCoord;
     }
     
-    private int findMinXAndFillAllDifferenceY(List<Cell> slice, List<Integer> diffY){
+    private int findMinX(List<Cell> slice){
     	Integer minXCoord = null;
     	for(Cell cell: slice){
-    		if(!diffY.contains(cell.y)){
-    			diffY.add(cell.y);
-    		}
     		if(minXCoord != null){
     			if(cell.x < minXCoord){
     				minXCoord = cell.x; 
@@ -139,12 +177,9 @@ public class DFSMethods {
     	return minXCoord;
     }
     
-    private int findMaxXAndFillAllDifferenceY(List<Cell> slice, List<Integer> diffY){
+    private int findMaxX(List<Cell> slice){
     	Integer maxXCoord = null;
     	for(Cell cell: slice){
-    		if(!diffY.contains(cell.y)){
-    			diffY.add(cell.y);
-    		}
     		if(maxXCoord != null){
     			if(cell.x > minXCoord){
     				maxXCoord = cell.x; 
@@ -174,5 +209,13 @@ public class DFSMethods {
     		}
     	}
     	return returnValue;
+    }
+    
+    private List<Integer> fillArrayWithIntValues(int start, int end){
+    	List<Integer> returnedList = new ArrayList<Integer>();
+    	for(int i = start; i < end + 1; i++){
+    		returnedList.add((Integer)i);
+    	}
+    	return returnedList;
     }
 }
