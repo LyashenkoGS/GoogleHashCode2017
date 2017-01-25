@@ -2,7 +2,10 @@ package com.google.hashcode.utils;
 
 import com.google.hashcode.entity.Cell;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 public class DFSMethods {
 
@@ -47,7 +50,7 @@ public class DFSMethods {
             for (int xCoord : differenceXCoordinates) {
                 //use .remove(index) to get object from pizza (with it's Ingradient)
                 //but for getting those index use .indexOf(Object o)
-                slice.add(pizza.remove(pizza.indexOf(new Cell(xCoord, minYCoordInSlice))))
+                //TODO fix a compile time error. slice.add(pizza.remove(pizza.indexOf(new Cell(xCoord, minYCoordInSlice))))
             }
             return true;
         } else {
@@ -57,6 +60,8 @@ public class DFSMethods {
     }
 
     public boolean stepRight(List<Cell> slice, List<Cell> pizza, int maxCellsInSlice) {
+        //TODO fix a compile time error
+        /*
         Integer maxXCoordInSlice = findMaxX(slice);
         List<Integer> differenceYCoordinates = fillAllDifferenceY(slice);
         ;
@@ -69,12 +74,13 @@ public class DFSMethods {
             return true;
         } else {
             return false;
-        }
-
+        }*/
+        return true;
     }
 
     public boolean stepDown(List<Cell> slice, List<Cell> pizza, int maxCellsInSlice) {
-        Integer maxYCoordInSlice = findMaxY(slice);
+        //TODO fix a compile time error
+        /*     Integer maxYCoordInSlice = findMaxY(slice);
         List<Integer> differenceXCoordinates = fillAllDifferenceX(slice);
         if (slice.size() + differenceXCoordinates.size() > maxCellsInSlice) return false;
         boolean pizzaContainsAllNeededCells = didPizzaContainsAllNeededVerticalCells(pizza, differenceXCoordinates, maxYCoordInSlice + 1);
@@ -85,12 +91,13 @@ public class DFSMethods {
             return true;
         } else {
             return false;
-        }
-
+        }*/
+        return true;
     }
 
     public boolean stepLeft(List<Cell> slice, List<Cell> pizza, int maxCellsInSlice) {
-        Integer minXCoordInSlice = findMinX(slice);
+        //TODO fix a compile time error
+      /*  Integer minXCoordInSlice = findMinX(slice);
         List<Integer> differenceYCoordinates = fillAllDifferenceY(slice);
         if (slice.size() + differenceYCoordinates.size() > maxCellsInSlice) return false;
         boolean pizzaContainsAllNeededCells = didPizzaContainsAllNeededVerticalCells(pizza, differenceYCoordinates, minXCoordInSlice - 1);
@@ -101,7 +108,8 @@ public class DFSMethods {
             return true;
         } else {
             return false;
-        }
+        }*/
+        return true;
     }
     //endregion
 
@@ -152,23 +160,27 @@ public class DFSMethods {
     }
 
     private boolean didPizzaContainsAllNeededHorizontalCells(List<Cell> pizza, List<Integer> differenceXCoordinate, Integer yCoord) {
-        boolean returnValue = true;
+        //TODO fix a compile time error
+       /* boolean returnValue = true;
         for (Integer xCoord : differenceXCoordinate) {
             if (!pizza.contains(new Cell(xCoord, yCoord))) {
                 returnValue = false;
             }
         }
-        return returnValue;
+        return returnValue;*/
+        return true;
     }
 
     private boolean didPizzaContainsAllNeededVerticalCells(List<Cell> pizza, List<Integer> differenceYCoordinate, Integer xCoord) {
-        boolean returnValue = true;
+        //TODO fix a compile time error
+     /*   boolean returnValue = true;
         for (Integer yCoord : differenceYCoordinate) {
             if (!pizza.contains(new Cell(xCoord, yCoord))) {
                 returnValue = false;
             }
         }
-        return returnValue;
+        return returnValue;*/
+        return true;
     }
 
     //endregion

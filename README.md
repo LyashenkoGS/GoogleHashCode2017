@@ -31,6 +31,6 @@ To automate interaction with online submission can be used [SeleniumIDE](https:/
  with a firefox browser.
 * login  to the [submission page](https://hashcodejudge.withgoogle.com/#/rounds/6553823069863936/submissions/)
 * setup selenium test suite(submitResultsViaSelenium) according to yours file system 
-* execute the test case and see scores on web
+* execute the test case and see scores on web. See the [video instruction on YouTube](https://www.youtube.com/watch?v=Wg7s3CtIeCs&feature=youtu.be)
 
 
