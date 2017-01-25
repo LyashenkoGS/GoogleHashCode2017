@@ -23,7 +23,7 @@ public class DFSMethods {
 		//checking bottom cells.
 		if(didPizzaContainsAllNeededHorizontalCells(pizza, differenceXCoordinates, maxY + 1)) cellsAroundSlice += differenceXCoordinates.size();
 		
-		//checking rirht cells.
+		//checking right cells.
 		if(didPizzaContainsAllNeededVerticalCells(pizza, differenceYCoordinates, minX - 1)) cellsAroundSlice += differenceYCoordinates.size();
 		
 		return cellsAroundSlice;
@@ -31,11 +31,12 @@ public class DFSMethods {
 	
     public boolean stepUp(List<Cell> slice, List<Cell> pizza, int maxCellsInSlice){
     	
-    	// finding min y coordinate in slice and fill values to differenceXCoordinates.
+    	// finding min y coordinate in slice.
     	Integer minYCoordInSlice = findMinY(slice);
+    	// find all difference x coordinates.
     	List<Integer> differenceXCoordinates = fillAllDifferenceX(slice);
     	
-    	//prevent this method for cutting too big slice.
+    	//prevent this method from cutting too big slice.
     	if(slice.size() + differenceXCoordinates.size() > maxCellsInSlice) return false;
     	
     	//our pizza still have all needed cells for this step? lets check it.
@@ -102,7 +103,7 @@ public class DFSMethods {
     	
     	if(slice.size() + differenceYCoordinates.size() > maxCellsInSlice) return false;
     	
-    	boolean pizzaContainsAllNeededCells = didPizzaContainsAllNeededVerticalCells(pizza, differenceYCoordinates, minXCoordInSlice -1 1);
+    	boolean pizzaContainsAllNeededCells = didPizzaContainsAllNeededVerticalCells(pizza, differenceYCoordinates, minXCoordInSlice -1);
     	
     	if(pizzaContainsAllNeededCells){
     		for(int yCoord: differenceYCoordinates){
@@ -128,8 +129,8 @@ public class DFSMethods {
     private List<integer> fillAllDifferenceY(List<Cell> slice){
     	List<Integer> diffY = new ArrayList<Integer>();
     	for(Cell cell: slice){
-    		if(!diffX.contains(cell.y)){
-    			diffX.add(cell.y);
+    		if(!diffY.contains(cell.y)){
+    			diffY.add(cell.y);
     		}
     	}
     	return diffY;
@@ -201,10 +202,10 @@ public class DFSMethods {
     	return returnValue;
     }
     
-    private boolean didPizzaContainsAllNeededVerticalCells(List<Cell> pizza, List<Integer> differenceYCoordinate, Integer minXCoordinate){
+    private boolean didPizzaContainsAllNeededVerticalCells(List<Cell> pizza, List<Integer> differenceYCoordinate, Integer xCoord){
     	boolean returnValue = true;
     	for(Integer yCoord: differenceYCoordinate){
-    		if(!pizza.contains(new Cell(minXCoordinate, yCoord))){
+    		if(!pizza.contains(new Cell(xCoord, yCoord))){
     			returnValue = false;
     		}
     	}
