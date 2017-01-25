@@ -20,4 +20,8 @@ public class Cell {
     public String toString() {
         return ingredient.toString();
     }
+
+    public int getX() {
+        return x;
+    }
 }

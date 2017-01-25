@@ -1,6 +1,7 @@
-#Java and Intellij specific
+#Java and Intellij & Eclipse specific
 .idea
 *.iml
+.project
 target
 #ignore the archived source code
 *.zip
