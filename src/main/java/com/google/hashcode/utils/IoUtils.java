@@ -44,9 +44,9 @@ public class IoUtils {
                 for (int column = 0; column < fileLine.length(); column++) {
                     Character literal = fileLine.charAt(column);
                     if (literal.toString().equals(Ingredient.TOMATO.toString())) {
-                        cells.add(new Cell(column, row, Ingredient.TOMATO));
+                        cells.add(new Cell(row, column, Ingredient.TOMATO));
                     } else if (literal.toString().equals(Ingredient.MUSHROOM.toString())) {
-                        cells.add(new Cell(column, row, Ingredient.MUSHROOM));
+                        cells.add(new Cell(row, column, Ingredient.MUSHROOM));
                     }
                 }
                 row++;

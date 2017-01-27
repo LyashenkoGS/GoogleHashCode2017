@@ -28,22 +28,22 @@ public class IoUtilsTest {
         Slice slice2 = new Slice();
 
         slice0.cells.add(new Cell(0, 0, Ingredient.TOMATO));
-        slice0.cells.add(new Cell(0, 1, Ingredient.TOMATO));
-        slice0.cells.add(new Cell(0, 2, Ingredient.TOMATO));
         slice0.cells.add(new Cell(1, 0, Ingredient.TOMATO));
+        slice0.cells.add(new Cell(2, 0, Ingredient.TOMATO));
+        slice0.cells.add(new Cell(0, 1, Ingredient.TOMATO));
         slice0.cells.add(new Cell(1, 1, Ingredient.MUSHROOM));
-        slice0.cells.add(new Cell(1, 2, Ingredient.TOMATO));
-
-        slice1.cells.add(new Cell(2, 0, Ingredient.TOMATO));
-        slice1.cells.add(new Cell(2, 1, Ingredient.MUSHROOM));
+        slice0.cells.add(new Cell(2, 1, Ingredient.TOMATO));
+    
+        slice1.cells.add(new Cell(0, 2, Ingredient.TOMATO));
+        slice1.cells.add(new Cell(1, 2, Ingredient.MUSHROOM));
         slice1.cells.add(new Cell(2, 2, Ingredient.TOMATO));
-
-        slice2.cells.add(new Cell(3, 0, Ingredient.TOMATO));
-        slice2.cells.add(new Cell(3, 1, Ingredient.MUSHROOM));
-        slice2.cells.add(new Cell(3, 2, Ingredient.TOMATO));
-        slice2.cells.add(new Cell(4, 0, Ingredient.TOMATO));
-        slice2.cells.add(new Cell(4, 1, Ingredient.TOMATO));
-        slice2.cells.add(new Cell(4, 2, Ingredient.TOMATO));
+    
+        slice2.cells.add(new Cell(0, 3, Ingredient.TOMATO));
+        slice2.cells.add(new Cell(1, 3, Ingredient.MUSHROOM));
+        slice2.cells.add(new Cell(2, 3, Ingredient.TOMATO));
+        slice2.cells.add(new Cell(0, 4, Ingredient.TOMATO));
+        slice2.cells.add(new Cell(1, 4, Ingredient.TOMATO));
+        slice2.cells.add(new Cell(2, 4, Ingredient.TOMATO));
 
         return Arrays.asList(slice0, slice1, slice2);
     }

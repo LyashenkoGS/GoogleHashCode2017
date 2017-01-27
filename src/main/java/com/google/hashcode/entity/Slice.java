@@ -1,9 +1,10 @@
 package com.google.hashcode.entity;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * A rectangle piece of a pizza
@@ -11,6 +12,7 @@ import java.util.List;
  * @author Grigoriy Lyashenko (Grog).
  */
 public class Slice {
+    private static final Logger LOGGER = LoggerFactory.getLogger(Slice.class);
 
     public List<Cell> cells = new ArrayList<>();
 
@@ -19,6 +21,23 @@ public class Slice {
 
     public Slice(Cell cell) {
         this.cells = Collections.singletonList(cell);
+    }
+
+    public Slice(List<Cell> cells) {
+        this.cells = cells;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Slice)) return false;
+        Slice slice = (Slice) o;
+        return Objects.equals(cells, slice.cells);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(cells);
     }
 
     public int minX() {
@@ -33,11 +52,6 @@ public class Slice {
         return Collections.max(cells, Comparator.comparingInt(Cell::getX)).x;
     }
 
-
-   /* public Slice(Cell cell) {
-        this.cells = Collections.singletonList(cell);
-    }*/
-
     public int maxY() {
         return Collections.max(cells, Comparator.comparingInt(Cell::getX)).y;
     }
@@ -46,5 +60,25 @@ public class Slice {
     public String toString() {
         return cells.toString();
     }
+
+    public boolean isValid(Pizza pizza) {
+        //TODO check rectangularity
+        int mushroomsNumber = this.cells.stream()
+                .filter(cell -> cell.ingredient.equals(Ingredient.MUSHROOM))
+                .collect(Collectors.toList())
+                .size();
+        int tomatoesNumber = this.cells.stream()
+                .filter(cell -> cell.ingredient.equals(Ingredient.TOMATO))
+                .collect(Collectors.toList())
+                .size();
+        boolean isPassedSliceInstructions = this.cells.size() <= pizza.getSliceInstruction().getMaxNumberOfCellsPerSlice()
+                && tomatoesNumber >= pizza.getSliceInstruction().getMinNumberOfIngredientPerSlice()
+                && mushroomsNumber >= pizza.getSliceInstruction().getMinNumberOfIngredientPerSlice();
+        LOGGER.info("\n" + pizza.getSliceInstruction() +
+                "\nSlice :" + this +
+                "\npassed validation: " + isPassedSliceInstructions);
+        return isPassedSliceInstructions;
+    }
+
 }
 
