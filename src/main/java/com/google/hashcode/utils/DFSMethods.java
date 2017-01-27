@@ -18,20 +18,19 @@ public abstract class DFSMethods {
     private DFSMethods() {
     }
 
+
     /**
-     * Calculates a number of cells around the given slice. Available cells is cells that can be merged
-     * into the slice, so it will remain a rectangle, so only up,down,left,right around an each slice outside cell.
-     * No on the diagonal !
+     * Step as an entity is an amount of a pizza cells, that can be added to a slice of a pizza or a pizza cell.<br>
+     * Step as an action is a process of:<br>
+     * <p>
+     * * adding cells to a start cell or a start slice<br>
+     * * validate generated slice according to the pizza slicing instructions<br>
+     * * if validation passed ->cutting the start cell with added cells from the pizza
      *
-     * @param slice given pizza
-     * @param pizza given slice
-     * @return number of cells available to merge into the slice
+     * @param pizza (mutable) a pizza to perform step on
+     * @param slice start position for a step
+     * @return cutted slice from the pizza
      */
-    public static int calculateNumberOfFreeCellsAroundSlice(Slice slice, Pizza pizza) {
-
-        return 0;
-    }
-
     public static Optional<Slice> rightStep(Pizza pizza, Slice slice) {
         List<Cell> slicesRightBorder = slice.cells.stream()
                 .filter(cell -> (cell.x == slice.maxX()) && (cell.y >= slice.minY()) && (cell.y <= slice.maxY()))
@@ -45,6 +44,8 @@ public abstract class DFSMethods {
             Slice sliceAndStep = new Slice(new ArrayList<>(slice.cells));
             sliceAndStep.cells.addAll(step.cells);
             if (!slice.cells.isEmpty() && sliceAndStep.isValid(pizza)) {
+                //remove the slice and step from the pizza
+                pizza.getCells().removeAll(sliceAndStep.cells);
                 return Optional.of(sliceAndStep);
             } else {
                 return Optional.empty();
