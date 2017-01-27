@@ -1,6 +1,8 @@
 package com.google.hashcode.entity;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -12,13 +14,32 @@ public class Slice {
 
     public List<Cell> cells = new ArrayList<>();
 
-    public void add(Cell cell) {
-        cells.add(cell);
-        cell.sliced = true;
+    public Slice() {
     }
 
-    public int cellsNumber() {
-        return cells.size();
+    public Slice(Cell cell) {
+        this.cells = Collections.singletonList(cell);
+    }
+
+    public int minX() {
+        return Collections.min(cells, Comparator.comparingInt(Cell::getX)).x;
+    }
+
+    public int minY() {
+        return Collections.min(cells, Comparator.comparingInt(Cell::getX)).y;
+    }
+
+    public int maxX() {
+        return Collections.max(cells, Comparator.comparingInt(Cell::getX)).x;
+    }
+
+
+   /* public Slice(Cell cell) {
+        this.cells = Collections.singletonList(cell);
+    }*/
+
+    public int maxY() {
+        return Collections.max(cells, Comparator.comparingInt(Cell::getX)).y;
     }
 
     @Override

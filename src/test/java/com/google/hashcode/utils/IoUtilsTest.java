@@ -13,7 +13,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 
 /**
  * @author Grigoriy Lyashenko (Grog).
@@ -21,7 +20,7 @@ import static org.junit.Assert.assertFalse;
 public class IoUtilsTest {
     private static final String TEST_OUTPUT_FILE = "testOutput.txt";
     private static final String PARAGON_OUTPUT_EXAMPLE_FILE = "src/test/resources/paragonOutputExample.txt";
-    private static final String EXAMPLE_PIZZA_FILE = "inputDataSets/example.in";
+    private static final String EXAMPLE_PIZZA_FILE = InputFiles.EXAMPLE_INPUT_FILE_PATH;
 
     private static List<Slice> createSlicesForParagonOutputExample() {
         Slice slice0 = new Slice();
@@ -55,7 +54,8 @@ public class IoUtilsTest {
         assertEquals("We expect" + EXAMPLE_PIZZA_FILE + "contains 3 rows", 3, ingredients.size);
         assertEquals("We expect" + EXAMPLE_PIZZA_FILE + "contains 5 columns", 5, ingredients[0].length);
         assertFalse("We expect no null value in ingredients", IoUtils.convertToHumanReadableTable(ingredients).contains("null"));
-   */ }
+   */
+    }
 
     @Test
     public void parseExampleSliceInstructions() throws IOException {

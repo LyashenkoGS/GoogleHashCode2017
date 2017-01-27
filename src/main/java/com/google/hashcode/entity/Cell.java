@@ -6,9 +6,9 @@ package com.google.hashcode.entity;
  * @author Grigoriy Lyashenko (Grog).
  */
 public class Cell {
-    public final int x;
-    public final int y;
-    public final Ingredient ingredient;
+    public int x;
+    public int y;
+    public Ingredient ingredient;
     /**
      * indicates if given cell has been sliced
      */
@@ -25,16 +25,8 @@ public class Cell {
         return ingredient.toString();
     }
 
-    /**
-     * Creates a new cell based on the parent but add given coordinates
-     * to the original one cell
-     *
-     * @param x delta x
-     * @param y delta y
-     * @return new Cell with adjusted coordinates
-     */
-    public Cell prototype(int x, int y) {
-        return new Cell(this.x + x, this.y + y, null);
+    public static Cell prototype(int x, int y) {
+        return new Cell(x, y, null);
     }
 
     @Override

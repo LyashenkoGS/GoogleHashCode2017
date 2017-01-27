@@ -11,14 +11,14 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import static com.google.hashcode.utils.InputFiles.EXAMPLE_INPUT_FILE_PATH;
+
 
 public class App {
     private static final Logger LOGGER = LoggerFactory.getLogger(Slicer.class);
 
     public static void main(String[] args) throws IOException {
-        String exampleInputFile = "inputDataSets/example.in";
-        List<Cell> ingredients = IoUtils.parsePizza(exampleInputFile);
-        Pizza pizza = new Pizza(new File(exampleInputFile), ingredients, IoUtils.parseSliceInstructions(exampleInputFile));
+        Pizza pizza = new Pizza(new File(EXAMPLE_INPUT_FILE_PATH), IoUtils.parsePizza(EXAMPLE_INPUT_FILE_PATH), IoUtils.parseSliceInstructions(EXAMPLE_INPUT_FILE_PATH));
         //  IoUtils.writeToFile("outputDataSet/example.txt", IoUtils.parseSlices(Slicer.slicePizza(pizza)));
         LOGGER.info("GoogleHashCode2017! Pizza task");
         LOGGER.info(pizza.toString());
