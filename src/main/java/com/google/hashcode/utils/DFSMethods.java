@@ -1,6 +1,7 @@
 package com.google.hashcode.utils;
 
 import com.google.hashcode.entity.Cell;
+import com.google.hashcode.entity.Ingredient;
 import com.google.hashcode.entity.Pizza;
 import com.google.hashcode.entity.Slice;
 import com.google.hashcode.entity.Step;
@@ -8,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -76,7 +78,19 @@ public abstract class DFSMethods {
 
     List<Slice> cutAllStartPositions(Pizza pizza) {
         //TODO pick-ups a step with a minimal steps number, execute it(cut it from the pizza, and a slice). The pizza is a mutable object
-        return new ArrayList<>();
+       	List<Cell> currentPizza = pizza.getCells();
+       	List<Slice> starts = new ArrayList<Slice>();
+       	Iterator<Cell> iter = currentPizza.iterator();
+       	while(iter.hasNext()){
+       		Cell cell = iter.next();
+       		if(cell.ingredient == Ingredient.MUSHROOM){
+       			Slice slice = new Slice();
+       			slice.cells.add(cell);
+       			starts.add(slice);
+       			iter.remove();
+       		}
+       	}
+        return starts;
     }
 
 }
