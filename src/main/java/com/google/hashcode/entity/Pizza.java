@@ -53,21 +53,30 @@ public class Pizza {
     @Override
     public String toString() {
         return input.toString()
-                + "\n" + sliceInstruction.toString()
-                + "\n" + outputCellsArray();
+                + ("\n" + sliceInstruction.toString()
+                + "\n" + outputCellsArray()).trim();
     }
 
     private String outputCellsArray() {
         StringBuilder stringBuilder = new StringBuilder();
         int columnsCount = cells.stream().max(Comparator.comparingInt(Cell::getX)).get().getX();
         int rowsCount = cells.stream().max(Comparator.comparingInt(Cell::getY)).get().getY();
-        for (int i = 0; i < rowsCount + 1; i++) {
-            for (int j = 0; j < columnsCount + 1; j++) {
-                stringBuilder.append(this.getCell(i, j).toString()).append(" ");
+        //output columns coordinates
+        stringBuilder.append(" ");
+        for (int column = 0; column < columnsCount + 1; column++) {
+            stringBuilder.append(" ").append(column);
+        }
+        stringBuilder.append("\n");
+        for (int row = 0; row < rowsCount + 1; row++) {
+            //output rows coordinates
+            stringBuilder.append(row).append(" ");
+            for (int column = 0; column < columnsCount + 1; column++) {
+                stringBuilder.append(this.getCell(row, column).toString()).append(" ");
             }
             stringBuilder.append("\n");
         }
         return stringBuilder.toString();
     }
+
 
 }

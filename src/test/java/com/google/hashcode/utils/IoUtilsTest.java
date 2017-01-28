@@ -12,7 +12,6 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 
-import static junit.framework.TestCase.assertFalse;
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -51,8 +50,7 @@ public class IoUtilsTest {
 
     @Test
     public void parseExampleInput() throws IOException {
-        List<Cell> ing = IoUtils.parsePizza(EXAMPLE_PIZZA_FILE);
-
+        List<Cell> input = IoUtils.parsePizza(EXAMPLE_PIZZA_FILE);
     }
 
     @Test
