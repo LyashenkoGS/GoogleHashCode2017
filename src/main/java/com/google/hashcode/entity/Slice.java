@@ -79,6 +79,54 @@ public class Slice {
                 "\npassed validation: " + isPassedSliceInstructions);
         return isPassedSliceInstructions;
     }
+    
+    public Slice generateAbowe(Slice slice){
+    	List<Cell> cells = new ArrayList<Cell>();
+		int maxX = slice.maxX();
+		int minX = slice.minX();
+		int minY = slice.minY();
+		for(int i = minX; i <= maxX; i++){
+			Cell cell = new Cell(minY-1, i, null);
+			cells.add(cell);
+		}
+    	return new Slice(cells);
+    }
+    
+    public Slice generateBelow(Slice slice){
+    	List<Cell> cells = new ArrayList<Cell>();
+		int maxX = slice.maxX();
+		int minX = slice.minX();
+		int maxY = slice.maxY();
+		for(int i = minX; i <= maxX; i++){
+			Cell cell = new Cell(maxY+1, i, null);
+			cells.add(cell);
+		}
+    	return new Slice(cells);
+    }
+    
+    public Slice generateLeft(Slice slice){
+    	List<Cell> cells = new ArrayList<Cell>();
+		int minX = slice.minX();
+		int minY = slice.minY();
+		int maxY = slice.maxY();
+		for(int i = minY; i <= maxY; i++){
+			Cell cell = new Cell(i, minX-1, null);
+			cells.add(cell);
+		}
+    	return new Slice(cells);
+    }
+    
+    public Slice generateRight(Slice slice){
+    	List<Cell> cells = new ArrayList<Cell>();
+		int maxX = slice.maxX();
+		int minY = slice.minY();
+		int maxY = slice.maxY();
+		for(int i = minY; i <= maxY; i++){
+			Cell cell = new Cell(i, maxX+1, null);
+			cells.add(cell);
+		}
+    	return new Slice(cells);
+    }
 
 }
 

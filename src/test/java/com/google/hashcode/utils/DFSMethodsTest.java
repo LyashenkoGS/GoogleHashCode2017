@@ -8,8 +8,10 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import static com.google.hashcode.utils.InputFiles.EXAMPLE_INPUT_FILE_PATH;
 import static org.junit.Assert.*;
@@ -31,7 +33,17 @@ public class DFSMethodsTest {
         ArrayList<Cell> expectedPizzaCells = new ArrayList<>(pizza.getCells());
         expectedPizzaCells.removeAll(expectedSlice.cells);
         assertEquals(expectedPizzaCells,pizza.getCells());
-
+    }
+    
+    @Test
+    public void getAvailableSteps() throws IOException{
+    	Pizza pizza = new Pizza(new File(EXAMPLE_INPUT_FILE_PATH), IoUtils.parsePizza(EXAMPLE_INPUT_FILE_PATH), IoUtils.parseSliceInstructions(EXAMPLE_INPUT_FILE_PATH));
+    	Slice a = new Slice(new Cell(1, 1, Ingredient.MUSHROOM));
+    	Slice b = new Slice(new Cell(0, 0, Ingredient.MUSHROOM));
+    	List<Slice> slices = new ArrayList<Slice>();
+    	slices.add(a);
+    	slices.add(b);
+    	// generate expected slices
     }
 
 }

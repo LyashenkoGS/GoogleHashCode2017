@@ -68,7 +68,18 @@ public abstract class DFSMethods {
      */
     List<Step> getAvailableSteps(Pizza pizza, List<Slice> output) {
         //TODO implement.For each slice find all available steps. We DON'T change the pizza on this stage
-        return new ArrayList<>();
+    	List<Step> allSteps = new ArrayList<Step>();
+        for (Slice slice : output) {
+        	Slice left = slice.generateLeft(slice);
+        	Slice right = slice.generateRight(slice);
+        	Slice abowe = slice.generateAbowe(slice);
+        	Slice belowe = slice.generateBelow(slice);
+        	if(pizza.cotnainsAllCells(left))allSteps.add(new Step(slice, left));
+        	if(pizza.cotnainsAllCells(right))allSteps.add(new Step(slice, right));
+        	if(pizza.cotnainsAllCells(abowe))allSteps.add(new Step(slice, abowe));
+        	if(pizza.cotnainsAllCells(belowe))allSteps.add(new Step(slice, belowe));
+		}
+    	return allSteps;
     }
 
     Slice performStep(Pizza pizza, List<Step> steps) {

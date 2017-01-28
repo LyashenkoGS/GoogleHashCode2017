@@ -55,5 +55,9 @@ public class Pizza {
                 //TODO fix human readable output   "\n" + IoUtils.convertToHumanReadableTable(cells) +
                 "\n" + sliceInstruction.toString();
     }
-
+    
+    public boolean cotnainsAllCells(Slice slice){
+    	return slice.cells.stream().allMatch(cell->this.cells.contains(cell));
+    }
+    		
 }
