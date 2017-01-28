@@ -73,24 +73,6 @@ public class IoUtils {
     }
 
     /**
-     * Converts given pizza cells 2d array to human readable string representation
-     *
-     * @param ingredients given array
-     * @return table like String representation
-     */
-    public static String convertToHumanReadableTable(Cell[][] ingredients) {
-        StringBuilder output = new StringBuilder();
-        for (Cell[] row : ingredients) {
-            for (Cell cell : row) {
-                output.append(cell).append(" ");
-            }
-            output.append("\n");
-        }
-        return output.toString();
-        //TODO reimplement for the pizza
-    }
-
-    /**
      * Formats data from list of slices to the required output format
      *
      * @param list inner representation of pizza

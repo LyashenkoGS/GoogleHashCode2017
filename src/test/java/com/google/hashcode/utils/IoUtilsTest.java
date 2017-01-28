@@ -12,6 +12,7 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 
+import static junit.framework.TestCase.assertFalse;
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -33,11 +34,11 @@ public class IoUtilsTest {
         slice0.cells.add(new Cell(0, 1, Ingredient.TOMATO));
         slice0.cells.add(new Cell(1, 1, Ingredient.MUSHROOM));
         slice0.cells.add(new Cell(2, 1, Ingredient.TOMATO));
-    
+
         slice1.cells.add(new Cell(0, 2, Ingredient.TOMATO));
         slice1.cells.add(new Cell(1, 2, Ingredient.MUSHROOM));
         slice1.cells.add(new Cell(2, 2, Ingredient.TOMATO));
-    
+
         slice2.cells.add(new Cell(0, 3, Ingredient.TOMATO));
         slice2.cells.add(new Cell(1, 3, Ingredient.MUSHROOM));
         slice2.cells.add(new Cell(2, 3, Ingredient.TOMATO));
@@ -50,11 +51,8 @@ public class IoUtilsTest {
 
     @Test
     public void parseExampleInput() throws IOException {
-   /*     List<Cell> ing = IoUtils.parsePizza(EXAMPLE_PIZZA_FILE);
-        assertEquals("We expect" + EXAMPLE_PIZZA_FILE + "contains 3 rows", 3, ingredients.size);
-        assertEquals("We expect" + EXAMPLE_PIZZA_FILE + "contains 5 columns", 5, ingredients[0].length);
-        assertFalse("We expect no null value in ingredients", IoUtils.convertToHumanReadableTable(ingredients).contains("null"));
-   */
+        List<Cell> ing = IoUtils.parsePizza(EXAMPLE_PIZZA_FILE);
+
     }
 
     @Test

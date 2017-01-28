@@ -1,6 +1,7 @@
 package com.google.hashcode.entity;
 
 import java.io.File;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -51,9 +52,22 @@ public class Pizza {
 
     @Override
     public String toString() {
-        return input.toString() +
-                //TODO fix human readable output   "\n" + IoUtils.convertToHumanReadableTable(cells) +
-                "\n" + sliceInstruction.toString();
+        return input.toString()
+                + "\n" + sliceInstruction.toString()
+                + "\n" + outputCellsArray();
+    }
+
+    private String outputCellsArray() {
+        StringBuilder stringBuilder = new StringBuilder();
+        int columnsCount = cells.stream().max(Comparator.comparingInt(Cell::getX)).get().getX();
+        int rowsCount = cells.stream().max(Comparator.comparingInt(Cell::getY)).get().getY();
+        for (int i = 0; i < rowsCount + 1; i++) {
+            for (int j = 0; j < columnsCount + 1; j++) {
+                stringBuilder.append(this.getCell(i, j).toString()).append(" ");
+            }
+            stringBuilder.append("\n");
+        }
+        return stringBuilder.toString();
     }
 
 }

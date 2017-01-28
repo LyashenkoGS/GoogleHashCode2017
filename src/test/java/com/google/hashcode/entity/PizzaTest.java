@@ -5,6 +5,7 @@ import com.google.hashcode.utils.IoUtils;
 import org.junit.Test;
 
 import java.io.File;
+import java.io.IOException;
 
 import static com.google.hashcode.utils.InputFiles.*;
 import static org.junit.Assert.assertEquals;
@@ -24,6 +25,12 @@ public class PizzaTest {
     public void getCellException() throws Exception {
         Pizza pizza = new Pizza(new File(EXAMPLE_INPUT_FILE_PATH), IoUtils.parsePizza(EXAMPLE_INPUT_FILE_PATH), IoUtils.parseSliceInstructions(EXAMPLE_INPUT_FILE_PATH));
         pizza.getCell(100500, 0);
+    }
+
+    @Test
+    public void testToString() throws IOException {
+        Pizza pizza = new Pizza(new File(EXAMPLE_INPUT_FILE_PATH), IoUtils.parsePizza(EXAMPLE_INPUT_FILE_PATH), IoUtils.parseSliceInstructions(EXAMPLE_INPUT_FILE_PATH));
+        System.out.println(pizza);
     }
 
 }
