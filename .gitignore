@@ -2,6 +2,10 @@
 .idea
 *.iml
 .project
+.classpath
+.project
 target
 #ignore the archived source code
 *.zip
+/.classpath
+.settings/

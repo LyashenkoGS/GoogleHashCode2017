@@ -34,16 +34,23 @@ public class DFSMethodsTest {
         expectedPizzaCells.removeAll(expectedSlice.cells);
         assertEquals(expectedPizzaCells,pizza.getCells());
     }
-    
+
     @Test
-    public void getAvailableSteps() throws IOException{
-    	Pizza pizza = new Pizza(new File(EXAMPLE_INPUT_FILE_PATH), IoUtils.parsePizza(EXAMPLE_INPUT_FILE_PATH), IoUtils.parseSliceInstructions(EXAMPLE_INPUT_FILE_PATH));
-    	Slice a = new Slice(new Cell(1, 1, Ingredient.MUSHROOM));
-    	Slice b = new Slice(new Cell(0, 0, Ingredient.MUSHROOM));
-    	List<Slice> slices = new ArrayList<Slice>();
-    	slices.add(a);
-    	slices.add(b);
-    	// generate expected slices
+    public void getAvailableSteps() throws IOException {
+        Pizza pizza = new Pizza(new File(EXAMPLE_INPUT_FILE_PATH), IoUtils.parsePizza(EXAMPLE_INPUT_FILE_PATH), IoUtils.parseSliceInstructions(EXAMPLE_INPUT_FILE_PATH));
+        //TODO implement the method properly ! assertEquals(8,DFSMethods.
+        //  getAvailableSteps(pizza,DFSMethods.cutAllStartPositions(pizza)).size());
+    }
+
+    @Test
+    public void cutAllStartPositions() throws IOException {
+        Pizza pizza = new Pizza(new File(EXAMPLE_INPUT_FILE_PATH), IoUtils.parsePizza(EXAMPLE_INPUT_FILE_PATH), IoUtils.parseSliceInstructions(EXAMPLE_INPUT_FILE_PATH));
+        List<Slice> expected = Arrays.asList(
+                new Slice(new Cell(1, 1, Ingredient.MUSHROOM)),
+                new Slice(new Cell(1, 2, Ingredient.MUSHROOM)),
+                new Slice(new Cell(1, 3, Ingredient.MUSHROOM))
+        );
+        assertEquals(expected, DFSMethods.cutAllStartPositions(pizza));
     }
 
 }

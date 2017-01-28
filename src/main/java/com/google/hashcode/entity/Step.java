@@ -17,4 +17,13 @@ public class Step {
 	public Slice startPosition;
 
     public Slice delta;
+
+	@Override
+	public String toString() {
+		return "Step{" +
+				"startPosition=" + startPosition +
+				", delta=" + delta +
+				'}';
+	}
+
 }
