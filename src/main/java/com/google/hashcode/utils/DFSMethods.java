@@ -3,7 +3,7 @@ package com.google.hashcode.utils;
 import com.google.hashcode.entity.Cell;
 import com.google.hashcode.entity.Pizza;
 import com.google.hashcode.entity.Slice;
-import com.google.hashcode.entity.SliceInstruction;
+import com.google.hashcode.entity.Step;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,7 +17,6 @@ public abstract class DFSMethods {
 
     private DFSMethods() {
     }
-
 
     /**
      * Step as an entity is an amount of a pizza cells, that can be added to a slice of a pizza or a pizza cell.<br>
@@ -58,16 +57,25 @@ public abstract class DFSMethods {
     }
 
     /**
-     * Step as an action it's a process, when a slice adding to itself a subset of a pizza cells and remains rectangular.
-     * Step as an entity is a Slice tha can be added to a particular slice inside a particalur pizza
-     * considering slice instructions
+     * Step as an action it's a process, when a slice adding to itself a subset of a pizza cells and remains rectangular
+     * and valid.
      *
-     * @param pizza            given pizza
-     * @param slice            given slice in the pizza
-     * @param sliceInstruction restrictions for a steps
+     * @param pizza  given pizza
+     * @param output given slice in the pizza
      * @return available steps
      */
-    List<Slice> getAvailableSteps(Pizza pizza, Slice slice, SliceInstruction sliceInstruction) {
+    List<Step> getAvailableSteps(Pizza pizza, List<Slice> output) {
+        //TODO implement.For each slice find all available steps. We DON'T change the pizza on this stage
+        return new ArrayList<>();
+    }
+
+    Slice performStep(Pizza pizza, List<Step> steps) {
+        //TODO pick-ups a step with a minimal steps number, execute it(cut it from the pizza, and a slice)
+        return null;
+    }
+
+    List<Slice> cutAllStartPositions(Pizza pizza) {
+        //TODO pick-ups a step with a minimal steps number, execute it(cut it from the pizza, and a slice). The pizza is a mutable object
         return new ArrayList<>();
     }
 
