@@ -57,10 +57,15 @@ public class Pizza {
                 + "\n" + outputCellsArray()).trim();
     }
 
-    public boolean cotnainsAllCells(Slice slice){
-    	return slice.cells.stream().allMatch(cell->this.cells.contains(cell));
+    /**
+     * Indicates does this pizza contains each slice's cell
+     *
+     * @param slice given slice
+     * @return true if the pizza contains the slice
+     */
+    public boolean containsCells(Slice slice) {
+        return slice.cells.stream().allMatch(this.cells::contains);
     }
-
 
     private String outputCellsArray() {
         StringBuilder stringBuilder = new StringBuilder();

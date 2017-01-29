@@ -1,15 +1,10 @@
 package com.google.hashcode.utils;
 
-import com.google.hashcode.entity.Cell;
-import com.google.hashcode.entity.Ingredient;
-import com.google.hashcode.entity.Pizza;
-import com.google.hashcode.entity.Slice;
-import com.google.hashcode.entity.Step;
+import com.google.hashcode.entity.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -68,14 +63,14 @@ public abstract class DFSMethods {
     public static List<Step> getAvailableSteps(Pizza pizza, List<Slice> output) {
         List<Step> steps = new ArrayList<>();
         for (Slice slice : output) {
-            Slice left = slice.generateLeft(slice);
-            Slice right = slice.generateRight(slice);
-            Slice above = slice.generateAbowe(slice);
-            Slice below = slice.generateBelow(slice);
-            if (pizza.cotnainsAllCells(left)) steps.add(new Step(slice, left));
-            if (pizza.cotnainsAllCells(right)) steps.add(new Step(slice, right));
-            if (pizza.cotnainsAllCells(above)) steps.add(new Step(slice, above));
-            if (pizza.cotnainsAllCells(below)) steps.add(new Step(slice, below));
+            Slice stepLeftDelta = slice.generateStepDeltaLeft();
+            Slice stepRightDelta = slice.generateStepRight();
+            Slice stepAboveDelta = slice.generateStepDeltaAbove();
+            Slice stepBelowDelta = slice.generateStepDeltaBelow();
+            if (pizza.containsCells(stepLeftDelta)) steps.add(new Step(slice, stepLeftDelta));
+            if (pizza.containsCells(stepRightDelta)) steps.add(new Step(slice, stepRightDelta));
+            if (pizza.containsCells(stepAboveDelta)) steps.add(new Step(slice, stepAboveDelta));
+            if (pizza.containsCells(stepBelowDelta)) steps.add(new Step(slice, stepBelowDelta));
         }
         LOGGER.info("available steps for" +
                 "\npizza: " + pizza
