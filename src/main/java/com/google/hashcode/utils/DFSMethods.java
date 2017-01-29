@@ -4,9 +4,7 @@ import com.google.hashcode.entity.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public abstract class DFSMethods {
@@ -60,9 +58,10 @@ public abstract class DFSMethods {
      * @param output given slices in the pizza
      * @return available steps
      */
-    public static List<Step> getAvailableSteps(Pizza pizza, List<Slice> output) {
-        List<Step> steps = new ArrayList<>();
+    public static Map<Slice, List<Step>> getAvailableSteps(Pizza pizza, List<Slice> output) {
+        Map<Slice, List<Step>> groupedSteps = new HashMap<>();
         for (Slice slice : output) {
+            List<Step> steps = new ArrayList<>();
             Slice stepLeftDelta = slice.generateStepDeltaLeft();
             Slice stepRightDelta = slice.generateStepDeltaRight();
             Slice stepAboveDelta = slice.generateStepDeltaAbove();
@@ -71,12 +70,13 @@ public abstract class DFSMethods {
             if (pizza.containsCells(stepRightDelta)) steps.add(new Step(slice, stepRightDelta));
             if (pizza.containsCells(stepAboveDelta)) steps.add(new Step(slice, stepAboveDelta));
             if (pizza.containsCells(stepBelowDelta)) steps.add(new Step(slice, stepBelowDelta));
+            groupedSteps.put(slice, steps);
         }
         LOGGER.info("available steps for" +
                 "\npizza: " + pizza
                 + "\nslices: " + output
-                + "\nsteps: " + steps);
-        return steps;
+                + "\nsteps: " + groupedSteps);
+        return groupedSteps;
     }
 
     public static Slice performStep(Pizza pizza, List<Step> steps) {
