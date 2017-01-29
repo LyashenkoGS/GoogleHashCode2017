@@ -55,6 +55,6 @@ public class SliceTest {
         Slice slice = new Slice(Arrays.asList(
                 new Cell(0, 0, Ingredient.MUSHROOM),
                 new Cell(0, 1, Ingredient.TOMATO)));
-        assertEquals(1, slice.generateStepRight().cells.size());
+        assertEquals(1, slice.generateStepDeltaRight().cells.size());
     }
 }

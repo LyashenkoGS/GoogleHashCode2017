@@ -110,7 +110,7 @@ public class Slice {
     public Slice generateStepDeltaLeft() {
         List<Cell> delta = new ArrayList<>();
         for (int y = this.minY(); y <= this.maxY(); y++) {
-            Cell cell = new Cell(y, minX(), Ingredient.TOMATO);
+            Cell cell = new Cell(y, minX() -1 , Ingredient.TOMATO);
             delta.add(cell);
         }
         LOGGER.info("generateStepDeltaLeft"
@@ -119,10 +119,10 @@ public class Slice {
         return new Slice(delta);
     }
 
-    public Slice generateStepRight() {
+    public Slice generateStepDeltaRight() {
         List<Cell> delta = new ArrayList<>();
         for (int y = this.minY(); y <= this.maxY(); y++) {
-            Cell cell = new Cell(y, minX(), Ingredient.TOMATO);
+            Cell cell = new Cell(y, maxX() + 1, Ingredient.TOMATO);
             delta.add(cell);
         }
         LOGGER.info("generateStepDeltaRight"

@@ -37,9 +37,9 @@ public class DFSMethodsTest {
     @Test
     public void getAvailableSteps() throws IOException {
         Pizza pizza = new Pizza(new File(EXAMPLE_INPUT_FILE_PATH), IoUtils.parsePizza(EXAMPLE_INPUT_FILE_PATH), IoUtils.parseSliceInstructions(EXAMPLE_INPUT_FILE_PATH));
-   /* TODO find a bug and fix    assertEquals(8, DFSMethods.
+    assertEquals(8, DFSMethods.
                 getAvailableSteps(pizza, DFSMethods.cutAllStartPositions(pizza)).size());
-    */}
+    }
 
     @Test
     public void cutAllStartPositions() throws IOException {

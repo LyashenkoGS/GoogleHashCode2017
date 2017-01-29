@@ -64,7 +64,7 @@ public abstract class DFSMethods {
         List<Step> steps = new ArrayList<>();
         for (Slice slice : output) {
             Slice stepLeftDelta = slice.generateStepDeltaLeft();
-            Slice stepRightDelta = slice.generateStepRight();
+            Slice stepRightDelta = slice.generateStepDeltaRight();
             Slice stepAboveDelta = slice.generateStepDeltaAbove();
             Slice stepBelowDelta = slice.generateStepDeltaBelow();
             if (pizza.containsCells(stepLeftDelta)) steps.add(new Step(slice, stepLeftDelta));
