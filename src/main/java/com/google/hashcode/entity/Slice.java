@@ -61,6 +61,12 @@ public class Slice {
         return cells.toString();
     }
 
+
+    /**
+     * check if slice valid for current pizza.
+     * @param pizza
+     * @return
+     */
     public boolean isValid(Pizza pizza) {
         //TODO check rectangularity
         int mushroomsNumber = this.cells.stream()

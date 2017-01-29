@@ -20,26 +20,26 @@ public abstract class DFSMethods {
      * For each slice find all available steps. We DON'T change the pizza on this stage
      *
      * @param pizza  given pizza
-     * @param output given slices in the pizza
+     * @param startPos given slices in the pizza
      * @return available steps
      */
-    public static Map<Slice, List<Step>> getAvailableSteps(Pizza pizza, List<Slice> output) {
+    public static Map<Slice, List<Step>> getAvailableSteps(Pizza pizza, List<Slice> startPos) {
         Map<Slice, List<Step>> groupedSteps = new HashMap<>();
-        for (Slice slice : output) {
+        for (Slice slice : startPos) {
             List<Step> steps = new ArrayList<>();
             Slice stepLeftDelta = slice.generateStepDeltaLeft();
             Slice stepRightDelta = slice.generateStepDeltaRight();
             Slice stepAboveDelta = slice.generateStepDeltaAbove();
             Slice stepBelowDelta = slice.generateStepDeltaBelow();
-            if (pizza.containsCells(stepLeftDelta)) steps.add(new Step(slice, stepLeftDelta));
-            if (pizza.containsCells(stepRightDelta)) steps.add(new Step(slice, stepRightDelta));
-            if (pizza.containsCells(stepAboveDelta)) steps.add(new Step(slice, stepAboveDelta));
-            if (pizza.containsCells(stepBelowDelta)) steps.add(new Step(slice, stepBelowDelta));
+            if (Step.isValid(pizza, slice, stepLeftDelta)) steps.add(new Step(slice, stepLeftDelta));
+            if (Step.isValid(pizza, slice, stepRightDelta)) steps.add(new Step(slice, stepRightDelta));
+            if (Step.isValid(pizza, slice, stepAboveDelta)) steps.add(new Step(slice, stepAboveDelta));
+            if (Step.isValid(pizza, slice, stepBelowDelta)) steps.add(new Step(slice, stepBelowDelta));
             groupedSteps.put(slice, steps);
         }
         LOGGER.info("available steps for" +
                 "\npizza: " + pizza
-                + "\nslices: " + output
+                + "\nslices: " + startPos
                 + "\nsteps: " + groupedSteps);
         return groupedSteps;
     }
