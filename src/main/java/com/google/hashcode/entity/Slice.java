@@ -20,7 +20,7 @@ public class Slice {
     }
 
     public Slice(Cell... cell) {
-        this.cells = Arrays.asList(cell);
+        this.cells = new ArrayList<>(Arrays.asList(cell));
     }
 
     public Slice(List<Cell> cells) {

@@ -19,7 +19,7 @@ public abstract class DFSMethods {
     /**
      * For each slice find all available steps. We DON'T change the pizza on this stage
      *
-     * @param pizza  given pizza
+     * @param pizza    given pizza
      * @param startPos given slices in the pizza
      * @return available steps
      */
@@ -49,12 +49,11 @@ public abstract class DFSMethods {
      * execute it(cut it from the pizza, and add to a slice)
      *
      * @param pizza given pizza
-     * @param steps available steps
+     * @param step  step to perform
      * @return formed slice that includes an original slice and delta from a step
      */
-    public static Slice performStep(Pizza pizza, Map<Slice, List<Step>> steps) {
+    public static Slice performStep(Pizza pizza, Step step) {
         //1. Pick ups a steps list with minimal total cells number
-        Step step = steps.values().stream().min((o1, o2) -> new StepsComparator().compare(o1, o2)).get().get(0);
         LOGGER.info("step to perform: " + step);
         //2. Cut all the step delta cells from pizza
         LOGGER.info("pizza before step: " + pizza
@@ -65,6 +64,12 @@ public abstract class DFSMethods {
         Slice slice = new Slice(step.delta.cells);
         slice.cells.addAll(step.startPosition.cells);
         return slice;
+    }
+
+    public static Step selectStep(Map<Slice, List<Step>> steps) {
+        return steps.values().stream()
+                .min((o1, o2) -> new StepsComparator().compare(o1, o2)).get()
+                .get(0);
     }
 
     /**
