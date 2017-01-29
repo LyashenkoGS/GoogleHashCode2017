@@ -13,7 +13,6 @@ import java.util.stream.Collectors;
  */
 public class Slice {
     private static final Logger LOGGER = LoggerFactory.getLogger(Slice.class);
-
     public List<Cell> cells = new ArrayList<>();
 
     public Slice() {
@@ -25,6 +24,10 @@ public class Slice {
 
     public Slice(List<Cell> cells) {
         this.cells = cells;
+    }
+
+    public List<Cell> getCells() {
+        return cells;
     }
 
     @Override
@@ -110,7 +113,7 @@ public class Slice {
     public Slice generateStepDeltaLeft() {
         List<Cell> delta = new ArrayList<>();
         for (int y = this.minY(); y <= this.maxY(); y++) {
-            Cell cell = new Cell(y, minX() -1 , Ingredient.TOMATO);
+            Cell cell = new Cell(y, minX() - 1, Ingredient.TOMATO);
             delta.add(cell);
         }
         LOGGER.info("generateStepDeltaLeft"

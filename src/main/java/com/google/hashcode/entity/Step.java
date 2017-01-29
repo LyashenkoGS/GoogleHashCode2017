@@ -8,22 +8,21 @@ package com.google.hashcode.entity;
  */
 public class Step {
 
-    public Step(Slice startPosition, Slice delta) {
-		super();
-		this.startPosition = startPosition;
-		this.delta = delta;
-	}
-
-	public Slice startPosition;
-
+    public Slice startPosition;
     public Slice delta;
 
-	@Override
-	public String toString() {
-		return "Step{" +
-				"startPosition=" + startPosition +
-				", delta=" + delta +
-				'}';
-	}
+    public Step(Slice startPosition, Slice delta) {
+        super();
+        this.startPosition = startPosition;
+        this.delta = delta;
+    }
+
+    @Override
+    public String toString() {
+        return "Step{" +
+                "startPosition=" + startPosition +
+                ", delta=" + delta +
+                '}';
+    }
 
 }

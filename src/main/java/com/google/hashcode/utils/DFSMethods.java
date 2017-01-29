@@ -35,7 +35,7 @@ public abstract class DFSMethods {
                     .map(slicesRightBorderCell -> pizza.getCell(slicesRightBorderCell.y, slicesRightBorderCell.x + 1))
                     .collect(Collectors.toList()));
             //check is step is valid
-            Slice sliceAndStep = new Slice(new ArrayList<>(slice.cells));
+            Slice sliceAndStep = new Slice(new ArrayList(slice.cells));
             sliceAndStep.cells.addAll(step.cells);
             if (!slice.cells.isEmpty() && sliceAndStep.isValid(pizza)) {
                 //remove the slice and step from the pizza
@@ -79,9 +79,18 @@ public abstract class DFSMethods {
         return groupedSteps;
     }
 
-    public static Slice performStep(Pizza pizza, List<Step> steps) {
-        //TODO pick-ups a step with a minimal steps number, execute it(cut it from the pizza, and a slice)
-        return null;
+    /**
+     * Pick-ups a step with a minimal cells delta number,
+     * execute it(cut it from the pizza, and add to a slice)
+     *
+     * @param pizza given pizza
+     * @param steps available steps
+     * @return formed slice that includes an original slice and delta from a step
+     */
+    public static List<Step> performStep(Pizza pizza, Map<Slice, List<Step>> steps) {
+        //1. Pick ups a steps list with minimal total cells number
+        final Optional<List<Step>> minStep = steps.values().stream().min((o1, o2) -> new StepsComparator().compare(o1, o2));
+        return minStep.get();
     }
 
     /**
