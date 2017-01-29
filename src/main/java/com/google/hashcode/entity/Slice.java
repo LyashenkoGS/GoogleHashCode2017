@@ -80,5 +80,57 @@ public class Slice {
         return isPassedSliceInstructions;
     }
 
+    //region generate steps
+
+
+    public Slice generateStepDeltaAbove() {
+        List<Cell> delta = new ArrayList<>();
+        for (int x = this.minX(); x <= this.maxX(); x++) {
+            Cell cell = new Cell(this.minY() - 1, x, Ingredient.TOMATO);
+            delta.add(cell);
+        }
+        LOGGER.info("generateStepDeltaAbove"
+                + "\nslice :" + this.toString()
+                + "\nstep above delta: " + delta.toString());
+        return new Slice(delta);
+    }
+
+    public Slice generateStepDeltaBelow() {
+        List<Cell> delta = new ArrayList<>();
+        for (int x = this.minX(); x <= this.maxX(); x++) {
+            Cell cell = new Cell(this.maxY() + 1, x, Ingredient.TOMATO);
+            delta.add(cell);
+        }
+        LOGGER.info("generateStepDeltaBelow"
+                + "\nslice :" + this.toString()
+                + "\nstep below delta: " + delta.toString());
+        return new Slice(delta);
+    }
+
+    public Slice generateStepDeltaLeft() {
+        List<Cell> delta = new ArrayList<>();
+        for (int y = this.minY(); y <= this.maxY(); y++) {
+            Cell cell = new Cell(y, minX(), Ingredient.TOMATO);
+            delta.add(cell);
+        }
+        LOGGER.info("generateStepDeltaLeft"
+                + "\nslice :" + this.toString()
+                + "\nstep left delta: " + delta.toString());
+        return new Slice(delta);
+    }
+
+    public Slice generateStepRight() {
+        List<Cell> delta = new ArrayList<>();
+        for (int y = this.minY(); y <= this.maxY(); y++) {
+            Cell cell = new Cell(y, minX(), Ingredient.TOMATO);
+            delta.add(cell);
+        }
+        LOGGER.info("generateStepDeltaRight"
+                + "\nslice :" + this.toString()
+                + "\nstep right delta: " + delta.toString());
+        return new Slice(delta);
+    }
+    //endregion
+
 }
 

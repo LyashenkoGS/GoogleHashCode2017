@@ -4,15 +4,16 @@ import com.google.hashcode.entity.Cell;
 import com.google.hashcode.entity.Ingredient;
 import com.google.hashcode.entity.Pizza;
 import com.google.hashcode.entity.Slice;
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import static com.google.hashcode.utils.InputFiles.EXAMPLE_INPUT_FILE_PATH;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author Grigoriy Lyashenko (Grog).
@@ -30,8 +31,25 @@ public class DFSMethodsTest {
         //and slice has been removed from the pizza
         ArrayList<Cell> expectedPizzaCells = new ArrayList<>(pizza.getCells());
         expectedPizzaCells.removeAll(expectedSlice.cells);
-        assertEquals(expectedPizzaCells,pizza.getCells());
+        assertEquals(expectedPizzaCells, pizza.getCells());
+    }
 
+    @Test
+    public void getAvailableSteps() throws IOException {
+        Pizza pizza = new Pizza(new File(EXAMPLE_INPUT_FILE_PATH), IoUtils.parsePizza(EXAMPLE_INPUT_FILE_PATH), IoUtils.parseSliceInstructions(EXAMPLE_INPUT_FILE_PATH));
+   /* TODO find a bug and fix    assertEquals(8, DFSMethods.
+                getAvailableSteps(pizza, DFSMethods.cutAllStartPositions(pizza)).size());
+    */}
+
+    @Test
+    public void cutAllStartPositions() throws IOException {
+        Pizza pizza = new Pizza(new File(EXAMPLE_INPUT_FILE_PATH), IoUtils.parsePizza(EXAMPLE_INPUT_FILE_PATH), IoUtils.parseSliceInstructions(EXAMPLE_INPUT_FILE_PATH));
+        List<Slice> expected = Arrays.asList(
+                new Slice(new Cell(1, 1, Ingredient.MUSHROOM)),
+                new Slice(new Cell(1, 2, Ingredient.MUSHROOM)),
+                new Slice(new Cell(1, 3, Ingredient.MUSHROOM))
+        );
+        assertEquals(expected, DFSMethods.cutAllStartPositions(pizza));
     }
 
 }

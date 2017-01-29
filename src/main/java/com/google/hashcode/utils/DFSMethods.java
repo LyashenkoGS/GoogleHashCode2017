@@ -1,15 +1,10 @@
 package com.google.hashcode.utils;
 
-import com.google.hashcode.entity.Cell;
-import com.google.hashcode.entity.Ingredient;
-import com.google.hashcode.entity.Pizza;
-import com.google.hashcode.entity.Slice;
-import com.google.hashcode.entity.Step;
+import com.google.hashcode.entity.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -59,38 +54,61 @@ public abstract class DFSMethods {
     }
 
     /**
-     * Step as an action it's a process, when a slice adding to itself a subset of a pizza cells and remains rectangular
-     * and valid.
+     * For each slice find all available steps. We DON'T change the pizza on this stage
      *
      * @param pizza  given pizza
-     * @param output given slice in the pizza
+     * @param output given slices in the pizza
      * @return available steps
      */
-    List<Step> getAvailableSteps(Pizza pizza, List<Slice> output) {
-        //TODO implement.For each slice find all available steps. We DON'T change the pizza on this stage
-        return new ArrayList<>();
+    public static List<Step> getAvailableSteps(Pizza pizza, List<Slice> output) {
+        List<Step> steps = new ArrayList<>();
+        for (Slice slice : output) {
+            Slice stepLeftDelta = slice.generateStepDeltaLeft();
+            Slice stepRightDelta = slice.generateStepRight();
+            Slice stepAboveDelta = slice.generateStepDeltaAbove();
+            Slice stepBelowDelta = slice.generateStepDeltaBelow();
+            if (pizza.containsCells(stepLeftDelta)) steps.add(new Step(slice, stepLeftDelta));
+            if (pizza.containsCells(stepRightDelta)) steps.add(new Step(slice, stepRightDelta));
+            if (pizza.containsCells(stepAboveDelta)) steps.add(new Step(slice, stepAboveDelta));
+            if (pizza.containsCells(stepBelowDelta)) steps.add(new Step(slice, stepBelowDelta));
+        }
+        LOGGER.info("available steps for" +
+                "\npizza: " + pizza
+                + "\nslices: " + output
+                + "\nsteps: " + steps);
+        return steps;
     }
 
-    Slice performStep(Pizza pizza, List<Step> steps) {
+    public static Slice performStep(Pizza pizza, List<Step> steps) {
         //TODO pick-ups a step with a minimal steps number, execute it(cut it from the pizza, and a slice)
         return null;
     }
 
-    List<Slice> cutAllStartPositions(Pizza pizza) {
-        //TODO pick-ups a step with a minimal steps number, execute it(cut it from the pizza, and a slice). The pizza is a mutable object
-       	List<Cell> currentPizza = pizza.getCells();
-       	List<Slice> starts = new ArrayList<Slice>();
-       	Iterator<Cell> iter = currentPizza.iterator();
-       	while(iter.hasNext()){
-       		Cell cell = iter.next();
-       		if(cell.ingredient == Ingredient.MUSHROOM){
-       			Slice slice = new Slice();
-       			slice.cells.add(cell);
-       			starts.add(slice);
-       			iter.remove();
-       		}
-       	}
-        return starts;
+    /**
+     * Finds a cells type with minimal cells numbers and generates one cell slices from them
+     *
+     * @param pizza given pizza
+     * @return slices that are start positions for future slicing
+     */
+    public static List<Slice> cutAllStartPositions(Pizza pizza) {
+        List<Cell> mushrooms = pizza.getCells().stream()
+                .filter(cell -> cell.ingredient.equals(Ingredient.MUSHROOM))
+                .collect(Collectors.toList());
+        List<Cell> tomatoes = pizza.getCells().stream()
+                .filter(cell -> cell.ingredient.equals(Ingredient.TOMATO))
+                .collect(Collectors.toList());
+        LOGGER.info("cutAllStartPositions for pizza: " + pizza
+                + "\nmushrooms number: " + mushrooms.size()
+                + "\ntomatoes number: " + tomatoes.size());
+        if (mushrooms.size() > tomatoes.size()) {
+            return tomatoes.stream()
+                    .map(Slice::new)
+                    .collect(Collectors.toList());
+        } else {
+            return mushrooms.stream()
+                    .map(Slice::new)
+                    .collect(Collectors.toList());
+        }
     }
 
 }
