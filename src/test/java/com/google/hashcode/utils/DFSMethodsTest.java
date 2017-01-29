@@ -1,9 +1,6 @@
 package com.google.hashcode.utils;
 
-import com.google.hashcode.entity.Cell;
-import com.google.hashcode.entity.Ingredient;
-import com.google.hashcode.entity.Pizza;
-import com.google.hashcode.entity.Slice;
+import com.google.hashcode.entity.*;
 import org.junit.Test;
 
 import java.io.File;
@@ -11,6 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import static com.google.hashcode.utils.InputFiles.EXAMPLE_INPUT_FILE_PATH;
 import static org.junit.Assert.assertEquals;
@@ -37,8 +35,11 @@ public class DFSMethodsTest {
     @Test
     public void getAvailableSteps() throws IOException {
         Pizza pizza = new Pizza(new File(EXAMPLE_INPUT_FILE_PATH), IoUtils.parsePizza(EXAMPLE_INPUT_FILE_PATH), IoUtils.parseSliceInstructions(EXAMPLE_INPUT_FILE_PATH));
-    assertEquals(8, DFSMethods.
-                getAvailableSteps(pizza, DFSMethods.cutAllStartPositions(pizza)).size());
+        Map<Slice, List<Step>> actualMap = DFSMethods.getAvailableSteps(pizza, DFSMethods.cutAllStartPositions(pizza));
+        assertEquals(3, actualMap.keySet().size());
+        assertEquals(3, actualMap.get(new Slice(new Cell(1,1, Ingredient.MUSHROOM))).size());
+        assertEquals(2, actualMap.get(new Slice(new Cell(1,2, Ingredient.MUSHROOM))).size());
+        assertEquals(3, actualMap.get(new Slice(new Cell(1,3, Ingredient.MUSHROOM))).size());
     }
 
     @Test
