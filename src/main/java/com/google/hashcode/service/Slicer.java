@@ -1,16 +1,5 @@
 package com.google.hashcode.service;
 
-import com.google.hashcode.entity.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import static java.lang.Integer.valueOf;
-
 /**
  * Slice a pizza according to a slice instructions
  *

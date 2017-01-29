@@ -32,8 +32,10 @@ public class App {
             output.remove(step.startPosition);
             output.add(DFSMethods.performStep(pizza, step));
             availableSteps = DFSMethods.getAvailableSteps(pizza, output);
+            LOGGER.info("OUTPUT AFTER A STEP: "
+            +"\n " + output);
         }
-        //IoUtils.writeToFile("outputDataSet/example.txt", IoUtils.parseSlices());
+        IoUtils.writeToFile("outputDataSet/example.txt", IoUtils.parseSlices(output));
         LOGGER.info("GoogleHashCode2017! Pizza task");
         LOGGER.info(pizza.toString());
 

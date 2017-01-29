@@ -56,14 +56,49 @@ public class Slice {
         return Collections.max(cells, Comparator.comparingInt(Cell::getX)).y;
     }
 
-    @Override
-    public String toString() {
-        return cells.toString();
+
+    /**
+     * Coordinates are like in a 2D array
+     *
+     * @param y - row number, 0..max row number
+     * @param x - column number,0..max column number
+     * @return a pizza cell with specified coordinated
+     */
+    public Optional<Cell> getCell(int y, int x) {
+        return cells.stream().filter(cell -> cell.x == x && cell.y == y).findFirst();
     }
 
+    @Override
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("slice : \n");
+        //output coordinates
+        int columnsCount = cells.stream().max(Comparator.comparingInt(Cell::getX)).get().getX();
+        int rowsCount = cells.stream().max(Comparator.comparingInt(Cell::getY)).get().getY();
+        //output columns coordinates
+        stringBuilder.append(" ");
+        for (int column = 0; column < columnsCount + 1; column++) {
+            stringBuilder.append(" ").append(column);
+        }
+        stringBuilder.append("\n");
+        for (int row = 0; row < rowsCount + 1; row++) {
+            //output rows coordinates
+            stringBuilder.append(row).append(" ");
+            for (int column = 0; column < columnsCount + 1; column++) {
+                if (this.getCell(row, column).isPresent()) {
+                    stringBuilder.append(this.getCell(row, column).get().toString()).append(" ");
+                } else {
+                    stringBuilder.append(" ").append(" ");
+                }
+            }
+            stringBuilder.append("\n");
+        }
+        return stringBuilder.toString().trim();
+    }
 
     /**
      * check if slice valid for current pizza.
+     *
      * @param pizza
      * @return
      */
@@ -88,53 +123,96 @@ public class Slice {
 
     //region generate steps
 
-
-    public Slice generateStepDeltaAbove() {
-        List<Cell> delta = new ArrayList<>();
+    public Step generateStepAbove(Pizza pizza) {
+        Slice delta = new Slice();
         for (int x = this.minX(); x <= this.maxX(); x++) {
-            Cell cell = new Cell(this.minY() - 1, x, Ingredient.TOMATO);
-            delta.add(cell);
+            //try to get a cell
+            Optional<Cell> cell = pizza.getCell(this.minY() - 1, x);
+            if (cell.isPresent()) {
+                delta.cells.add(cell.get());
+            } else {
+                LOGGER.info("cant perform step left !");
+                return null;
+            }
         }
-        LOGGER.info("generateStepDeltaAbove"
-                + "\nslice :" + this.toString()
-                + "\nstep above delta: " + delta.toString());
-        return new Slice(delta);
-    }
-
-    public Slice generateStepDeltaBelow() {
-        List<Cell> delta = new ArrayList<>();
-        for (int x = this.minX(); x <= this.maxX(); x++) {
-            Cell cell = new Cell(this.maxY() + 1, x, Ingredient.TOMATO);
-            delta.add(cell);
-        }
-        LOGGER.info("generateStepDeltaBelow"
-                + "\nslice :" + this.toString()
-                + "\nstep below delta: " + delta.toString());
-        return new Slice(delta);
-    }
-
-    public Slice generateStepDeltaLeft() {
-        List<Cell> delta = new ArrayList<>();
-        for (int y = this.minY(); y <= this.maxY(); y++) {
-            Cell cell = new Cell(y, minX() - 1, Ingredient.TOMATO);
-            delta.add(cell);
-        }
-        LOGGER.info("generateStepDeltaLeft"
-                + "\nslice :" + this.toString()
+        LOGGER.debug("generateStepLeft"
                 + "\nstep left delta: " + delta.toString());
-        return new Slice(delta);
+        Step step = new Step(this, delta);
+        if (step.isValid(pizza)) {
+            return step;
+        } else {
+            LOGGER.info("step is invalid !");
+            return null;
+        }
     }
 
-    public Slice generateStepDeltaRight() {
-        List<Cell> delta = new ArrayList<>();
-        for (int y = this.minY(); y <= this.maxY(); y++) {
-            Cell cell = new Cell(y, maxX() + 1, Ingredient.TOMATO);
-            delta.add(cell);
+    public Step generateStepBelow(Pizza pizza) {
+        Slice delta = new Slice();
+        for (int x = this.minX(); x <= this.maxX(); x++) {
+            //try to get a cell
+            Optional<Cell> cell = pizza.getCell(this.maxY() + 1, x);
+            if (cell.isPresent()) {
+                delta.cells.add(cell.get());
+            } else {
+                LOGGER.info("cant perform step left !");
+                return null;
+            }
         }
-        LOGGER.info("generateStepDeltaRight"
-                + "\nslice :" + this.toString()
-                + "\nstep right delta: " + delta.toString());
-        return new Slice(delta);
+        LOGGER.debug("generateStepLeft"
+                + "\nstep left delta: " + delta.toString());
+        Step step = new Step(this, delta);
+        if (step.isValid(pizza)) {
+            return step;
+        } else {
+            LOGGER.info("step is invalid !");
+            return null;
+        }
+    }
+
+    public Step generateStepLeft(Pizza pizza) {
+        Slice delta = new Slice();
+        for (int y = this.minY(); y <= this.maxY(); y++) {
+            //try to get a cell
+            Optional<Cell> cell = pizza.getCell(y, minX() - 1);
+            if (cell.isPresent()) {
+                delta.cells.add(cell.get());
+            } else {
+                LOGGER.info("cant perform step left !");
+                return null;
+            }
+        }
+        LOGGER.debug("generateStepLeft"
+                + "\nstep left delta: " + delta.toString());
+        Step step = new Step(this, delta);
+        if (step.isValid(pizza)) {
+            return step;
+        } else {
+            LOGGER.info("step is invalid !");
+            return null;
+        }
+    }
+
+    public Step generateStepRight(Pizza pizza) {
+        Slice delta = new Slice();
+        for (int y = this.minY(); y <= this.maxY(); y++) {
+            //try to get a cell
+            Optional<Cell> cell = pizza.getCell(y, maxX()+1);
+            if (cell.isPresent()) {
+                delta.cells.add(cell.get());
+            } else {
+                LOGGER.info("cant perform step left !");
+                return null;
+            }
+        }
+        LOGGER.debug("generateStepLeft"
+                + "\nstep left delta: " + delta.toString());
+        Step step = new Step(this, delta);
+        if (step.isValid(pizza)) {
+            return step;
+        } else {
+            LOGGER.info("step is invalid !");
+            return null;
+        }
     }
     //endregion
 

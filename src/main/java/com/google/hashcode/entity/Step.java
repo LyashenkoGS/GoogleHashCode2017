@@ -1,6 +1,6 @@
 package com.google.hashcode.entity;
 
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Step as an entity is a slice tha can be added to a particular slice inside a particular pizza, considering
@@ -19,21 +19,23 @@ public class Step {
         this.delta = delta;
     }
 
-    @Override
-    public String toString() {
-        return "Step{" +
-                "startPosition=" + startPosition +
-                ", delta=" + delta +
-                '}';
+    public boolean isValid(Pizza pizza) {
+        Slice slice = new Slice(new ArrayList<>(startPosition.cells));
+        slice.cells.addAll(delta.cells);
+        return slice.isValid(pizza);
     }
 
-	public static boolean isValid(Pizza pizza, Slice startSlice, Slice checkedSlice){
-		if( pizza.containsCells(checkedSlice) &&
-				startSlice.cells.size() + checkedSlice.cells.size() <= pizza.getSliceInstruction().getMaxNumberOfCellsPerSlice()){
-			return true;
-		}
+    public int size() {
+        return startPosition.cells.size() + delta.cells.size();
+    }
 
-		return false;
-	}
+    @Override
+    public String toString() {
+        return "\nStep{" +
+                "\nstartPosition=" + startPosition +
+                "\ndelta=" + delta +
+                "\n}";
+    }
+
 
 }
