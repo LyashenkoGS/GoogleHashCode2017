@@ -45,7 +45,7 @@ public class Slice {
     }
 
     public int minY() {
-        return Collections.min(cells, Comparator.comparingInt(Cell::getX)).y;
+        return Collections.min(cells, Comparator.comparingInt(Cell::getY)).y;
     }
 
     public int maxX() {
@@ -53,7 +53,7 @@ public class Slice {
     }
 
     public int maxY() {
-        return Collections.max(cells, Comparator.comparingInt(Cell::getX)).y;
+        return Collections.max(cells, Comparator.comparingInt(Cell::getY)).y;
     }
 
 
@@ -200,7 +200,7 @@ public class Slice {
             if (cell.isPresent()) {
                 delta.cells.add(cell.get());
             } else {
-                LOGGER.info("cant perform step left !");
+                LOGGER.info("cant perform step right !");
                 return null;
             }
         }

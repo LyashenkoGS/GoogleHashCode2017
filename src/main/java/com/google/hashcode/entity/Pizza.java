@@ -63,28 +63,32 @@ public class Pizza {
     }
 
     private String outputCellsArray() {
-        StringBuilder stringBuilder = new StringBuilder();
-        int columnsCount = cells.stream().max(Comparator.comparingInt(Cell::getX)).get().getX();
-        int rowsCount = cells.stream().max(Comparator.comparingInt(Cell::getY)).get().getY();
-        //output columns coordinates
-        stringBuilder.append(" ");
-        for (int column = 0; column < columnsCount + 1; column++) {
-            stringBuilder.append(" ").append(column);
-        }
-        stringBuilder.append("\n");
-        for (int row = 0; row < rowsCount + 1; row++) {
-            //output rows coordinates
-            stringBuilder.append(row).append(" ");
+        if (!cells.isEmpty()) {
+            StringBuilder stringBuilder = new StringBuilder();
+            int columnsCount = cells.stream().max(Comparator.comparingInt(Cell::getX)).get().getX();
+            int rowsCount = cells.stream().max(Comparator.comparingInt(Cell::getY)).get().getY();
+            //output columns coordinates
+            stringBuilder.append(" ");
             for (int column = 0; column < columnsCount + 1; column++) {
-                if (this.getCell(row, column).isPresent()) {
-                    stringBuilder.append(this.getCell(row, column).get().toString()).append(" ");
-                } else {
-                    stringBuilder.append(" ").append(" ");
-                }
+                stringBuilder.append(" ").append(column);
             }
             stringBuilder.append("\n");
+            for (int row = 0; row < rowsCount + 1; row++) {
+                //output rows coordinates
+                stringBuilder.append(row).append(" ");
+                for (int column = 0; column < columnsCount + 1; column++) {
+                    if (this.getCell(row, column).isPresent()) {
+                        stringBuilder.append(this.getCell(row, column).get().toString()).append(" ");
+                    } else {
+                        stringBuilder.append(" ").append(" ");
+                    }
+                }
+                stringBuilder.append("\n");
+            }
+            return stringBuilder.toString();
+        } else {
+            return "";
         }
-        return stringBuilder.toString();
     }
 
 

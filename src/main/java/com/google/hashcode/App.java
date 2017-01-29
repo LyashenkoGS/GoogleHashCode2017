@@ -3,7 +3,6 @@ package com.google.hashcode;
 import com.google.hashcode.entity.Pizza;
 import com.google.hashcode.entity.Slice;
 import com.google.hashcode.entity.Step;
-import com.google.hashcode.service.Slicer;
 import com.google.hashcode.utils.DFSMethods;
 import com.google.hashcode.utils.IoUtils;
 import org.slf4j.Logger;
@@ -18,27 +17,30 @@ import static com.google.hashcode.utils.InputFiles.EXAMPLE_INPUT_FILE_PATH;
 
 
 public class App {
-    private static final Logger LOGGER = LoggerFactory.getLogger(Slicer.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(App.class);
 
     public static void main(String[] args) throws IOException {
+        slicePizza(EXAMPLE_INPUT_FILE_PATH, "outputDataSet/example.txt");
+
+    }
+
+    public static void slicePizza(String exampleInputFilePath, String outputFile) throws IOException {
         List<Slice> output;
-        Pizza pizza = new Pizza(new File(EXAMPLE_INPUT_FILE_PATH), IoUtils.parsePizza(EXAMPLE_INPUT_FILE_PATH), IoUtils.parseSliceInstructions(EXAMPLE_INPUT_FILE_PATH));
+        Pizza pizza = new Pizza(new File(exampleInputFilePath), IoUtils.parsePizza(exampleInputFilePath), IoUtils.parseSliceInstructions(exampleInputFilePath));
         //get start positions
         output = DFSMethods.cutAllStartPositions(pizza);
         //get All steps
         Map<Slice, List<Step>> availableSteps = DFSMethods.getAvailableSteps(pizza, output);
-        while (availableSteps.size() > 0) {
+        while (!availableSteps.values().stream().allMatch(List::isEmpty)) {
             Step step = DFSMethods.selectStep(availableSteps);
             output.remove(step.startPosition);
             output.add(DFSMethods.performStep(pizza, step));
             availableSteps = DFSMethods.getAvailableSteps(pizza, output);
             LOGGER.info("OUTPUT AFTER A STEP: "
-            +"\n " + output);
+                    + "\n " + output);
         }
-        IoUtils.writeToFile("outputDataSet/example.txt", IoUtils.parseSlices(output));
-        LOGGER.info("GoogleHashCode2017! Pizza task");
-        LOGGER.info(pizza.toString());
-
+        IoUtils.writeToFile(outputFile, IoUtils.parseSlices(output));
+        LOGGER.info("FINISHED for " + exampleInputFilePath + "!!!!!");
     }
 
 }

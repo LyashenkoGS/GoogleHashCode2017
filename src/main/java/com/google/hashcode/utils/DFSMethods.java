@@ -65,11 +65,26 @@ public abstract class DFSMethods {
         return slice;
     }
 
+    /**
+     * Selects a step which start position has minimal delta in all the steps
+     *
+     * @param steps
+     * @return
+     */
     public static Step selectStep(Map<Slice, List<Step>> steps) {
-        Step step = steps.values().stream()
-                .min((o1, o2) -> new StepsComparator().compare(o1, o2)).get().get(0);
-        LOGGER.info("step with minimal number of delta cells: " + step);
-        return step;
+        List<Step> min = steps.values().stream()
+                .min(Comparator.comparingLong(value -> value.stream().map(step -> step.delta.cells.size()).count())).get();
+        if (!min.isEmpty()) {
+            LOGGER.info("steps list with minimal number of delta cells: " + min);
+            return min.get(0);
+        } else {
+            Optional<List<Step>> optionalStep = steps.values().stream().filter(steps1 -> !steps1.isEmpty()).findFirst();
+            if (optionalStep.isPresent()) {
+                final Step step = optionalStep.get().get(0);
+                LOGGER.info("Selected step to perform:" + step);
+                return step;
+            } else return null;
+        }
     }
 
     /**
