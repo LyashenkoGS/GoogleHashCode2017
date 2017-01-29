@@ -13,21 +13,18 @@ import java.util.stream.Collectors;
  */
 public class Slice {
     private static final Logger LOGGER = LoggerFactory.getLogger(Slice.class);
+
     public List<Cell> cells = new ArrayList<>();
 
     public Slice() {
     }
 
-    public Slice(Cell cell) {
-        this.cells = Collections.singletonList(cell);
+    public Slice(Cell... cell) {
+        this.cells = Arrays.asList(cell);
     }
 
     public Slice(List<Cell> cells) {
         this.cells = cells;
-    }
-
-    public List<Cell> getCells() {
-        return cells;
     }
 
     @Override

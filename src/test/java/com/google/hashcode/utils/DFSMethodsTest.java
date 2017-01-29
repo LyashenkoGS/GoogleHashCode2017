@@ -6,7 +6,6 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -27,18 +26,6 @@ public class DFSMethodsTest {
     }
 
     @Test
-    public void rightStep() throws Exception {
-        //then perform a step right from a particular cell
-        Slice actualSlice = DFSMethods.rightStep(pizza, new Slice(pizza.getCell(1, 3))).get();
-        Slice expectedSlice = new Slice(Arrays.asList(new Cell(1, 3, Ingredient.MUSHROOM), new Cell(1, 4, Ingredient.TOMATO)));
-        assertEquals(expectedSlice, actualSlice);
-        //and slice has been removed from the pizza
-        ArrayList<Cell> expectedPizzaCells = new ArrayList<>(pizza.getCells());
-        expectedPizzaCells.removeAll(expectedSlice.cells);
-        assertEquals(expectedPizzaCells, pizza.getCells());
-    }
-
-    @Test
     public void getAvailableSteps() throws IOException {
         Map<Slice, List<Step>> actualMap = DFSMethods.getAvailableSteps(pizza, DFSMethods.cutAllStartPositions(pizza));
         assertEquals(3, actualMap.keySet().size());
@@ -55,12 +42,14 @@ public class DFSMethodsTest {
                 new Slice(new Cell(1, 3, Ingredient.MUSHROOM))
         );
         assertEquals(expected, DFSMethods.cutAllStartPositions(pizza));
+        assertEquals("We expect pizza size reduced to 15-3=12", 12, pizza.getCells().size());
     }
 
     @Test
     public void performStep() {
-        //TODO finish the method implementation
-        List<Step> minSteps = DFSMethods.performStep(pizza, DFSMethods.getAvailableSteps(pizza, DFSMethods.cutAllStartPositions(pizza)));
-        System.err.println(minSteps);
+        List<Slice> output = DFSMethods.cutAllStartPositions(pizza);
+        Slice slice = DFSMethods.performStep(pizza, DFSMethods.getAvailableSteps(pizza, output));
+        assertEquals(new Slice(Arrays.asList(new Cell(0, 2, Ingredient.TOMATO), new Cell(1, 2, Ingredient.MUSHROOM))), slice);
+        assertEquals(11, pizza.getCells().size());
     }
 }
