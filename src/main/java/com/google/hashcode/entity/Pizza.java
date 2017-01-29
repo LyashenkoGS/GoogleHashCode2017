@@ -37,13 +37,8 @@ public class Pizza {
      * @param x - column number,0..max column number
      * @return a pizza cell with specified coordinated
      */
-    public Cell getCell(int y, int x) {
-        final Optional<Cell> cellByCoordinates = cells.stream().filter(cell -> cell.x == x && cell.y == y).findFirst();
-        if (cellByCoordinates.isPresent()) {
-            return cellByCoordinates.get();
-        } else throw new IllegalArgumentException("No cell with "
-                + "\n y: " + y
-                + "\nx: " + x);
+    public Optional<Cell> getCell(int y, int x) {
+        return cells.stream().filter(cell -> cell.x == x && cell.y == y).findFirst();
     }
 
     public SliceInstruction getSliceInstruction() {
@@ -81,7 +76,11 @@ public class Pizza {
             //output rows coordinates
             stringBuilder.append(row).append(" ");
             for (int column = 0; column < columnsCount + 1; column++) {
-                stringBuilder.append(this.getCell(row, column).toString()).append(" ");
+                if (this.getCell(row, column).isPresent()) {
+                    stringBuilder.append(this.getCell(row, column).get().toString()).append(" ");
+                } else {
+                    stringBuilder.append(" ").append(" ");
+                }
             }
             stringBuilder.append("\n");
         }

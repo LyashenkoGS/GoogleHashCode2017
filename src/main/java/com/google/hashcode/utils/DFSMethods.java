@@ -4,51 +4,16 @@ import com.google.hashcode.entity.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public abstract class DFSMethods {
     private static final Logger LOGGER = LoggerFactory.getLogger(DFSMethods.class);
 
     private DFSMethods() {
-    }
-
-    /**
-     * Step as an entity is an amount of a pizza cells, that can be added to a slice of a pizza or a pizza cell.<br>
-     * Step as an action is a process of:<br>
-     * <p>
-     * * adding cells to a start cell or a start slice<br>
-     * * validate generated slice according to the pizza slicing instructions<br>
-     * * if validation passed ->cutting the start cell with added cells from the pizza
-     *
-     * @param pizza (mutable) a pizza to perform step on
-     * @param slice start position for a step
-     * @return cutted slice from the pizza
-     */
-    public static Optional<Slice> rightStep(Pizza pizza, Slice slice) {
-        List<Cell> slicesRightBorder = slice.cells.stream()
-                .filter(cell -> (cell.x == slice.maxX()) && (cell.y >= slice.minY()) && (cell.y <= slice.maxY()))
-                .collect(Collectors.toList());
-        //each cell should have a cell right side of it in the pizza
-        try {
-            Slice step = new Slice(slicesRightBorder.stream()
-                    .map(slicesRightBorderCell -> pizza.getCell(slicesRightBorderCell.y, slicesRightBorderCell.x + 1))
-                    .collect(Collectors.toList()));
-            //check is step is valid
-            Slice sliceAndStep = new Slice(new ArrayList<>(slice.cells));
-            sliceAndStep.cells.addAll(step.cells);
-            if (!slice.cells.isEmpty() && sliceAndStep.isValid(pizza)) {
-                //remove the slice and step from the pizza
-                pizza.getCells().removeAll(sliceAndStep.cells);
-                return Optional.of(sliceAndStep);
-            } else {
-                return Optional.empty();
-            }
-        } catch (IllegalArgumentException e) {
-            //if can't add at least one neccessary cell - > return an empty step
-            LOGGER.info("Can't perform a step right !");
-            return Optional.empty();
-        }
     }
 
     /**
@@ -79,13 +44,32 @@ public abstract class DFSMethods {
         return groupedSteps;
     }
 
-    public static Slice performStep(Pizza pizza, List<Step> steps) {
-        //TODO pick-ups a step with a minimal steps number, execute it(cut it from the pizza, and a slice)
-        return null;
+    /**
+     * Pick-ups a step with a minimal cells delta number,
+     * execute it(cut it from the pizza, and add to a slice)
+     *
+     * @param pizza given pizza
+     * @param steps available steps
+     * @return formed slice that includes an original slice and delta from a step
+     */
+    public static Slice performStep(Pizza pizza, Map<Slice, List<Step>> steps) {
+        //1. Pick ups a steps list with minimal total cells number
+        Step step = steps.values().stream().min((o1, o2) -> new StepsComparator().compare(o1, o2)).get().get(0);
+        LOGGER.info("step to perform: " + step);
+        //2. Cut all the step delta cells from pizza
+        LOGGER.info("pizza before step: " + pizza
+                + "\ndelta to remove from the pizza: " + step.delta);
+        pizza.getCells().removeAll(step.delta.cells);
+        LOGGER.info("pizza after step:" + pizza);
+        //3. Add the step cells to an output slice
+        Slice slice = new Slice(step.delta.cells);
+        slice.cells.addAll(step.startPosition.cells);
+        return slice;
     }
 
     /**
      * Finds a cells type with minimal cells numbers and generates one cell slices from them
+     * Delete the slices from the pizza
      *
      * @param pizza given pizza
      * @return slices that are start positions for future slicing
@@ -100,15 +84,26 @@ public abstract class DFSMethods {
         LOGGER.info("cutAllStartPositions for pizza: " + pizza
                 + "\nmushrooms number: " + mushrooms.size()
                 + "\ntomatoes number: " + tomatoes.size());
+        List<Slice> startPositions = null;
         if (mushrooms.size() > tomatoes.size()) {
-            return tomatoes.stream()
+            startPositions = tomatoes.stream()
                     .map(Slice::new)
                     .collect(Collectors.toList());
+            List<Cell> cellsToRemove = startPositions.stream()
+                    .flatMap(slice -> slice.cells.stream())
+                    .collect(Collectors.toList());
+            pizza.getCells().removeAll(cellsToRemove);
         } else {
-            return mushrooms.stream()
+            startPositions = mushrooms.stream()
                     .map(Slice::new)
                     .collect(Collectors.toList());
+            List<Cell> cellsToRemove = startPositions.stream()
+                    .flatMap(slice -> slice.cells.stream())
+                    .collect(Collectors.toList());
+            pizza.getCells().removeAll(cellsToRemove);
         }
+        LOGGER.info("pizza without start positions:" + pizza);
+        return startPositions;
     }
 
 }

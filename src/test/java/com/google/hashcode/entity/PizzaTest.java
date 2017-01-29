@@ -6,9 +6,11 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Optional;
 
 import static com.google.hashcode.utils.InputFiles.EXAMPLE_INPUT_FILE_PATH;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 /**
  * @author Grigoriy Lyashenko (Grog).
@@ -24,12 +26,13 @@ public class PizzaTest {
 
     @Test
     public void getCell() throws Exception {
-        assertEquals(examplePizza.getCell(0, 0), new Cell(0, 0, Ingredient.TOMATO));
+        assertEquals(examplePizza.getCell(0, 0), Optional.of(new Cell(0, 0, Ingredient.TOMATO)));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void getCellException() throws Exception {
-        examplePizza.getCell(100500, 0);
+        Optional<Cell> cell = examplePizza.getCell(100500, 0);
+        assertFalse(cell.isPresent());
     }
 
     @Test

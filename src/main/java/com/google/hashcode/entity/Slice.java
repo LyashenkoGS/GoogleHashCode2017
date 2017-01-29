@@ -19,8 +19,8 @@ public class Slice {
     public Slice() {
     }
 
-    public Slice(Cell cell) {
-        this.cells = Collections.singletonList(cell);
+    public Slice(Cell... cell) {
+        this.cells = Arrays.asList(cell);
     }
 
     public Slice(List<Cell> cells) {
@@ -110,7 +110,7 @@ public class Slice {
     public Slice generateStepDeltaLeft() {
         List<Cell> delta = new ArrayList<>();
         for (int y = this.minY(); y <= this.maxY(); y++) {
-            Cell cell = new Cell(y, minX() -1 , Ingredient.TOMATO);
+            Cell cell = new Cell(y, minX() - 1, Ingredient.TOMATO);
             delta.add(cell);
         }
         LOGGER.info("generateStepDeltaLeft"
