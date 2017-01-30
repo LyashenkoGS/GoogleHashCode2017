@@ -5,7 +5,8 @@
 .classpath
 .project
 target
-#ignore the archived source code
+#ignore the archived source code and output files
+/outputDataSet/*
 *.zip
 /.classpath
 .settings/

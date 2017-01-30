@@ -20,7 +20,7 @@ import static org.junit.Assert.assertEquals;
 public class IoUtilsTest {
     private static final String TEST_OUTPUT_FILE = "testOutput.txt";
     private static final String PARAGON_OUTPUT_EXAMPLE_FILE = "src/test/resources/paragonOutputExample.txt";
-    private static final String EXAMPLE_PIZZA_FILE = InputFiles.EXAMPLE_INPUT_FILE_PATH;
+    private static final String EXAMPLE_PIZZA_FILE = FilesPaths.EXAMPLE_INPUT_FILE_PATH;
 
     private static List<Slice> createSlicesForParagonOutputExample() {
         Slice slice0 = new Slice();

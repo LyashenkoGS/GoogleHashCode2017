@@ -4,11 +4,11 @@ import com.google.hashcode.entity.Step;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * @author Grigoriy Lyashenko (Grog).
  */
+//TODO examine this class work by parameterized tests
 public class StepsComparator implements Comparator<List<Step>> {
 
     @Override

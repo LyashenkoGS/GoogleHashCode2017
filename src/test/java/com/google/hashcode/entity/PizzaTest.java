@@ -8,7 +8,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Optional;
 
-import static com.google.hashcode.utils.InputFiles.EXAMPLE_INPUT_FILE_PATH;
+import static com.google.hashcode.utils.FilesPaths.EXAMPLE_INPUT_FILE_PATH;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 

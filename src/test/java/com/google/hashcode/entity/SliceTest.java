@@ -10,14 +10,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
-import static com.google.hashcode.utils.InputFiles.EXAMPLE_INPUT_FILE_PATH;
+import static com.google.hashcode.utils.FilesPaths.EXAMPLE_INPUT_FILE_PATH;
 import static org.junit.Assert.*;
 
 /**
  * @author Grigoriy Lyashenko (Grog).
  */
 public class SliceTest {
-   private Pizza pizza;
+    private Pizza pizza;
 
     @Before
     public void setup() throws IOException {

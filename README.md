@@ -1,5 +1,7 @@
 # GoogleHashCode2017  
+hash tags: #hashcode #2017 #googleHashCode 
 ![google hash code logo](./documentation/logo.png)
+[![Build Status](https://travis-ci.org/LyashenkoGS/GoogleHashCode2017.svg?branch=master)](https://travis-ci.org/LyashenkoGS/GoogleHashCode2017)
 
 ##Pizza
 Practice problem for the Google HashCode 2017

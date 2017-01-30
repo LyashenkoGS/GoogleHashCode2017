@@ -196,7 +196,7 @@ public class Slice {
         Slice delta = new Slice();
         for (int y = this.minY(); y <= this.maxY(); y++) {
             //try to get a cell
-            Optional<Cell> cell = pizza.getCell(y, maxX()+1);
+            Optional<Cell> cell = pizza.getCell(y, maxX() + 1);
             if (cell.isPresent()) {
                 delta.cells.add(cell.get());
             } else {

@@ -13,20 +13,23 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-import static com.google.hashcode.utils.InputFiles.EXAMPLE_INPUT_FILE_PATH;
+import static com.google.hashcode.utils.FilesPaths.*;
 
 
 public class App {
     private static final Logger LOGGER = LoggerFactory.getLogger(App.class);
 
     public static void main(String[] args) throws IOException {
-        slicePizza(EXAMPLE_INPUT_FILE_PATH, "outputDataSet/example.txt");
-
+        slicePizza(EXAMPLE_INPUT_FILE_PATH, OUTPUT_DATA_SET_EXAMPLE_TXT);
+        slicePizza(SMALL_INPUT_FILE_PATH, OUTPUT_DATA_SET_SMALL_TXT);
+        //TODO troubles to input big files, possible exciting String max size
+        //slicePizza(BIG_INPUT_FILE_PATH, OUTPUT_DATA_SET_BIG_TXT);
+        //slicePizza(MEDIUM_INPUT_FILE_PATH, OUTPUT_DATA_SET_MEDIUM_TXT);
     }
 
-    public static void slicePizza(String exampleInputFilePath, String outputFile) throws IOException {
+    public static void slicePizza(String inputFile, String outputFile) throws IOException {
         List<Slice> output;
-        Pizza pizza = new Pizza(new File(exampleInputFilePath), IoUtils.parsePizza(exampleInputFilePath), IoUtils.parseSliceInstructions(exampleInputFilePath));
+        Pizza pizza = new Pizza(new File(inputFile), IoUtils.parsePizza(inputFile), IoUtils.parseSliceInstructions(inputFile));
         //get start positions
         output = DFSMethods.cutAllStartPositions(pizza);
         //get All steps
@@ -35,12 +38,13 @@ public class App {
             Step step = DFSMethods.selectStep(availableSteps);
             output.remove(step.startPosition);
             output.add(DFSMethods.performStep(pizza, step));
+            //TODO available steps should include merging slices to each other
             availableSteps = DFSMethods.getAvailableSteps(pizza, output);
             LOGGER.info("OUTPUT AFTER A STEP: "
                     + "\n " + output);
         }
         IoUtils.writeToFile(outputFile, IoUtils.parseSlices(output));
-        LOGGER.info("FINISHED for " + exampleInputFilePath + "!!!!!");
+        LOGGER.info("FINISHED for " + inputFile + "!!!!!");
     }
 
 }
