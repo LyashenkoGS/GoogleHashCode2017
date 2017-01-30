@@ -1,6 +1,12 @@
-#Java and Intellij specific
+#Java and Intellij & Eclipse specific
 .idea
 *.iml
+.project
+.classpath
+.project
 target
-#ignore the archived source code
+#ignore the archived source code and output files
+/outputDataSet/*
 *.zip
+/.classpath
+.settings/

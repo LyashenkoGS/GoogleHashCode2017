@@ -1,23 +1,48 @@
 package com.google.hashcode.entity;
 
+import java.util.Objects;
+
 /**
  * Represents a pizza cell with it coordinates. There is no getters/setters for simplicity
  *
  * @author Grigoriy Lyashenko (Grog).
  */
 public class Cell {
-    public final int x;
-    public final int y;
-    public final Ingredient ingredient;
+    public int y;
+    public int x;
+    public Ingredient ingredient;
 
-    public Cell(int x, int y, Ingredient ingredient) {
-        this.x = x;
+    public Cell(int y, int x, Ingredient ingredient) {
         this.y = y;
+        this.x = x;
         this.ingredient = ingredient;
     }
 
     @Override
     public String toString() {
         return ingredient.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Cell)) return false;
+        Cell cell = (Cell) o;
+        return x == cell.x &&
+                y == cell.y &&
+                ingredient == cell.ingredient;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(x, y, ingredient);
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
     }
 }
