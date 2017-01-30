@@ -1,4 +1,6 @@
 # GoogleHashCode2017  
+
+[![Join the chat at https://gitter.im/GoogleHashCode2017/Lobby](https://badges.gitter.im/GoogleHashCode2017/Lobby.svg)](https://gitter.im/GoogleHashCode2017/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 ![google hash code logo](./documentation/logo.png)
 
 ##Pizza
