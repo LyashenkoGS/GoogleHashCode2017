@@ -126,73 +126,57 @@ public class Slice {
     	int maxSliseSize = pizza.getSliceInstruction().getMaxNumberOfCellsPerSlice();
     	switch(direction){
     		case UP:
-    			System.out.print("step up");
 //    			validation on max slice size
     			if( (this.cells.size() + (this.maxX()-this.minX())) > maxSliseSize ) return null;
     			for(int x = this.minX(); x <= this.maxX(); x++){
-    				System.err.println("x=" + x + "y="+(minY()-1));
     				Optional<Cell> cell = pizza.getCell(minY()-1, x);
 //    				validation on containing step cells in pizza
     				if(cell.isPresent()){
     					delta.cells.add(cell.get());
-    					System.out.println(" success");
     				}else{
 //    					Pizza doesn't contain one of step cells. This step is blocked
-    					System.out.println(" fail");
     					return null;
     				}
     			}
     			break;
     		case RIGHT:
-    			System.out.print("step right");
 //    			validation on max slice size
     			if( (this.cells.size() + (this.maxY()-this.minY())) > maxSliseSize ) return null;
     			for (int y = this.minY(); y <= this.maxY(); y++) {
-    				System.err.println("x=" + (maxX()+1) + "y="+y);
     				Optional<Cell> cell = pizza.getCell(y, maxX() + 1);
 //    				validation on containing step cells in pizza
     				if(cell.isPresent()){
     					delta.cells.add(cell.get());
-    					System.out.println(" success");
    				 	}else{
 //   				 	Pizza doesn't contain one of step cells. This step is blocked;
-   				 		System.out.println(" fail");
    				 		return null;
    				 	}
     			}
     			break;
     		case DOWN:
-    			System.out.print("step down");
 //    			validation on max slice size
     			if( (this.cells.size() + (this.maxX()-this.minX())) > maxSliseSize ) return null;
     			for(int x = this.minX(); x <= this.maxX(); x++){
-    				System.err.println("x=" + x + "y="+(maxY()+1));
     				Optional<Cell> cell = pizza.getCell(maxY()+1, x);
 //    				validation on containing step cells in pizza
     				if(cell.isPresent()){
     					delta.cells.add(cell.get());
-    					System.out.println(" success");
     				}else{
 //    					Pizza doesn't contain one of step cells. This step is blocked;
-    					System.out.println(" fail");
     					return null;
     				}
     			}
     			break;
     		case LEFT:
-    			System.out.print("step left");
 //    			validation on max slice size
     			if( (this.cells.size() + (this.maxY()-this.minY())) > maxSliseSize ) return null;
     			for (int y = this.minY(); y <= this.maxY(); y++) {
-    				System.err.println("x=" + (minX()-1) + "y="+y);
     				Optional<Cell> cell = pizza.getCell(y, minX() - 1);
 //    				validation on containing step cells in pizza
     				if(cell.isPresent()){
     					delta.cells.add(cell.get());
-    					System.out.println(" success");
    				 	}else{
 //   				 	Pizza doesn't contain one of step cells. This step is blocked;
-   				 		System.out.println(" fail");
    				 		return null;
    				 	}
     			}

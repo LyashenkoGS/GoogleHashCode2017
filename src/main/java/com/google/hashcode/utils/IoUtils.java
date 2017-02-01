@@ -35,6 +35,8 @@ public class IoUtils {
     //this method coud be rewrited and fill mashrooms and tomatos to difference list from start (now it's going in cutAllStartPositions() method) 
     public static List<Cell> parsePizza(String file) throws IOException {
         try (FileReader fileReader = new FileReader(file)) {
+        	long t1 = System.currentTimeMillis();
+        	System.out.println("START parsePizza()");
             BufferedReader br = new BufferedReader(fileReader);
             //skip a line with slice instructions
             br.readLine();
@@ -42,11 +44,9 @@ public class IoUtils {
             List<Cell> cells = new ArrayList<>();
             int row = 0;
             String fileLine;
-            int counter = 0;
             while ((fileLine = br.readLine()) != null) {
                 for (int column = 0; column < fileLine.length(); column++) {
                     Character literal = fileLine.charAt(column);
-                    System.out.println("counter = " + counter++);
                     if (literal.toString().equals(Ingredient.TOMATO.toString())) {
                         cells.add(new Cell(row, column, Ingredient.TOMATO));
                     } else if (literal.toString().equals(Ingredient.MUSHROOM.toString())) {
@@ -55,6 +55,8 @@ public class IoUtils {
                 }
                 row++;
             }
+            long t2 = System.currentTimeMillis() - t1;
+            System.out.println("parsePizza() FINISHED in " + t2 + " milliseconds" );
             return cells;
         }
     }

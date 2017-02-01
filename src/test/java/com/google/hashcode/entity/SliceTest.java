@@ -35,53 +35,53 @@ public class SliceTest {
         assertTrue(validSlice.isValid(pizza));
     }
 
-    @Test
-    public void generateStepDeltaBelow() {
-        Slice slice = new Slice(Arrays.asList(
-                new Cell(0, 0, Ingredient.MUSHROOM),
-                new Cell(0, 1, Ingredient.TOMATO)));
-        assertEquals(2, slice.generateStepBelow(pizza).delta.cells.size());
-    }
-
-    @Test
-    public void centGenerateStepDeltaAbove() {
-        Slice slice = new Slice(Arrays.asList(
-                new Cell(0, 0, Ingredient.MUSHROOM),
-                new Cell(0, 1, Ingredient.TOMATO)));
-        assertEquals(null, slice.generateStepAbove(pizza));
-    }
-
-    @Test
-    public void generateStepDeltaAbove() {
-        Slice slice = new Slice(Arrays.asList(
-                new Cell(1, 0, Ingredient.MUSHROOM),
-                new Cell(1, 1, Ingredient.TOMATO)));
-        assertEquals(2, slice.generateStepAbove(pizza).delta.cells.size());
-    }
-
-    @Test
-    public void generateStepLeft() {
-        Slice slice = new Slice(new ArrayList<>(Collections.singletonList(
-                new Cell(1, 1, Ingredient.MUSHROOM))));
-        assertEquals(2, slice.generateStepLeft(pizza).size());
-    }
-
-    @Test
-    public void cantGenerateStepLeft() {
-        Slice slice = new Slice(Arrays.asList(
-                new Cell(0, 0, Ingredient.MUSHROOM),
-                new Cell(0, 1, Ingredient.TOMATO)));
-        assertEquals(null, slice.generateStepLeft(pizza));
-    }
-
-    @Test
-    public void generateStepRight() {
-        Slice slice = new Slice(Arrays.asList(
-                new Cell(0, 0, Ingredient.MUSHROOM),
-                new Cell(0, 1, Ingredient.TOMATO)));
-        assertEquals(1, slice.generateStepRight(pizza).delta.cells.size());
-        assertEquals(3, slice.generateStepRight(pizza).size());
-    }
+//    @Test
+//    public void generateStepDeltaBelow() {
+//        Slice slice = new Slice(Arrays.asList(
+//                new Cell(0, 0, Ingredient.MUSHROOM),
+//                new Cell(0, 1, Ingredient.TOMATO)));
+//        assertEquals(2, slice.generateStepBelow(pizza).delta.cells.size());
+//    }
+//
+//    @Test
+//    public void centGenerateStepDeltaAbove() {
+//        Slice slice = new Slice(Arrays.asList(
+//                new Cell(0, 0, Ingredient.MUSHROOM),
+//                new Cell(0, 1, Ingredient.TOMATO)));
+//        assertEquals(null, slice.generateStepAbove(pizza));
+//    }
+//
+//    @Test
+//    public void generateStepDeltaAbove() {
+//        Slice slice = new Slice(Arrays.asList(
+//                new Cell(1, 0, Ingredient.MUSHROOM),
+//                new Cell(1, 1, Ingredient.TOMATO)));
+//        assertEquals(2, slice.generateStepAbove(pizza).delta.cells.size());
+//    }
+//
+//    @Test
+//    public void generateStepLeft() {
+//        Slice slice = new Slice(new ArrayList<>(Collections.singletonList(
+//                new Cell(1, 1, Ingredient.MUSHROOM))));
+//        assertEquals(2, slice.generateStepLeft(pizza).size());
+//    }
+//
+//    @Test
+//    public void cantGenerateStepLeft() {
+//        Slice slice = new Slice(Arrays.asList(
+//                new Cell(0, 0, Ingredient.MUSHROOM),
+//                new Cell(0, 1, Ingredient.TOMATO)));
+//        assertEquals(null, slice.generateStepLeft(pizza));
+//    }
+//
+//    @Test
+//    public void generateStepRight() {
+//        Slice slice = new Slice(Arrays.asList(
+//                new Cell(0, 0, Ingredient.MUSHROOM),
+//                new Cell(0, 1, Ingredient.TOMATO)));
+//        assertEquals(1, slice.generateStepRight(pizza).delta.cells.size());
+//        assertEquals(3, slice.generateStepRight(pizza).size());
+//    }
 
     @Test
     public void testToString() {
