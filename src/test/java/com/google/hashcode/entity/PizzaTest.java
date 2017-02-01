@@ -19,10 +19,10 @@ public class PizzaTest {
 
     private Pizza examplePizza;
 
-    @Before
-    public void setup() throws IOException {
-        examplePizza = new Pizza(new File(EXAMPLE_INPUT_FILE_PATH), IoUtils.parsePizza(EXAMPLE_INPUT_FILE_PATH), IoUtils.parseSliceInstructions(EXAMPLE_INPUT_FILE_PATH));
-    }
+//    @Before
+//    public void setup() throws IOException {
+//        examplePizza = new Pizza(new File(EXAMPLE_INPUT_FILE_PATH), IoUtils.parsePizza(EXAMPLE_INPUT_FILE_PATH), IoUtils.parseSliceInstructions(EXAMPLE_INPUT_FILE_PATH));
+//    }
 
     @Test
     public void getCell() throws Exception {

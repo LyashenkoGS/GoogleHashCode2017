@@ -20,10 +20,10 @@ public class DFSMethodsTest {
 
     private Pizza pizza;
 
-    @Before
-    public void setup() throws IOException {
-        pizza = new Pizza(new File(EXAMPLE_INPUT_FILE_PATH), IoUtils.parsePizza(EXAMPLE_INPUT_FILE_PATH), IoUtils.parseSliceInstructions(EXAMPLE_INPUT_FILE_PATH));
-    }
+//    @Before
+//    public void setup() throws IOException {
+//        pizza = new Pizza(new File(EXAMPLE_INPUT_FILE_PATH), IoUtils.parsePizza(EXAMPLE_INPUT_FILE_PATH), IoUtils.parseSliceInstructions(EXAMPLE_INPUT_FILE_PATH));
+//    }
 
 //    @Test
 //    public void getAvailableSteps() throws IOException {
@@ -34,16 +34,16 @@ public class DFSMethodsTest {
 //        assertEquals(3, actualMap.get(new Slice(new Cell(1, 3, Ingredient.MUSHROOM))).size());
 //    }
 
-    @Test
-    public void cutAllStartPositions() throws IOException {
-        List<Slice> expected = Arrays.asList(
-                new Slice(new Cell(1, 1, Ingredient.MUSHROOM)),
-                new Slice(new Cell(1, 2, Ingredient.MUSHROOM)),
-                new Slice(new Cell(1, 3, Ingredient.MUSHROOM))
-        );
-        assertEquals(expected, DFSMethods.cutAllStartPositions(pizza));
-        assertEquals("We expect pizza size reduced to 15-3=12", 12, pizza.getCells().size());
-    }
+//    @Test
+//    public void cutAllStartPositions() throws IOException {
+//        List<Slice> expected = Arrays.asList(
+//                new Slice(new Cell(1, 1, Ingredient.MUSHROOM)),
+//                new Slice(new Cell(1, 2, Ingredient.MUSHROOM)),
+//                new Slice(new Cell(1, 3, Ingredient.MUSHROOM))
+//        );
+//        assertEquals(expected, DFSMethods.cutAllStartPositions(pizza));
+//        assertEquals("We expect pizza size reduced to 15-3=12", 12, pizza.getCells().size());
+//    }
 
 //    @Test
 //    public void performStep() {

@@ -19,10 +19,10 @@ import static org.junit.Assert.*;
 public class SliceTest {
     private Pizza pizza;
 
-    @Before
-    public void setup() throws IOException {
-        pizza = new Pizza(new File(EXAMPLE_INPUT_FILE_PATH), IoUtils.parsePizza(EXAMPLE_INPUT_FILE_PATH), IoUtils.parseSliceInstructions(EXAMPLE_INPUT_FILE_PATH));
-    }
+//    @Before
+//    public void setup() throws IOException {
+//        pizza = new Pizza(new File(EXAMPLE_INPUT_FILE_PATH), IoUtils.parsePizza(EXAMPLE_INPUT_FILE_PATH), IoUtils.parseSliceInstructions(EXAMPLE_INPUT_FILE_PATH));
+//    }
 
     @Test
     public void isValid() throws Exception {

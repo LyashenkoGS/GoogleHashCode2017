@@ -48,10 +48,10 @@ public class IoUtilsTest {
         return Arrays.asList(slice0, slice1, slice2);
     }
 
-    @Test
-    public void parseExampleInput() throws IOException {
-        List<Cell> input = IoUtils.parsePizza(EXAMPLE_PIZZA_FILE);
-    }
+//    @Test
+//    public void parseExampleInput() throws IOException {
+//        List<Cell> input = IoUtils.parsePizza(EXAMPLE_PIZZA_FILE);
+//    }
 
     @Test
     public void parseExampleSliceInstructions() throws IOException {

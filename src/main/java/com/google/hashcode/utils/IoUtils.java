@@ -33,7 +33,7 @@ public class IoUtils {
      */
     
     //this method coud be rewrited and fill mashrooms and tomatos to difference list from start (now it's going in cutAllStartPositions() method) 
-    public static List<Cell> parsePizza(String file) throws IOException {
+    public static List<Cell> parsePizza(String file, List<Slice> startPositions) throws IOException {
         try (FileReader fileReader = new FileReader(file)) {
         	long t1 = System.currentTimeMillis();
         	System.out.println("START parsePizza()");
@@ -41,23 +41,38 @@ public class IoUtils {
             //skip a line with slice instructions
             br.readLine();
             //declare a pizza cells array
-            List<Cell> cells = new ArrayList<>();
             int row = 0;
             String fileLine;
+            List<Cell> tomatoes = new ArrayList<Cell>();
+            List<Cell> mushrooms = new ArrayList<Cell>();
             while ((fileLine = br.readLine()) != null) {
                 for (int column = 0; column < fileLine.length(); column++) {
                     Character literal = fileLine.charAt(column);
                     if (literal.toString().equals(Ingredient.TOMATO.toString())) {
-                        cells.add(new Cell(row, column, Ingredient.TOMATO));
-                    } else if (literal.toString().equals(Ingredient.MUSHROOM.toString())) {
-                        cells.add(new Cell(row, column, Ingredient.MUSHROOM));
+                    	tomatoes.add(new Cell(row, column, Ingredient.TOMATO));
+                    } else {
+                    	mushrooms.add(new Cell(row, column, Ingredient.MUSHROOM));
                     }
                 }
                 row++;
             }
+            List<Slice> slice = new ArrayList<Slice>();
+            System.out.println(mushrooms.size() +" "+ tomatoes.size());
             long t2 = System.currentTimeMillis() - t1;
             System.out.println("parsePizza() FINISHED in " + t2 + " milliseconds" );
-            return cells;
+            if(tomatoes.size() > mushrooms.size()){
+            	for (Cell cell : mushrooms) {
+            		slice.add(new Slice(cell));
+    			}
+            	startPositions.addAll(slice);
+            	return tomatoes;
+            }else{
+            	for (Cell cell : tomatoes) {
+            		slice.add(new Slice(cell));
+    			}
+            	startPositions.addAll(slice);
+            	return mushrooms;
+            }
         }
     }
 

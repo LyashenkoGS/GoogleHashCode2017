@@ -23,7 +23,6 @@ public abstract class DFSMethods {
 	 *            given slices in the pizza
 	 * @return available steps
 	 */
-	static long total = 0;
 	static int counter = 0;
 	public static Map<Slice, List<Step>> getAvailableSteps(Pizza pizza, List<Slice> startPositions,
 			List<Slice> output) {
@@ -64,9 +63,7 @@ public abstract class DFSMethods {
 		}
 		System.out.println("TOTAL STEPS = " + groupedSteps.values().size() + " STEPS");
 		long t2 = System.currentTimeMillis() - t1;
-		total += t2;
 		System.out.println("getAvailableSteps() finished in " + (t2) + " milliseconds");
-		System.out.println("TOTAL = " + (total%1000) + " seconds");
 //		LOGGER.info("availadle steps count = " + groupedSteps.size());
 		return groupedSteps;
 	}
@@ -101,21 +98,15 @@ public abstract class DFSMethods {
 	 * @return
 	 */
 	public static Step selectStep(Map<Slice, List<Step>> steps) {
-		long t1 = System.currentTimeMillis();
-		System.out.println("selectStep() STARTED");
 		List<Step> min = steps.values().stream()
 				.min(Comparator.comparingLong(value -> value.stream().map(step -> step.delta.cells.size()).count()))
 				.get();
-		long t2 = System.currentTimeMillis() - t1;
-		System.out.println("method selectStep() FINISHED IN " + t2 + " MILLIS");
 		if (!min.isEmpty()) {
-//			LOGGER.info("steps list with minimal number of delta cells: " + min);
 			return min.get(0);
 		} else {
 			Optional<List<Step>> optionalStep = steps.values().stream().filter(steps1 -> !steps1.isEmpty()).findFirst();
 			if (optionalStep.isPresent()) {
 				final Step step = optionalStep.get().get(0);
-//				LOGGER.info("Selected step to perform:" + step);
 				return step;
 			} else
 				return null;
@@ -130,35 +121,34 @@ public abstract class DFSMethods {
 	 *            given pizza
 	 * @return slices that are start positions for future slicing
 	 */
-	
-	//17 second on my working PC with functional functions (medium)
-	public static List<Slice> cutAllStartPositions(Pizza pizza) {
-		long t1 = System.currentTimeMillis();
-		System.out.println("cutAllStartPositions() starts");
-		List<Cell> mushrooms = new ArrayList<Cell>();
-		List<Cell> tomatoes = new ArrayList<Cell>();
-		for (Cell cell : pizza.getCells()) {
-			if(cell.ingredient.equals(Ingredient.TOMATO)){
-				tomatoes.add(cell);
-			} else{
-				mushrooms.add(cell);
-			}
-		}
-		List<Slice> startPositions = new ArrayList<Slice>();
-		if (mushrooms.size() > tomatoes.size()) {
-			for (Cell cell : tomatoes) {
-				startPositions.add(new Slice(cell));
-			}
-			pizza.getCells().removeAll(tomatoes);
-		} else {
-			for (Cell cell : mushrooms) {
-				startPositions.add(new Slice(cell));
-			}
-			pizza.getCells().removeAll(mushrooms);
-		}
-		long t2 = System.currentTimeMillis();
-		System.out.println("method cutAllStartPositions() finished in " + (t2 - t1) + " miliseconds");
-		return startPositions;
-	}
+//	all logic was remowed to pizza cutting
+//	public static List<Slice> cutAllStartPositions(Pizza pizza) {
+//		long t1 = System.currentTimeMillis();
+//		System.out.println("cutAllStartPositions() starts");
+//		List<Cell> mushrooms = new ArrayList<Cell>();
+//		List<Cell> tomatoes = new ArrayList<Cell>();
+//		for (Cell cell : pizza.getCells()) {
+//			if(cell.ingredient.equals(Ingredient.TOMATO)){
+//				tomatoes.add(cell);
+//			} else{
+//				mushrooms.add(cell);
+//			}
+//		}
+//		List<Slice> startPositions = new ArrayList<Slice>();
+//		if (mushrooms.size() > tomatoes.size()) {
+//			for (Cell cell : tomatoes) {
+//				startPositions.add(new Slice(cell));
+//			}
+//			pizza.getCells().removeAll(tomatoes);
+//		} else {
+//			for (Cell cell : mushrooms) {
+//				startPositions.add(new Slice(cell));
+//			}
+//			pizza.getCells().removeAll(mushrooms);
+//		}
+//		long t2 = System.currentTimeMillis();
+//		System.out.println("method cutAllStartPositions() finished in " + (t2 - t1) + " miliseconds");
+//		return startPositions;
+//	}
 
 }
