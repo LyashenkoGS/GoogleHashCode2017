@@ -5,6 +5,7 @@ import com.google.hashcode.entity.Slice;
 import com.google.hashcode.entity.Step;
 import com.google.hashcode.utils.DFSMethods;
 import com.google.hashcode.utils.IoUtils;
+import com.google.hashcode.utils.Profiler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,12 +23,13 @@ public class App {
     public static void main(String[] args) throws IOException {
         slicePizza(EXAMPLE_INPUT_FILE_PATH, OUTPUT_DATA_SET_EXAMPLE_TXT);
         slicePizza(SMALL_INPUT_FILE_PATH, OUTPUT_DATA_SET_SMALL_TXT);
+        slicePizza(MEDIUM_INPUT_FILE_PATH, OUTPUT_DATA_SET_MEDIUM_TXT);
         //TODO troubles to input big files, possible exciting String max size
         //slicePizza(BIG_INPUT_FILE_PATH, OUTPUT_DATA_SET_BIG_TXT);
-        //slicePizza(MEDIUM_INPUT_FILE_PATH, OUTPUT_DATA_SET_MEDIUM_TXT);
     }
 
     public static void slicePizza(String inputFile, String outputFile) throws IOException {
+        Profiler profiler = new Profiler();
         List<Slice> output;
         Pizza pizza = new Pizza(new File(inputFile), IoUtils.parsePizza(inputFile), IoUtils.parseSliceInstructions(inputFile));
         //get start positions
@@ -45,6 +47,7 @@ public class App {
         }
         IoUtils.writeToFile(outputFile, IoUtils.parseSlices(output));
         LOGGER.info("FINISHED for " + inputFile + "!!!!!");
+        LOGGER.info(profiler.measure(inputFile + " execution time: "));
     }
 
 }
