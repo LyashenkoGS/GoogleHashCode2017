@@ -31,6 +31,8 @@ public class IoUtils {
      * @return 2d array representing a pizza
      * @throws IOException parsing fail
      */
+    
+    //this method coud be rewrited and fill mashrooms and tomatos to difference list from start (now it's going in cutAllStartPositions() method) 
     public static List<Cell> parsePizza(String file) throws IOException {
         try (FileReader fileReader = new FileReader(file)) {
             BufferedReader br = new BufferedReader(fileReader);
@@ -40,9 +42,11 @@ public class IoUtils {
             List<Cell> cells = new ArrayList<>();
             int row = 0;
             String fileLine;
+            int counter = 0;
             while ((fileLine = br.readLine()) != null) {
                 for (int column = 0; column < fileLine.length(); column++) {
                     Character literal = fileLine.charAt(column);
+                    System.out.println("counter = " + counter++);
                     if (literal.toString().equals(Ingredient.TOMATO.toString())) {
                         cells.add(new Cell(row, column, Ingredient.TOMATO));
                     } else if (literal.toString().equals(Ingredient.MUSHROOM.toString())) {

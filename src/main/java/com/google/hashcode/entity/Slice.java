@@ -3,6 +3,7 @@ package com.google.hashcode.entity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.net.StandardSocketOptions;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -115,106 +116,91 @@ public class Slice {
         boolean isPassedSliceInstructions = this.cells.size() <= pizza.getSliceInstruction().getMaxNumberOfCellsPerSlice()
                 && tomatoesNumber >= pizza.getSliceInstruction().getMinNumberOfIngredientPerSlice()
                 && mushroomsNumber >= pizza.getSliceInstruction().getMinNumberOfIngredientPerSlice();
-        LOGGER.info("\n" + pizza.getSliceInstruction() +
-                "\nSlice :" + this +
-                "\npassed validation: " + isPassedSliceInstructions);
         return isPassedSliceInstructions;
     }
-
-    //region generate steps
-
-    public Step generateStepAbove(Pizza pizza) {
-        Slice delta = new Slice();
-        for (int x = this.minX(); x <= this.maxX(); x++) {
-            //try to get a cell
-            Optional<Cell> cell = pizza.getCell(this.minY() - 1, x);
-            if (cell.isPresent()) {
-                delta.cells.add(cell.get());
-            } else {
-                LOGGER.info("cant perform step left !");
-                return null;
-            }
-        }
-        LOGGER.debug("generateStepLeft"
-                + "\nstep left delta: " + delta.toString());
-        Step step = new Step(this, delta);
-        if (step.isValid(pizza)) {
-            return step;
-        } else {
-            LOGGER.info("step is invalid !");
-            return null;
-        }
+    
+    int counter = 0;
+    //single method for generating all steps
+    public Step generateStep(Pizza pizza, Direction direction){
+    	Slice delta = new Slice();
+    	int maxSliseSize = pizza.getSliceInstruction().getMaxNumberOfCellsPerSlice();
+    	switch(direction){
+    		case UP:
+    			System.out.print("step up");
+//    			validation on max slice size
+    			if( (this.cells.size() + (this.maxX()-this.minX())) > maxSliseSize ) return null;
+    			for(int x = this.minX(); x <= this.maxX(); x++){
+    				System.err.println("x=" + x + "y="+(minY()-1));
+    				Optional<Cell> cell = pizza.getCell(minY()-1, x);
+//    				validation on containing step cells in pizza
+    				if(cell.isPresent()){
+    					delta.cells.add(cell.get());
+    					System.out.println(" success");
+    				}else{
+//    					Pizza doesn't contain one of step cells. This step is blocked
+    					System.out.println(" fail");
+    					return null;
+    				}
+    			}
+    			break;
+    		case RIGHT:
+    			System.out.print("step right");
+//    			validation on max slice size
+    			if( (this.cells.size() + (this.maxY()-this.minY())) > maxSliseSize ) return null;
+    			for (int y = this.minY(); y <= this.maxY(); y++) {
+    				System.err.println("x=" + (maxX()+1) + "y="+y);
+    				Optional<Cell> cell = pizza.getCell(y, maxX() + 1);
+//    				validation on containing step cells in pizza
+    				if(cell.isPresent()){
+    					delta.cells.add(cell.get());
+    					System.out.println(" success");
+   				 	}else{
+//   				 	Pizza doesn't contain one of step cells. This step is blocked;
+   				 		System.out.println(" fail");
+   				 		return null;
+   				 	}
+    			}
+    			break;
+    		case DOWN:
+    			System.out.print("step down");
+//    			validation on max slice size
+    			if( (this.cells.size() + (this.maxX()-this.minX())) > maxSliseSize ) return null;
+    			for(int x = this.minX(); x <= this.maxX(); x++){
+    				System.err.println("x=" + x + "y="+(maxY()+1));
+    				Optional<Cell> cell = pizza.getCell(maxY()+1, x);
+//    				validation on containing step cells in pizza
+    				if(cell.isPresent()){
+    					delta.cells.add(cell.get());
+    					System.out.println(" success");
+    				}else{
+//    					Pizza doesn't contain one of step cells. This step is blocked;
+    					System.out.println(" fail");
+    					return null;
+    				}
+    			}
+    			break;
+    		case LEFT:
+    			System.out.print("step left");
+//    			validation on max slice size
+    			if( (this.cells.size() + (this.maxY()-this.minY())) > maxSliseSize ) return null;
+    			for (int y = this.minY(); y <= this.maxY(); y++) {
+    				System.err.println("x=" + (minX()-1) + "y="+y);
+    				Optional<Cell> cell = pizza.getCell(y, minX() - 1);
+//    				validation on containing step cells in pizza
+    				if(cell.isPresent()){
+    					delta.cells.add(cell.get());
+    					System.out.println(" success");
+   				 	}else{
+//   				 	Pizza doesn't contain one of step cells. This step is blocked;
+   				 		System.out.println(" fail");
+   				 		return null;
+   				 	}
+    			}
+    			break;
+    		}
+//    	LOGGER.info("return " + counter++ + " availadle step") ;
+    	return new Step(this, delta);
     }
-
-    public Step generateStepBelow(Pizza pizza) {
-        Slice delta = new Slice();
-        for (int x = this.minX(); x <= this.maxX(); x++) {
-            //try to get a cell
-            Optional<Cell> cell = pizza.getCell(this.maxY() + 1, x);
-            if (cell.isPresent()) {
-                delta.cells.add(cell.get());
-            } else {
-                LOGGER.info("cant perform step left !");
-                return null;
-            }
-        }
-        LOGGER.debug("generateStepLeft"
-                + "\nstep left delta: " + delta.toString());
-        Step step = new Step(this, delta);
-        if (step.isValid(pizza)) {
-            return step;
-        } else {
-            LOGGER.info("step is invalid !");
-            return null;
-        }
-    }
-
-    public Step generateStepLeft(Pizza pizza) {
-        Slice delta = new Slice();
-        for (int y = this.minY(); y <= this.maxY(); y++) {
-            //try to get a cell
-            Optional<Cell> cell = pizza.getCell(y, minX() - 1);
-            if (cell.isPresent()) {
-                delta.cells.add(cell.get());
-            } else {
-                LOGGER.info("cant perform step left !");
-                return null;
-            }
-        }
-        LOGGER.debug("generateStepLeft"
-                + "\nstep left delta: " + delta.toString());
-        Step step = new Step(this, delta);
-        if (step.isValid(pizza)) {
-            return step;
-        } else {
-            LOGGER.info("step is invalid !");
-            return null;
-        }
-    }
-
-    public Step generateStepRight(Pizza pizza) {
-        Slice delta = new Slice();
-        for (int y = this.minY(); y <= this.maxY(); y++) {
-            //try to get a cell
-            Optional<Cell> cell = pizza.getCell(y, maxX() + 1);
-            if (cell.isPresent()) {
-                delta.cells.add(cell.get());
-            } else {
-                LOGGER.info("cant perform step right !");
-                return null;
-            }
-        }
-        LOGGER.debug("generateStepLeft"
-                + "\nstep left delta: " + delta.toString());
-        Step step = new Step(this, delta);
-        if (step.isValid(pizza)) {
-            return step;
-        } else {
-            LOGGER.info("step is invalid !");
-            return null;
-        }
-    }
-    //endregion
-
+    
 }
 

@@ -36,6 +36,4 @@ public class Step {
                 "\ndelta=" + delta +
                 "\n}";
     }
-
-
 }

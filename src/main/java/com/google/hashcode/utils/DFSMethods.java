@@ -20,26 +20,45 @@ public abstract class DFSMethods {
      * @param startPositions given slices in the pizza
      * @return available steps
      */
-    public static Map<Slice, List<Step>> getAvailableSteps(Pizza pizza, List<Slice> startPositions) {
+    public static Map<Slice, List<Step>> getAvailableSteps(Pizza pizza, List<Slice> startPositions, List<Slice> output) {
+    	long t1 = System.currentTimeMillis();
+    	System.out.println("getAvailableSteps() start");
         Map<Slice, List<Step>> groupedSteps = new HashMap<>();
-        for (Slice startPosition : startPositions) {
+        Iterator<Slice> iter = startPositions.iterator();
+        while(iter.hasNext()){
+        	Slice startPosition = iter.next();
             List<Step> steps = new ArrayList<>();
-            Step stepLeft = startPosition.generateStepLeft(pizza);
-            Step stepRight = startPosition.generateStepRight(pizza);
-            Step stepAbove = startPosition.generateStepAbove(pizza);
-            Step stepBelow = startPosition.generateStepBelow(pizza);
+            Step stepLeft = startPosition.generateStep(pizza, Direction.LEFT);
+            Step stepRight = startPosition.generateStep(pizza, Direction.RIGHT);
+            Step stepAbove = startPosition.generateStep(pizza, Direction.UP);
+            Step stepBelow = startPosition.generateStep(pizza, Direction.DOWN);
 
             steps.add(stepRight);
             steps.add(stepLeft);
             steps.add(stepBelow);
             steps.add(stepAbove);
-            steps = steps.stream().filter(Objects::nonNull).collect(Collectors.toList());
-
-            groupedSteps.put(startPosition, steps);
+            
+            steps = steps.stream().filter(Objects::nonNull).collect(Collectors.toList()); 
+            
+            if(steps.size() == 0){
+            	if(startPosition.isValid(pizza)){
+//            		if slice is valid and have'nt any steps -> cut it from startPositions
+            		output.add(startPosition);
+            		startPositions.remove(startPosition);
+            	}else{
+//            		if slice isn't valid and have'nt any steps -> return all it cells to pizza
+            		startPositions.remove(startPosition);	
+            	}
+//            	if slice haven't available steps and still doest'n valid -> return this slice to pizza
+            	pizza.getCells().addAll(startPosition.cells);
+            } else {
+            	groupedSteps.put(startPosition, steps);
+            }
+            
         }
-        LOGGER.info("available steps for" +
-                "\npizza: " + pizza
-                + "\nsteps: " + groupedSteps);
+        long t2 = System.currentTimeMillis();
+        System.out.println("getAvailableSteps() finished in " + (t2-t1) + " milliseconds");
+        LOGGER.info("availadle steps count = " + groupedSteps.size()) ;
         return groupedSteps;
     }
 
@@ -53,12 +72,10 @@ public abstract class DFSMethods {
      */
     public static Slice performStep(Pizza pizza, Step step) {
         //1. Pick ups a steps list with minimal total cells number
-        LOGGER.info("STEP TO PERFORM " + step);
+        LOGGER.info("STEP TO PERFORM " + step.size());
         //2. Cut all the step delta cells from pizza
-        LOGGER.info("pizza before step: " + pizza
-                + "\ndelta to remove from the pizza: " + step.delta);
         pizza.getCells().removeAll(step.delta.cells);
-        LOGGER.info("PIZZA AFTER STEP:" + pizza);
+        LOGGER.info("PIZZA AFTER STEP:" + pizza.getCells().size());
         //3. Add the step cells to an output slice
         Slice slice = new Slice(step.delta.cells);
         slice.cells.addAll(step.startPosition.cells);
@@ -95,16 +112,14 @@ public abstract class DFSMethods {
      * @return slices that are start positions for future slicing
      */
     public static List<Slice> cutAllStartPositions(Pizza pizza) {
+    	long t1 = System.currentTimeMillis();
+    	System.out.println("cutAllStartPositions() starts");
         List<Cell> mushrooms = pizza.getCells().stream()
                 .filter(cell -> cell.ingredient.equals(Ingredient.MUSHROOM))
                 .collect(Collectors.toList());
         List<Cell> tomatoes = pizza.getCells().stream()
                 .filter(cell -> cell.ingredient.equals(Ingredient.TOMATO))
                 .collect(Collectors.toList());
-        LOGGER.info("cutAllStartPositions for pizza: "
-                + "\n" + pizza
-                + "\nmushrooms number: " + mushrooms.size()
-                + "\ntomatoes number: " + tomatoes.size());
         List<Slice> startPositions = null;
         if (mushrooms.size() > tomatoes.size()) {
             startPositions = tomatoes.stream()
@@ -123,8 +138,8 @@ public abstract class DFSMethods {
                     .collect(Collectors.toList());
             pizza.getCells().removeAll(cellsToRemove);
         }
-        LOGGER.info("pizza without start positions:"
-                + "\n" + pizza);
+        long t2 = System.currentTimeMillis();
+        System.out.println("method cutAllStartPositions() finished in " + (t2-t1) + " miliseconds");
         return startPositions;
     }
 
