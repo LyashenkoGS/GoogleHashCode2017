@@ -42,9 +42,10 @@ public class App {
         while (!availableSteps.values().stream().allMatch(List::isEmpty)) {
         	System.out.println("START POSITIONS = " + startPositions.size());
         	System.out.println("OUTPUT = " + output.size());
-            Step step = DFSMethods.selectStep(availableSteps);
-            startPositions.remove(step.startPosition);
-            startPositions.add(DFSMethods.performStep(pizza, step));
+//            Step step = DFSMethods.selectStep(availableSteps);
+//            startPositions.remove(step.startPosition);
+//            startPositions.add(DFSMethods.performStep(pizza, step));
+        	DFSMethods.performStep(pizza, startPositions, output, availableSteps);
             //TODO available steps should include merging slices to each other
             availableSteps = DFSMethods.getAvailableSteps(pizza, startPositions, output);
         }

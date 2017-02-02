@@ -30,6 +30,7 @@ public abstract class DFSMethods {
 		System.out.println("getAvailableSteps() start " + ++counter + "-st time");
 		Map<Slice, List<Step>> groupedSteps = new HashMap<>();
 		Iterator<Slice> iter = startPositions.iterator();
+		int counter = 0;
 		while (iter.hasNext()) {
 			Slice startPosition = iter.next();
 			List<Step> steps = new ArrayList<>();
@@ -59,11 +60,11 @@ public abstract class DFSMethods {
 			} else {
 				groupedSteps.put(startPosition, steps);
 			}
-
+			++ counter;
 		}
 		System.out.println("TOTAL STEPS = " + groupedSteps.values().size() + " STEPS");
 		long t2 = System.currentTimeMillis() - t1;
-		System.out.println("getAvailableSteps() finished in " + (t2) + " milliseconds");
+		System.out.println("getAvailableSteps() finished in " + (t2) + " milliseconds AND " + counter + " ITERATIONS");
 //		LOGGER.info("availadle steps count = " + groupedSteps.size());
 		return groupedSteps;
 	}
@@ -89,6 +90,22 @@ public abstract class DFSMethods {
 		Slice slice = new Slice(step.delta.cells);
 		slice.cells.addAll(step.startPosition.cells);
 		return slice;
+	}
+	
+	public static void performStep(Pizza pizza, List<Slice> startPoints, List<Slice> output, Map<Slice, List<Step>> availableStepsp){
+		long t1 = System.currentTimeMillis();
+		System.out.println("performStep() STARTED");
+		int counter=0; 
+		for (Slice step : availableStepsp.keySet()) {
+			Slice afterStep = performStep(pizza, availableStepsp.get(step).get(0));
+			if(afterStep.cells.size() == pizza.getSliceInstruction().getMaxNumberOfCellsPerSlice()){
+				output.add(afterStep);
+				startPoints.remove(afterStep);
+			}
+			++counter; 
+		}
+		long t2 = System.currentTimeMillis() - t1;
+		System.out.println("performStep() FINISHED IN " + t2 + " MILLIS AND " + counter + " ITERATIONS");
 	}
 
 	/**
