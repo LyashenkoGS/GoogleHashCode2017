@@ -29,11 +29,11 @@ public class PizzaTest {
         assertEquals(examplePizza.getCell(0, 0), Optional.of(new Cell(0, 0, Ingredient.TOMATO)));
     }
 
-    @Test
-    public void getCellException() throws Exception {
-        Optional<Cell> cell = examplePizza.getCell(100500, 0);
-        assertFalse(cell.isPresent());
-    }
+//    @Test
+//    public void getCellException() throws Exception {
+//        Optional<Cell> cell = examplePizza.getCell(100500, 0);
+//        assertFalse(cell.isPresent());
+//    }
 
     @Test
     public void testToString() throws IOException {

@@ -1,14 +1,10 @@
 package com.google.hashcode.utils;
 
 import com.google.hashcode.entity.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.*;
 import java.util.stream.Collectors;
 
 public abstract class DFSMethods {
-	private static final Logger LOGGER = LoggerFactory.getLogger(DFSMethods.class);
 
 	private DFSMethods() {
 	}
@@ -28,6 +24,7 @@ public abstract class DFSMethods {
 			List<Slice> output) {
 		long t1 = System.currentTimeMillis();
 		System.out.println("getAvailableSteps() start " + ++counter + "-st time");
+		System.out.println("thread name = " + Thread.currentThread().getName());
 		Map<Slice, List<Step>> groupedSteps = new HashMap<>();
 		Iterator<Slice> iter = startPositions.iterator();
 		int counter = 0;
