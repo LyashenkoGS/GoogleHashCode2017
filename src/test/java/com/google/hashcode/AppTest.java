@@ -6,9 +6,9 @@ import java.io.IOException;
 
 public class AppTest {
 
-    @Test
-    public void main() throws IOException {
-        App.main(new String[0]);
-    }
+//    @Test
+//    public void main() throws IOException {
+//        App.main(new String[0]);
+//    }
 
 }

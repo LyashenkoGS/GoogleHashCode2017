@@ -19,17 +19,16 @@ public abstract class DFSMethods {
 	 *            given slices in the pizza
 	 * @return available steps
 	 */
-	static int counter = 0;
 	public static Map<Slice, List<Step>> getAvailableSteps(Pizza pizza, List<Slice> startPositions,
 			List<Slice> output) {
 		long t1 = System.currentTimeMillis();
-		System.out.println("getAvailableSteps() start " + ++counter + "-st time");
-		System.out.println("thread name = " + Thread.currentThread().getName());
+		System.out.println("getAvailableSteps() start in " + Thread.currentThread().getName() + " thread");
 		Map<Slice, List<Step>> groupedSteps = new HashMap<>();
 		Iterator<Slice> iter = startPositions.iterator();
 		int counter = 0;
 		while (iter.hasNext()) {
 			Slice startPosition = iter.next();
+			
 			List<Step> steps = new ArrayList<>();
 			Step stepLeft = startPosition.generateStep(pizza, Direction.LEFT);
 			Step stepRight = startPosition.generateStep(pizza, Direction.RIGHT);

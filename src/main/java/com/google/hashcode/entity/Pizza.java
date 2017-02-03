@@ -1,7 +1,9 @@
 package com.google.hashcode.entity;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.ConcurrentModificationException;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,7 +40,18 @@ public class Pizza {
      * @return a pizza cell with specified coordinated
      */
     public Optional<Cell> getCell(int y, int x) {
-        return cells.stream().filter(cell -> cell.x == x && cell.y == y).findFirst();
+    	Optional<Cell> c = null;
+    	try {
+			c = cells.stream().filter(cell -> cell.x == x && cell.y == y).findFirst();
+		} catch (ConcurrentModificationException e) {
+			try {
+				Thread.sleep(50);
+			} catch (InterruptedException e1) {
+				e1.printStackTrace();
+			}
+			c = cells.stream().filter(cell -> cell.x == x && cell.y == y).findFirst();
+		}
+        return c;
     }
 
     public SliceInstruction getSliceInstruction() {
@@ -89,5 +102,13 @@ public class Pizza {
         } else {
             return "";
         }
+    }
+    
+    public List<Cell> cloneCells(){
+    	List<Cell> cells = new ArrayList<>();
+    	for (Cell cell : this.cells) {
+			cells.add(new Cell(cell.y, cell.x, cell.ingredient));
+		}
+    	return cells;
     }
 }

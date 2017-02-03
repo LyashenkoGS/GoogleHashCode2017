@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.google.hashcode.entity.Cell;
 import com.google.hashcode.entity.Pizza;
 import com.google.hashcode.entity.Slice;
 import com.google.hashcode.entity.Step;
@@ -17,17 +18,22 @@ public class ThreadMethods {
 	static Map<Slice, List<Step>> forthMap = new HashMap<>();
 	
 	public static Map<Slice, List<Step>> threadAvailableSteps(Pizza pizza, List<Slice> startPositions,
-			List<Slice> output){
+			List<Slice> output) {
 		int counter = startPositions.size()/4;
 		List<Slice> firstList = startPositions.subList(0, counter);
 		List<Slice> secondList = startPositions.subList(counter, counter*2);
 		List<Slice> thirdList = startPositions.subList(counter*2, counter*3);
 		List<Slice> forthList = startPositions.subList(counter*3, startPositions.size());
 		
-		Pizza p1 = new Pizza(pizza.getInput(), pizza.getCells(), pizza.getSliceInstruction());
-		Pizza p2 = new Pizza(pizza.getInput(), pizza.getCells(), pizza.getSliceInstruction());
-		Pizza p3 = new Pizza(pizza.getInput(), pizza.getCells(), pizza.getSliceInstruction());
-		Pizza p4 = new Pizza(pizza.getInput(), pizza.getCells(), pizza.getSliceInstruction());
+		List<Cell> l1 = pizza.cloneCells();
+		List<Cell> l2 = pizza.cloneCells();
+		List<Cell> l3 = pizza.cloneCells();
+		List<Cell> l4 = pizza.cloneCells();
+		
+		Pizza p1 = new Pizza(pizza.getInput(), l1, pizza.getSliceInstruction());
+		Pizza p2 = new Pizza(pizza.getInput(), l2, pizza.getSliceInstruction());
+		Pizza p3 = new Pizza(pizza.getInput(), l3, pizza.getSliceInstruction());
+		Pizza p4 = new Pizza(pizza.getInput(), l4, pizza.getSliceInstruction());
 		
 		List<Slice> o1 = new ArrayList<Slice>();
 		List<Slice> o2 = new ArrayList<Slice>();
@@ -63,6 +69,7 @@ public class ThreadMethods {
 		thread2.start();
 		thread3.start();
 		thread4.start();
+		
 		Map<Slice, List<Step>> groupedSteps = new HashMap<>();
 		groupedSteps.putAll(firstMap);
 		groupedSteps.putAll(secondMap);

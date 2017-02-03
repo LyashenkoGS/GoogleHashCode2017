@@ -51,7 +51,7 @@ public class App {
         	DFSMethods.performStep(pizza, startPositions, output, availableSteps);
             //TODO available steps should include merging slices to each other
 //            availableSteps = DFSMethods.getAvailableSteps(pizza, startPositions, output);
-        	availableSteps = ThreadMethods.threadAvailableSteps(pizza, startPositions, output);
+        	ThreadMethods.threadAvailableSteps(pizza, startPositions, output);
         }
         IoUtils.writeToFile(outputFile, IoUtils.parseSlices(output));
         long t2 = System.currentTimeMillis();
