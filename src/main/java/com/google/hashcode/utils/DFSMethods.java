@@ -18,15 +18,23 @@ public abstract class DFSMethods {
      * If used start position hasn't any steps and is invalid for a pizza ->
      * remove this slice from startPositions and add all it's cells to the pizza.
      *
-     * @param pizza          given pizza
-     * @param startPositions given slices in the pizza
-     * @param output         list of valid slices
+     * @param pizza          given pizza(mutable)
+     * @param startPositions given slices in the pizza(mutable)
+     * @param output         list of valid slices(mutable)
      * @return available steps
      */
     public static Map<Slice, List<Step>> getAvailableSteps(Pizza pizza, List<Slice> startPositions, List<Slice> output) {
-        Profiler profiler = new Profiler();
         Map<Slice, List<Step>> groupedSteps = new HashMap<>();
-        Iterator iter = startPositions.iterator();
+        Iterator iter;
+        //optimization for big arrays
+        if (startPositions.size() > 1_000) {
+            List<Slice> startPositionsSubset = startPositions.subList(0, 20);
+            iter = startPositionsSubset.iterator();
+        }
+        //iterate over all the start positions
+        else {
+            iter = startPositions.iterator();
+        }
         while (iter.hasNext()) {
             Slice startPosition = (Slice) iter.next();
 
@@ -58,7 +66,7 @@ public abstract class DFSMethods {
                 groupedSteps.put(startPosition, steps);
             }
         }
-        LOGGER.info("available steps for" +
+        LOGGER.debug("available steps for" +
                 "\npizza: " + pizza
                 + "\nsteps: " + groupedSteps);
         return groupedSteps;
@@ -68,32 +76,30 @@ public abstract class DFSMethods {
      * Pick-ups a step with a minimal cells delta number,
      * execute it(cut it from the pizza, and add to a slice)
      *
-     * @param pizza          given pizza
+     * @param pizza          given pizza(mutable)
      * @param step           step to perform
-     * @param startPositions
-     * @param output         @return formed slice that includes an original slice and delta from a step
+     * @param startPositions given start positions(mutable_
+     * @param output         given list of output slices
      */
     public static void performStep(Pizza pizza, Step step, List<Slice> startPositions, List<Slice> output) {
         //1. Pick ups a steps list with minimal total cells number
-        LOGGER.info("STEP TO PERFORM " + step);
+        LOGGER.debug("STEP TO PERFORM " + step);
         //2. Cut all the step delta cells from pizza
-        LOGGER.info("pizza before step: " + pizza
+        LOGGER.debug("pizza before step: " + pizza
                 + "\ndelta to remove from the pizza: " + step.delta);
         pizza.getCells().removeAll(step.delta.cells);
-
-        //3. remove previous version start position from startPositions
+        //3. remove step start position from total start positions
         startPositions.remove(step.startPosition);
-
         List<Cell> returnedList = step.startPosition.cells;
         returnedList.addAll(step.delta.cells);
         Slice finalSlice = new Slice(returnedList);
-
-        LOGGER.info("PIZZA AFTER STEP:" + pizza);
-        //3. Add the step cells to an output slice
-
-        if (finalSlice.cells.size() == pizza.getSliceInstruction().getMaxNumberOfCellsPerSlice()) {
+        LOGGER.debug("PIZZA AFTER STEP:" + pizza);
+        //3. Add the step cells to an output slice if it's valid
+        if (finalSlice.isValid(pizza)) {
             output.add(finalSlice);
-        } else {
+        }
+        //4. add start position + delta to start positions
+        else {
             startPositions.add(finalSlice);
         }
     }
@@ -101,20 +107,27 @@ public abstract class DFSMethods {
     /**
      * Selects a step which start position has minimal delta in all the steps
      *
-     * @param steps
-     * @return
+     * @param steps given steps
+     * @return optimal step
      */
     public static Step selectStep(Map<Slice, List<Step>> steps) {
         List<Step> min = steps.values().stream()
-                .min(Comparator.comparingLong(value -> value.stream().map(step -> step.delta.cells.size()).count())).get();
+                .min(Comparator.comparingLong(value ->
+                        value.stream()
+                                .map(step -> step.delta.cells.size())
+                                .count()))
+                .get();
         if (!min.isEmpty()) {
-            LOGGER.info("steps list with minimal number of delta cells: " + min);
+            LOGGER.debug("steps list with minimal number of delta cells: " + min);
             return min.get(0);
         } else {
-            Optional<List<Step>> optionalStep = steps.values().stream().filter(steps1 -> !steps1.isEmpty()).findFirst();
+            Optional<List<Step>> optionalStep = steps.values()
+                    .stream()
+                    .filter(steps1 -> !steps1.isEmpty())
+                    .findFirst();
             if (optionalStep.isPresent()) {
                 final Step step = optionalStep.get().get(0);
-                LOGGER.info("Selected step to perform:" + step);
+                LOGGER.debug("Selected step to perform:" + step);
                 return step;
             } else return null;
         }

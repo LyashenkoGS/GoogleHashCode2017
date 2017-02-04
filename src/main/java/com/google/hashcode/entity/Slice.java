@@ -116,7 +116,7 @@ public class Slice {
         boolean isPassedSliceInstructions = this.cells.size() <= pizza.getSliceInstruction().getMaxNumberOfCellsPerSlice()
                 && tomatoesNumber >= pizza.getSliceInstruction().getMinNumberOfIngredientPerSlice()
                 && mushroomsNumber >= pizza.getSliceInstruction().getMinNumberOfIngredientPerSlice();
-        LOGGER.info("\n" + pizza.getSliceInstruction() +
+        LOGGER.debug("\n" + pizza.getSliceInstruction() +
                 "\nSlice :" + this +
                 "\npassed validation: " + isPassedSliceInstructions);
         return isPassedSliceInstructions;
@@ -132,7 +132,7 @@ public class Slice {
             if (cell.isPresent()) {
                 delta.cells.add(cell.get());
             } else {
-                LOGGER.info("cant perform step left !");
+                LOGGER.debug("cant perform step left !");
                 return null;
             }
         }
@@ -142,7 +142,7 @@ public class Slice {
         if (step.isValid(pizza)) {
             return step;
         } else {
-            LOGGER.info("step is invalid !");
+            LOGGER.debug("step is invalid !");
             return null;
         }
     }
@@ -155,7 +155,7 @@ public class Slice {
             if (cell.isPresent()) {
                 delta.cells.add(cell.get());
             } else {
-                LOGGER.info("cant perform step left !");
+                LOGGER.debug("cant perform step left !");
                 return null;
             }
         }
@@ -165,7 +165,7 @@ public class Slice {
         if (step.isValid(pizza)) {
             return step;
         } else {
-            LOGGER.info("step is invalid !");
+            LOGGER.debug("step is invalid !");
             return null;
         }
     }
@@ -178,7 +178,7 @@ public class Slice {
             if (cell.isPresent()) {
                 delta.cells.add(cell.get());
             } else {
-                LOGGER.info("cant perform step left !");
+                LOGGER.debug("cant perform step left !");
                 return null;
             }
         }
@@ -188,7 +188,7 @@ public class Slice {
         if (step.isValid(pizza)) {
             return step;
         } else {
-            LOGGER.info("step is invalid !");
+            LOGGER.debug("step is invalid !");
             return null;
         }
     }
@@ -201,7 +201,7 @@ public class Slice {
             if (cell.isPresent()) {
                 delta.cells.add(cell.get());
             } else {
-                LOGGER.info("cant perform step right !");
+                LOGGER.debug("cant perform step right !");
                 return null;
             }
         }
@@ -211,7 +211,7 @@ public class Slice {
         if (step.isValid(pizza)) {
             return step;
         } else {
-            LOGGER.info("step is invalid !");
+            LOGGER.debug("step is invalid !");
             return null;
         }
     }

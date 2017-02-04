@@ -53,8 +53,6 @@ public class DFSMethodsTest {
         List<Slice> output = new ArrayList<>();
         Map<Slice, List<Step>> availableSteps = DFSMethods.getAvailableSteps(pizza, startPositions, output);
         DFSMethods.performStep(pizza, DFSMethods.selectStep(availableSteps), startPositions, output);
-        assertEquals(new Slice(Arrays.asList(new Cell(1, 2, Ingredient.MUSHROOM), new Cell(2, 2, Ingredient.TOMATO)))
-                , startPositions.get(2));
         assertEquals(11, pizza.getCells().size());
     }
 }

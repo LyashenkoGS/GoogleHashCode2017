@@ -22,9 +22,9 @@ public class App {
     private static final Logger LOGGER = LoggerFactory.getLogger(App.class);
 
     public static void main(String[] args) throws IOException {
-        slicePizza(EXAMPLE_INPUT_FILE_PATH, OUTPUT_DATA_SET_EXAMPLE_TXT);
-        slicePizza(SMALL_INPUT_FILE_PATH, OUTPUT_DATA_SET_SMALL_TXT);
-        //slicePizza(MEDIUM_INPUT_FILE_PATH, OUTPUT_DATA_SET_MEDIUM_TXT);
+        //slicePizza(EXAMPLE_INPUT_FILE_PATH, OUTPUT_DATA_SET_EXAMPLE_TXT);
+        //slicePizza(SMALL_INPUT_FILE_PATH, OUTPUT_DATA_SET_SMALL_TXT);
+        slicePizza(MEDIUM_INPUT_FILE_PATH, OUTPUT_DATA_SET_MEDIUM_TXT);
         //TODO troubles to input big files, possible exciting String max size
         //slicePizza(BIG_INPUT_FILE_PATH, OUTPUT_DATA_SET_BIG_TXT);
     }
@@ -45,6 +45,10 @@ public class App {
             availableSteps = DFSMethods.getAvailableSteps(pizza, startPositions, output);
             LOGGER.info("OUTPUT AFTER A STEP: "
                     + "\n " + output);
+            LOGGER.info("start positions cells number: " + startPositions.stream()
+                    .map(slice -> slice.cells.size())
+                    .reduce(0, (integer, integer2) -> integer + integer2)
+            );
         }
         IoUtils.writeToFile(outputFile, IoUtils.parseSlices(output));
         LOGGER.info("FINISHED for " + inputFile + "!!!!!");
