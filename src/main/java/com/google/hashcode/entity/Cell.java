@@ -28,9 +28,9 @@ public class Cell {
         if (this == o) return true;
         if (!(o instanceof Cell)) return false;
         Cell cell = (Cell) o;
-        return x == cell.x &&
-                y == cell.y &&
-                ingredient == cell.ingredient;
+        return this.x == cell.x &&
+                this.y == cell.y &&
+                this.ingredient == cell.ingredient;
     }
 
     @Override

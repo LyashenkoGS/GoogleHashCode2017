@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -30,18 +31,18 @@ public class App {
 
     public static void slicePizza(String inputFile, String outputFile) throws IOException {
         Profiler profiler = new Profiler();
-        List<Slice> output;
+        List<Slice> startPositions;
+        List<Slice> output = new ArrayList<>();
         Pizza pizza = new Pizza(new File(inputFile), IoUtils.parsePizza(inputFile), IoUtils.parseSliceInstructions(inputFile));
         //get start positions
-        output = DFSMethods.cutAllStartPositions(pizza);
+        startPositions = DFSMethods.cutAllStartPositions(pizza);
         //get All steps
-        Map<Slice, List<Step>> availableSteps = DFSMethods.getAvailableSteps(pizza, output);
+        Map<Slice, List<Step>> availableSteps = DFSMethods.getAvailableSteps(pizza, startPositions, output);
         while (!availableSteps.values().stream().allMatch(List::isEmpty)) {
             Step step = DFSMethods.selectStep(availableSteps);
-            output.remove(step.startPosition);
-            output.add(DFSMethods.performStep(pizza, step));
+            DFSMethods.performStep(pizza, step, startPositions, output);
             //TODO available steps should include merging slices to each other
-            availableSteps = DFSMethods.getAvailableSteps(pizza, output);
+            availableSteps = DFSMethods.getAvailableSteps(pizza, startPositions, output);
             LOGGER.info("OUTPUT AFTER A STEP: "
                     + "\n " + output);
         }

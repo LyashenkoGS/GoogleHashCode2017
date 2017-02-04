@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -27,7 +28,8 @@ public class DFSMethodsTest {
 
     @Test
     public void getAvailableSteps() throws IOException {
-        Map<Slice, List<Step>> actualMap = DFSMethods.getAvailableSteps(pizza, DFSMethods.cutAllStartPositions(pizza));
+        List<Slice> output = new ArrayList<>();
+        Map<Slice, List<Step>> actualMap = DFSMethods.getAvailableSteps(pizza, DFSMethods.cutAllStartPositions(pizza), output);
         assertEquals(3, actualMap.keySet().size());
         assertEquals(3, actualMap.get(new Slice(new Cell(1, 1, Ingredient.MUSHROOM))).size());
         assertEquals(2, actualMap.get(new Slice(new Cell(1, 2, Ingredient.MUSHROOM))).size());
@@ -47,10 +49,12 @@ public class DFSMethodsTest {
 
     @Test
     public void performStep() {
-        List<Slice> output = DFSMethods.cutAllStartPositions(pizza);
-        Map<Slice, List<Step>> availableSteps = DFSMethods.getAvailableSteps(pizza, output);
-        Slice slice = DFSMethods.performStep(pizza, DFSMethods.selectStep(availableSteps));
-        assertEquals(new Slice(Arrays.asList(new Cell(2, 2, Ingredient.TOMATO), new Cell(1, 2, Ingredient.MUSHROOM))), slice);
+        List<Slice> startPositions = DFSMethods.cutAllStartPositions(pizza);
+        List<Slice> output = new ArrayList<>();
+        Map<Slice, List<Step>> availableSteps = DFSMethods.getAvailableSteps(pizza, startPositions, output);
+        DFSMethods.performStep(pizza, DFSMethods.selectStep(availableSteps), startPositions, output);
+        assertEquals(new Slice(Arrays.asList(new Cell(1, 2, Ingredient.MUSHROOM), new Cell(2, 2, Ingredient.TOMATO)))
+                , startPositions.get(2));
         assertEquals(11, pizza.getCells().size());
     }
 }
