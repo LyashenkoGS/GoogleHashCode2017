@@ -14,15 +14,19 @@ public abstract class DFSMethods {
     }
 
     /**
-     * For each slice find all available steps. We DON'T change the pizza on this stage
-     *
+     * For each slice find all available steps.<br>
+     * If founded start position that haven't any steps and it is unvalid ->
+     * remove this slice from startPositions and add all it's cells to pizza.
      * @param pizza          given pizza
      * @param startPositions given slices in the pizza
      * @return available steps
      */
     public static Map<Slice, List<Step>> getAvailableSteps(Pizza pizza, List<Slice> startPositions) {
         Map<Slice, List<Step>> groupedSteps = new HashMap<>();
-        for (Slice startPosition : startPositions) {
+        Iterator iter = startPositions.iterator();
+        while (iter.hasNext()) {
+            Slice startPosition = (Slice) iter.next();
+
             List<Step> steps = new ArrayList<>();
             Step stepLeft = startPosition.generateStepLeft(pizza);
             Step stepRight = startPosition.generateStepRight(pizza);
@@ -35,7 +39,20 @@ public abstract class DFSMethods {
             steps.add(stepAbove);
             steps = steps.stream().filter(Objects::nonNull).collect(Collectors.toList());
 
-            groupedSteps.put(startPosition, steps);
+            if (steps.size() == 0) {
+                if (startPosition.isValid(pizza)) {
+                    // if slice is valid and have'nt any steps -> cut it from
+                    // startPositions
+                    groupedSteps.put(startPosition, steps);
+                } else {
+                    // if slice isn't valid and have'nt any steps -> return all
+                    // it cells to pizza
+                    pizza.getCells().addAll(startPosition.cells);
+                    iter.remove();
+                }
+            } else {
+                groupedSteps.put(startPosition, steps);
+            }
         }
         LOGGER.info("available steps for" +
                 "\npizza: " + pizza
