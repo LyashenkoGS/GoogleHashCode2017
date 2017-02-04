@@ -15,14 +15,16 @@ public abstract class DFSMethods {
 
     /**
      * For each slice find all available steps.<br>
-     * If founded start position that haven't any steps and it is unvalid ->
-     * remove this slice from startPositions and add all it's cells to pizza.
+     * If used start position hasn't any steps and is invalid for a pizza ->
+     * remove this slice from startPositions and add all it's cells to the pizza.
+     *
      * @param pizza          given pizza
      * @param startPositions given slices in the pizza
-     * @param output
+     * @param output         list of valid slices
      * @return available steps
      */
     public static Map<Slice, List<Step>> getAvailableSteps(Pizza pizza, List<Slice> startPositions, List<Slice> output) {
+        Profiler profiler = new Profiler();
         Map<Slice, List<Step>> groupedSteps = new HashMap<>();
         Iterator iter = startPositions.iterator();
         while (iter.hasNext()) {
@@ -40,9 +42,9 @@ public abstract class DFSMethods {
             steps.add(stepAbove);
             steps = steps.stream().filter(Objects::nonNull).collect(Collectors.toList());
 
-            if (steps.size() == 0) {
+            if (steps.isEmpty()) {
                 if (startPosition.isValid(pizza)) {
-                    // if slice is valid and have'nt any steps -> cut it from
+                    // if slice is valid and haven't any steps -> cut it from
                     // startPositions
                     output.add(startPosition);
                     iter.remove();
@@ -66,10 +68,10 @@ public abstract class DFSMethods {
      * Pick-ups a step with a minimal cells delta number,
      * execute it(cut it from the pizza, and add to a slice)
      *
-     * @param pizza given pizza
-     * @param step  step to perform
+     * @param pizza          given pizza
+     * @param step           step to perform
      * @param startPositions
-     *@param output @return formed slice that includes an original slice and delta from a step
+     * @param output         @return formed slice that includes an original slice and delta from a step
      */
     public static void performStep(Pizza pizza, Step step, List<Slice> startPositions, List<Slice> output) {
         //1. Pick ups a steps list with minimal total cells number
@@ -89,9 +91,9 @@ public abstract class DFSMethods {
         LOGGER.info("PIZZA AFTER STEP:" + pizza);
         //3. Add the step cells to an output slice
 
-        if(finalSlice.cells.size() == pizza.getSliceInstruction().getMaxNumberOfCellsPerSlice()){
+        if (finalSlice.cells.size() == pizza.getSliceInstruction().getMaxNumberOfCellsPerSlice()) {
             output.add(finalSlice);
-        } else{
+        } else {
             startPositions.add(finalSlice);
         }
     }
