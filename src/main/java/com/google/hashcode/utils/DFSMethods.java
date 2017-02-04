@@ -19,9 +19,10 @@ public abstract class DFSMethods {
      * remove this slice from startPositions and add all it's cells to pizza.
      * @param pizza          given pizza
      * @param startPositions given slices in the pizza
+     * @param output
      * @return available steps
      */
-    public static Map<Slice, List<Step>> getAvailableSteps(Pizza pizza, List<Slice> startPositions) {
+    public static Map<Slice, List<Step>> getAvailableSteps(Pizza pizza, List<Slice> startPositions, List<Slice> output) {
         Map<Slice, List<Step>> groupedSteps = new HashMap<>();
         Iterator iter = startPositions.iterator();
         while (iter.hasNext()) {
@@ -43,7 +44,8 @@ public abstract class DFSMethods {
                 if (startPosition.isValid(pizza)) {
                     // if slice is valid and have'nt any steps -> cut it from
                     // startPositions
-                    groupedSteps.put(startPosition, steps);
+                    output.add(startPosition);
+                    iter.remove();
                 } else {
                     // if slice isn't valid and have'nt any steps -> return all
                     // it cells to pizza
@@ -66,20 +68,32 @@ public abstract class DFSMethods {
      *
      * @param pizza given pizza
      * @param step  step to perform
-     * @return formed slice that includes an original slice and delta from a step
+     * @param startPositions
+     *@param output @return formed slice that includes an original slice and delta from a step
      */
-    public static Slice performStep(Pizza pizza, Step step) {
+    public static void performStep(Pizza pizza, Step step, List<Slice> startPositions, List<Slice> output) {
         //1. Pick ups a steps list with minimal total cells number
         LOGGER.info("STEP TO PERFORM " + step);
         //2. Cut all the step delta cells from pizza
         LOGGER.info("pizza before step: " + pizza
                 + "\ndelta to remove from the pizza: " + step.delta);
         pizza.getCells().removeAll(step.delta.cells);
+
+        //3. remove previous version start position from startPositions
+        startPositions.remove(step.startPosition);
+
+        List<Cell> returnedList = step.startPosition.cells;
+        returnedList.addAll(step.delta.cells);
+        Slice finalSlice = new Slice(returnedList);
+
         LOGGER.info("PIZZA AFTER STEP:" + pizza);
         //3. Add the step cells to an output slice
-        Slice slice = new Slice(step.delta.cells);
-        slice.cells.addAll(step.startPosition.cells);
-        return slice;
+
+        if(finalSlice.cells.size() == pizza.getSliceInstruction().getMaxNumberOfCellsPerSlice()){
+            output.add(finalSlice);
+        } else{
+            startPositions.add(finalSlice);
+        }
     }
 
     /**
