@@ -32,8 +32,8 @@ public class Step {
     @Override
     public String toString() {
         return "\nStep{" +
-                "\nstartPosition=" + startPosition +
-                "\ndelta=" + delta +
+                "\nstartPosition=" + startPosition.toString() +
+                "\ndelta=" + delta.toString() +
                 "\n}";
     }
 

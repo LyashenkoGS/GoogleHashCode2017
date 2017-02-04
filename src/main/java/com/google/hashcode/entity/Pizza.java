@@ -63,7 +63,7 @@ public class Pizza {
     }
 
     private String outputCellsArray() {
-        if (!cells.isEmpty()) {
+        if (!cells.isEmpty() && cells.size() < 100) {
             StringBuilder stringBuilder = new StringBuilder();
             int columnsCount = cells.stream().max(Comparator.comparingInt(Cell::getX)).get().getX();
             int rowsCount = cells.stream().max(Comparator.comparingInt(Cell::getY)).get().getY();
@@ -87,8 +87,9 @@ public class Pizza {
             }
             return stringBuilder.toString();
         } else {
-            return "";
+            return "pizza size is:" + cells.size();
         }
+
     }
 
 
