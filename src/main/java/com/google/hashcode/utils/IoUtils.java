@@ -40,9 +40,12 @@ public class IoUtils {
             List<Cell> cells = new ArrayList<>();
             int row = 0;
             String fileLine;
+            int counter = 0;
             while ((fileLine = br.readLine()) != null) {
                 for (int column = 0; column < fileLine.length(); column++) {
                     Character literal = fileLine.charAt(column);
+                    counter ++;
+                    System.out.println("letter " + literal + " counter = " + counter);
                     if (literal.toString().equals(Ingredient.TOMATO.toString())) {
                         cells.add(new Cell(row, column, Ingredient.TOMATO));
                     } else if (literal.toString().equals(Ingredient.MUSHROOM.toString())) {
