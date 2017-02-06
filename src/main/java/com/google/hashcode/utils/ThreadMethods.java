@@ -20,10 +20,30 @@ public class ThreadMethods {
 	public static Map<Slice, List<Step>> threadAvailableSteps(Pizza pizza, List<Slice> startPositions,
 			List<Slice> output) {
 		int counter = startPositions.size()/4;
-		List<Slice> firstList = startPositions.subList(0, counter);
-		List<Slice> secondList = startPositions.subList(counter, counter*2);
-		List<Slice> thirdList = startPositions.subList(counter*2, counter*3);
-		List<Slice> forthList = startPositions.subList(counter*3, startPositions.size());
+		List<Slice> f1 = new ArrayList<>();
+		for (Slice slice : startPositions) {
+			f1.add(slice.clone());
+		}
+		List<Slice> f2 = new ArrayList<>();
+		for (Slice slice : startPositions) {
+			f2.add(slice.clone());
+		}
+		List<Slice> f3 = new ArrayList<>();
+		for (Slice slice : startPositions) {
+			f3.add(slice.clone());
+		}
+		List<Slice> f4 = new ArrayList<>();
+		for (Slice slice : startPositions) {
+			f4.add(slice.clone());
+		}
+		List<Slice> firstList = f1.subList(0, counter);
+		firstList.clear();
+		List<Slice> secondList = f2.subList(counter, counter*2);
+		secondList.clear();
+		List<Slice> thirdList = f3.subList(counter*2, counter*3);
+		thirdList.clear();
+		List<Slice> forthList = f4.subList(counter*3, startPositions.size());
+		forthList.clear();
 		
 		List<Cell> l1 = pizza.cloneCells();
 		List<Cell> l2 = pizza.cloneCells();

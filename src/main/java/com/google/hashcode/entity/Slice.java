@@ -186,5 +186,12 @@ public class Slice {
     	return new Step(this, delta);
     }
     
+    public Slice clone(){
+    	List<Cell> newList = new ArrayList<>();
+    	for (Cell cell : cells) {
+			newList.add(new Cell(cell.y, cell.x, cell.ingredient));
+		}
+    	return new Slice(newList);
+    }
 }
 
