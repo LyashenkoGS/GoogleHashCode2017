@@ -141,12 +141,16 @@ public abstract class DFSMethods {
      * @return slices that are start positions for future slicing
      */
     public static List<Slice> cutAllStartPositions(Pizza pizza) {
+        Profiler profiler = new Profiler();
+        System.out.println("cutAllStartPosition start");
         List<Cell> mushrooms = pizza.getCells().stream()
                 .filter(cell -> cell.ingredient.equals(Ingredient.MUSHROOM))
                 .collect(Collectors.toList());
+        System.out.println("m size = " + mushrooms.size());
         List<Cell> tomatoes = pizza.getCells().stream()
                 .filter(cell -> cell.ingredient.equals(Ingredient.TOMATO))
                 .collect(Collectors.toList());
+        System.out.println("t size = " + tomatoes.size());
         LOGGER.info("cutAllStartPositions for pizza: "
                 + "\n" + pizza
                 + "\nmushrooms number: " + mushrooms.size()
@@ -156,21 +160,16 @@ public abstract class DFSMethods {
             startPositions = tomatoes.stream()
                     .map(Slice::new)
                     .collect(Collectors.toList());
-            List<Cell> cellsToRemove = startPositions.stream()
-                    .flatMap(slice -> slice.cells.stream())
-                    .collect(Collectors.toList());
-            pizza.getCells().removeAll(cellsToRemove);
+            pizza.setCells(mushrooms);
         } else {
             startPositions = mushrooms.stream()
                     .map(Slice::new)
                     .collect(Collectors.toList());
-            List<Cell> cellsToRemove = startPositions.stream()
-                    .flatMap(slice -> slice.cells.stream())
-                    .collect(Collectors.toList());
-            pizza.getCells().removeAll(cellsToRemove);
+            pizza.setCells(tomatoes);
         }
         LOGGER.info("pizza without start positions:"
                 + "\n" + pizza);
+        System.out.println(profiler.measure("cut All ss ends in "));
         return startPositions;
     }
 
