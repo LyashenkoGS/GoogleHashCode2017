@@ -1,6 +1,7 @@
 package com.google.hashcode.entity;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -91,6 +92,14 @@ public class Pizza {
         }
 
     }
+
+	public List<Cell> cloneCells() {
+		List<Cell> cells = new ArrayList<>();
+    	for (Cell cell : this.cells) {
+			cells.add(new Cell(cell.y, cell.x, cell.ingredient));
+		}
+    	return cells;
+	}
 
 
 }
