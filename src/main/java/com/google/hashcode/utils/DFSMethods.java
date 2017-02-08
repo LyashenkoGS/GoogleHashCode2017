@@ -71,6 +71,28 @@ public abstract class DFSMethods {
                 + "\nsteps: " + groupedSteps);
         return groupedSteps;
     }
+    
+    public static void performAllSteps(Pizza pizza,  Map<Slice, List<Step>> availableSteps, List<Slice> startPositions, List<Slice> output){
+    	Profiler profiler = new Profiler();
+    	System.out.println("start positions = " + startPositions.size() + " output = "+output.size()+" pizza = " + pizza.getCells().size());
+    	System.out.println("start perform steps");
+    	for (List<Step> start : availableSteps.values()) {
+    		Step step = start.get(0);
+    		pizza.getCells().removeAll(step.delta.cells);
+            startPositions.remove(step.startPosition);
+            List<Cell> returnedList = step.startPosition.cells;
+            returnedList.addAll(step.delta.cells);
+            Slice finalSlice = new Slice(returnedList);
+            if (finalSlice.isValid(pizza)) {
+                output.add(finalSlice);
+            }
+            else {
+                startPositions.add(finalSlice);
+            }
+		}
+    	System.out.println(profiler.measure("performAllSteps() ends in "));
+    	System.out.println("start positions = " + startPositions.size() + " output = "+output.size()+" pizza = " + pizza.getCells().size());
+    }
 
     /**
      * Pick-ups a step with a minimal cells delta number,
