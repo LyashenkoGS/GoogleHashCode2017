@@ -77,18 +77,35 @@ public abstract class DFSMethods {
     	System.out.println("start positions = " + startPositions.size() + " output = "+output.size()+" pizza = " + pizza.getCells().size());
     	System.out.println("start perform steps");
     	for (List<Step> start : availableSteps.values()) {
-    		Step step = start.get(0);
-    		pizza.getCells().removeAll(step.delta.cells);
-            startPositions.remove(step.startPosition);
-            List<Cell> returnedList = step.startPosition.cells;
-            returnedList.addAll(step.delta.cells);
-            Slice finalSlice = new Slice(returnedList);
-            if (finalSlice.isValid(pizza)) {
-                output.add(finalSlice);
-            }
-            else {
-                startPositions.add(finalSlice);
-            }
+    		for(int i = 0; i< start.size(); i++){
+    			Step step = start.get(i);
+    			if(pizza.containsCells(step.delta)){
+    				pizza.getCells().removeAll(step.delta.cells);
+    	            startPositions.remove(step.startPosition);
+    	            List<Cell> returnedList = step.startPosition.cells;
+    	            returnedList.addAll(step.delta.cells);
+    	            Slice finalSlice = new Slice(returnedList);
+    	            if (finalSlice.isValid(pizza)) {
+    	                output.add(finalSlice);
+    	            }
+    	            else {
+    	                startPositions.add(finalSlice);
+    	            }
+    	            break;
+    			}
+    		}
+//    		Step step = start.get(0);
+//    		pizza.getCells().removeAll(step.delta.cells);
+//            startPositions.remove(step.startPosition);
+//            List<Cell> returnedList = step.startPosition.cells;
+//            returnedList.addAll(step.delta.cells);
+//            Slice finalSlice = new Slice(returnedList);
+//            if (finalSlice.isValid(pizza)) {
+//                output.add(finalSlice);
+//            }
+//            else {
+//                startPositions.add(finalSlice);
+//            }
 		}
     	System.out.println(profiler.measure("performAllSteps() ends in "));
     	System.out.println("start positions = " + startPositions.size() + " output = "+output.size()+" pizza = " + pizza.getCells().size());
@@ -173,10 +190,6 @@ public abstract class DFSMethods {
                 .filter(cell -> cell.ingredient.equals(Ingredient.TOMATO))
                 .collect(Collectors.toList());
         System.out.println("t size = " + tomatoes.size());
-        LOGGER.info("cutAllStartPositions for pizza: "
-                + "\n" + pizza
-                + "\nmushrooms number: " + mushrooms.size()
-                + "\ntomatoes number: " + tomatoes.size());
         List<Slice> startPositions = null;
         if (mushrooms.size() > tomatoes.size()) {
             startPositions = tomatoes.stream()
@@ -189,8 +202,6 @@ public abstract class DFSMethods {
                     .collect(Collectors.toList());
             pizza.setCells(tomatoes);
         }
-        LOGGER.info("pizza without start positions:"
-                + "\n" + pizza);
         System.out.println(profiler.measure("cut All ss ends in "));
         return startPositions;
     }
