@@ -95,6 +95,21 @@ public abstract class DFSMethods {
             startPositions.add(finalSlice);
         }
     }
+    
+    public static void performAllSteps(Pizza pizza,  Map<Slice, List<Step>> availableSteps, List<Slice> startPositions, List<Slice> output){
+    	Profiler profiler = new Profiler();
+    	System.out.println("start perform steps");
+    	for (Slice start : availableSteps.keySet()) {
+    		List<Cell> deltaCells = availableSteps.get(start).get(0).delta.cells;
+    		Slice afterStep = new Slice(deltaCells);
+    		afterStep.cells.addAll(availableSteps.get(start).get(0).startPosition.cells);
+    		pizza.getCells().removeAll(deltaCells);
+    		if(afterStep.cells.size() == pizza.getSliceInstruction().getMaxNumberOfCellsPerSlice()){
+    			output.add(afterStep);
+    			startPositions.remove(start);
+    		}
+		}
+    }
 
     /**
      * Selects a step which start position has minimal delta in all the steps
