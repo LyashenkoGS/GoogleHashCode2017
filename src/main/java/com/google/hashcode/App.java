@@ -22,9 +22,9 @@ public class App {
     private static final Logger LOGGER = LoggerFactory.getLogger(App.class);
 
     public static void main(String[] args) throws IOException {
-        slicePizza(EXAMPLE_INPUT_FILE_PATH, OUTPUT_DATA_SET_EXAMPLE_TXT);
+//        slicePizza(EXAMPLE_INPUT_FILE_PATH, OUTPUT_DATA_SET_EXAMPLE_TXT);
         slicePizza(SMALL_INPUT_FILE_PATH, OUTPUT_DATA_SET_SMALL_TXT);
-        slicePizza(MEDIUM_INPUT_FILE_PATH, OUTPUT_DATA_SET_MEDIUM_TXT);
+//        slicePizza(MEDIUM_INPUT_FILE_PATH, OUTPUT_DATA_SET_MEDIUM_TXT);
         //TODO troubles to input big files, possible exciting String max size
         //slicePizza(BIG_INPUT_FILE_PATH, OUTPUT_DATA_SET_BIG_TXT);
     }
@@ -39,8 +39,7 @@ public class App {
         //get All steps
         Map<Slice, List<Step>> availableSteps = DFSMethods.getAvailableSteps(pizza, startPositions, output);
         while (!availableSteps.values().stream().allMatch(List::isEmpty)) {
-            Step step = DFSMethods.selectStep(availableSteps);
-            DFSMethods.performStep(pizza, step, startPositions, output);
+        	DFSMethods.performAllSteps(pizza, availableSteps, startPositions, output);
             //TODO available steps should include merging slices to each other
             availableSteps = DFSMethods.getAvailableSteps(pizza, startPositions, output);
             LOGGER.info("OUTPUT AFTER A STEP: "

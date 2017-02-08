@@ -23,21 +23,25 @@ public abstract class DFSMethods {
      * @return available steps
      */
     public static Map<Slice, List<Step>> getAvailableSteps(Pizza pizza, List<Slice> startPositions, List<Slice> output) {
-        Map<Slice, List<Step>> groupedSteps = new HashMap<>();
-        Iterator iter = startPositions.iterator();
+        Profiler profiler = new Profiler();
+    	System.out.println("start GAAS");
+    	Map<Slice, List<Step>> groupedSteps = new HashMap<>();
+        Iterator iter;
+        //optimization for big arrays
+        if (startPositions.size() > 1000) {
+        	System.out.println("too many start positions");
+            List<Slice> startPositionsSubset = startPositions.subList(0, 20);
+            iter = startPositionsSubset.iterator();
+        } else{
+        	 iter = startPositions.iterator();
+        }
         while (iter.hasNext()) {
             Slice startPosition = (Slice) iter.next();
-
+            
             List<Step> steps = new ArrayList<>();
-            Step stepLeft = startPosition.generateStepLeft(pizza);
-            Step stepRight = startPosition.generateStepRight(pizza);
-            Step stepAbove = startPosition.generateStepAbove(pizza);
-            Step stepBelow = startPosition.generateStepBelow(pizza);
+            Step stepLeft = generateRandomStep(pizza, startPosition);
 
-            steps.add(stepRight);
             steps.add(stepLeft);
-            steps.add(stepBelow);
-            steps.add(stepAbove);
             steps = steps.stream().filter(Objects::nonNull).collect(Collectors.toList());
 
             if (steps.size() == 0) {
@@ -56,6 +60,7 @@ public abstract class DFSMethods {
                 groupedSteps.put(startPosition, steps);
             }
         }
+        System.out.println(profiler.measure("GAAS ends in "));
         LOGGER.info("available steps for" +
                 "\npizza: " + pizza
                 + "\nsteps: " + groupedSteps);
@@ -109,6 +114,7 @@ public abstract class DFSMethods {
     			startPositions.remove(start);
     		}
 		}
+    	System.out.println(profiler.measure("performAllSteps() ends in "));
     }
 
     /**
@@ -174,4 +180,28 @@ public abstract class DFSMethods {
         return startPositions;
     }
 
+    private static Step generateRandomStep(Pizza pizza, Slice startPosition){
+    	Step st = null;
+    	int i = 0;
+    	while(st == null || i < 4){
+    		Random random = new Random();
+        	int step = random.nextInt(4);
+    		switch(step){
+    			case 0:
+    				st = startPosition.generateStepLeft(pizza);
+    				break;
+    			case 1:
+    				st = startPosition.generateStepAbove(pizza);
+    				break;
+    			case 2:
+    				st = startPosition.generateStepRight(pizza);
+    				break;
+    			case 3:
+    				st = startPosition.generateStepBelow(pizza);
+    				break;
+    		}
+    		i++;
+    	}
+    	return st;
+    }
 }
