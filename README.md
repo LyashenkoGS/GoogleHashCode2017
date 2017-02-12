@@ -7,6 +7,16 @@ hash tags: #hashcode #2017 #googleHashCode
 ##Pizza
 Practice problem for the Google HashCode 2017.
 
+##Effectiveness's for v0.02
+Slicing of: example, small, medium slices took  10m 39 seconds on a MacBookPro
+Results:
+ * example 6
+ * small 30
+ * medium 33037
+ * big - too long to slicing. Was ran once 
+ from  the commit and took about 20 hours.(a desktop PC with an Intel-I54670K)
+  
+ 
 * original assignment - [Task.pdf](./documentation/TaskDescription.pdf)
 * [input data sets](./inputDataSets)
 

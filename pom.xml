@@ -4,7 +4,7 @@
 
     <groupId>com.google.hashcode</groupId>
     <artifactId>pizza</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.0.2</version>
     <packaging>jar</packaging>
 
     <name>pizza</name>

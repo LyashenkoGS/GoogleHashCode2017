@@ -35,7 +35,7 @@
     <root level="debug">
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="FILE-DEBUG"/>
-   </root>
+    </root>
 
     <logger name="com.google.hashcode.App" level="debug"
             additivity="false">
