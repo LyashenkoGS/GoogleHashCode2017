@@ -2,6 +2,11 @@
 <configuration>
 
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
         <layout class="ch.qos.logback.classic.PatternLayout">
             <Pattern>
                 %d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n
@@ -9,9 +14,8 @@
         </layout>
     </appender>
 
-    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
-        <file>./pizzaSlicing.log</file>
-        <append>false</append>
+    <appender name="FILE-DEBUG" class="ch.qos.logback.core.FileAppender">
+        <file>./pizzaSlicingDebug.log</file>
         <encoder>
             <pattern>
                 %d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n
@@ -19,14 +23,22 @@
         </encoder>
     </appender>
 
-    <root level="info">
-        <appender-ref ref="STDOUT"/>
-    </root>
+    <appender name="FILE-AUDIT" class="ch.qos.logback.core.FileAppender">
+        <file>./pizzaSlicingAudit.log</file>
+        <encoder>
+            <pattern>
+                %d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n
+            </pattern>
+        </encoder>
+    </appender>
 
-    <logger name="com.google" level="info"
+    <root level="debug">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="FILE-DEBUG"/>
+   </root>
+
+    <logger name="com.google.hashcode.App" level="debug"
             additivity="false">
-        <appender-ref ref="FILE"/>
-        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="FILE-AUDIT"/>
     </logger>
-
 </configuration>
