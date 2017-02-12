@@ -13,8 +13,8 @@ import java.util.Optional;
 public class Pizza {
 
     private final File input;
-    private final List<Cell> cells;
     private final SliceInstruction sliceInstruction;
+    private List<Cell> cells;
 
     public Pizza(File input, List<Cell> cells, SliceInstruction sliceInstruction) {
         this.input = input;
@@ -28,6 +28,10 @@ public class Pizza {
 
     public List<Cell> getCells() {
         return cells;
+    }
+
+    public void setCells(List<Cell> cells) {
+        this.cells = cells;
     }
 
     /**
@@ -63,7 +67,7 @@ public class Pizza {
     }
 
     private String outputCellsArray() {
-        if (!cells.isEmpty()) {
+        if (!cells.isEmpty() && cells.size() < 100) {
             StringBuilder stringBuilder = new StringBuilder();
             int columnsCount = cells.stream().max(Comparator.comparingInt(Cell::getX)).get().getX();
             int rowsCount = cells.stream().max(Comparator.comparingInt(Cell::getY)).get().getY();
@@ -87,8 +91,9 @@ public class Pizza {
             }
             return stringBuilder.toString();
         } else {
-            return "";
+            return "pizza size is:" + cells.size();
         }
+
     }
 
 

@@ -22,7 +22,8 @@ public class Step {
     public boolean isValid(Pizza pizza) {
         Slice slice = new Slice(new ArrayList<>(startPosition.cells));
         slice.cells.addAll(delta.cells);
-        return slice.isValid(pizza);
+        return slice.isValid(pizza) ||
+                slice.cells.size() < pizza.getSliceInstruction().getMaxNumberOfCellsPerSlice();
     }
 
     public int size() {
@@ -32,8 +33,8 @@ public class Step {
     @Override
     public String toString() {
         return "\nStep{" +
-                "\nstartPosition=" + startPosition +
-                "\ndelta=" + delta +
+                "\nstartPosition=" + startPosition.toString() +
+                "\ndelta=" + delta.toString() +
                 "\n}";
     }
 
