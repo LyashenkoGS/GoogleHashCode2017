@@ -17,7 +17,7 @@ import static org.junit.Assert.assertEquals;
 /**
  * @author Grigoriy Lyashenko (Grog).
  */
-public class DFSMethodsTest {
+public class SlicingMethodsTest {
 
     private Pizza pizza;
 
@@ -53,8 +53,6 @@ public class DFSMethodsTest {
         List<Slice> output = new ArrayList<>();
         Map<Slice, List<Step>> availableSteps = SlicingMethods.getAvailableSteps(pizza, startPositions, output);
         SlicingMethods.performStep(pizza, SlicingMethods.selectStep(availableSteps), startPositions, output);
-        assertEquals(new Slice(Arrays.asList(new Cell(1, 2, Ingredient.MUSHROOM), new Cell(2, 2, Ingredient.TOMATO)))
-                , startPositions.get(2));
         assertEquals(11, pizza.getCells().size());
     }
 }

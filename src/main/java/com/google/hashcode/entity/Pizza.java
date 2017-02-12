@@ -13,8 +13,8 @@ import java.util.Optional;
 public class Pizza {
 
     private final File input;
-    private final List<Cell> cells;
     private final SliceInstruction sliceInstruction;
+    private List<Cell> cells;
 
     public Pizza(File input, List<Cell> cells, SliceInstruction sliceInstruction) {
         this.input = input;
@@ -28,6 +28,10 @@ public class Pizza {
 
     public List<Cell> getCells() {
         return cells;
+    }
+
+    public void setCells(List<Cell> cells) {
+        this.cells = cells;
     }
 
     /**

@@ -5,7 +5,7 @@ hash tags: #hashcode #2017 #googleHashCode
 [![Build Status](https://travis-ci.org/LyashenkoGS/GoogleHashCode2017.svg?branch=master)](https://travis-ci.org/LyashenkoGS/GoogleHashCode2017)
 
 ##Pizza
-Practice problem for the Google HashCode 2017. Current version works correctly for example input only.
+Practice problem for the Google HashCode 2017.
 
 * original assignment - [Task.pdf](./documentation/TaskDescription.pdf)
 * [input data sets](./inputDataSets)
@@ -30,6 +30,8 @@ To zip the source code execute :
 
     ./zipSourceCode.sh
     
+    
+## Deprecated
 To automate interaction with online submission can be used [SeleniumIDE](https://addons.mozilla.org/en-US/firefox/addon/selenium-ide/)
  with a firefox browser.
 * login  to the [submission page](https://hashcodejudge.withgoogle.com/#/rounds/6553823069863936/submissions/)

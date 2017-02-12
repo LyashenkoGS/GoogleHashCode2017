@@ -29,7 +29,16 @@ public abstract class SlicingMethods {
      */
     public static Map<Slice, List<Step>> getAvailableSteps(Pizza pizza, List<Slice> startPositions, List<Slice> output) {
         Map<Slice, List<Step>> groupedByAStartPositionSteps = new HashMap<>();
-        Iterator iterator = startPositions.iterator();
+        Iterator iterator;
+        //optimization for big arrays
+        if (startPositions.size() > 1_000) {
+            List<Slice> startPositionsSubset = startPositions.subList(0, 20);
+            iterator = startPositionsSubset.iterator();
+        }
+        //iterate over all the start positions
+        else {
+            iterator = startPositions.iterator();
+        }
         while (iterator.hasNext()) {
             Slice startPosition = (Slice) iterator.next();
 
@@ -54,7 +63,7 @@ public abstract class SlicingMethods {
                     output.add(startPosition);
                     iterator.remove();
                 } else {
-                    LOGGER.warn("A start position ISN'T valid as a slice -> " +
+                    LOGGER.debug("A start position ISN'T valid as a slice -> " +
                             "remove it from startPositions and add all it cells");
                     pizza.getCells().addAll(startPosition.cells);
                     iterator.remove();
@@ -63,7 +72,7 @@ public abstract class SlicingMethods {
                 groupedByAStartPositionSteps.put(startPosition, steps);
             }
         }
-        LOGGER.info("available steps for" +
+        LOGGER.debug("available steps for" +
                 "\npizza: " + pizza
                 + "\nsteps: " + groupedByAStartPositionSteps);
         return groupedByAStartPositionSteps;
@@ -80,20 +89,22 @@ public abstract class SlicingMethods {
     public static void performStep(Pizza pizza, Step step, List<Slice> startPositions, List<Slice> output) {
         //1. Pick ups a steps list with minimal total cells number
         LOGGER.debug("STEP TO PERFORM " + step);
-        //2. Cut all the step delta cells from a pizza
+        //2. Cut all the step delta cells from pizza
         LOGGER.debug("pizza before step: " + pizza
                 + "\ndelta to remove from the pizza: " + step.delta);
         pizza.getCells().removeAll(step.delta.cells);
-        //3. remove previous version start position from startPositions
+        //3. remove step start position from total start positions
         startPositions.remove(step.startPosition);
         List<Cell> returnedList = step.startPosition.cells;
         returnedList.addAll(step.delta.cells);
         Slice finalSlice = new Slice(returnedList);
         LOGGER.debug("PIZZA AFTER STEP:" + pizza);
-        //3. Add the step cells to an output slice
-        if (finalSlice.cells.size() == pizza.getSliceInstruction().getMaxNumberOfCellsPerSlice()) {
+        //3. Add the step cells to an output slice if it's valid
+        if (finalSlice.isValid(pizza)) {
             output.add(finalSlice);
-        } else {
+        }
+        //4. add start position + delta to start positions
+        else {
             startPositions.add(finalSlice);
         }
     }
@@ -107,9 +118,13 @@ public abstract class SlicingMethods {
     public static Step selectStep(Map<Slice, List<Step>> steps) {
         //TODO test and refactor this peace of shit properly !!
         List<Step> min = steps.values().stream()
-                .min(Comparator.comparingLong(value -> value.stream().map(step -> step.delta.cells.size()).count())).get();
+                .min(Comparator.comparingLong(value ->
+                        value.stream()
+                                .map(step -> step.delta.cells.size())
+                                .count()))
+                .get();
         if (!min.isEmpty()) {
-            LOGGER.info("steps list with minimal number of delta cells: " + min);
+            LOGGER.debug("steps list with minimal number of delta cells: " + min);
             return min.get(0);
         } else {
             Optional<List<Step>> optionalStep = steps.values().stream().filter(steps1 -> !steps1.isEmpty()).findFirst();
@@ -146,18 +161,12 @@ public abstract class SlicingMethods {
             startPositions = tomatoes.stream()
                     .map(Slice::new)
                     .collect(Collectors.toList());
-            List<Cell> cellsToRemove = startPositions.stream()
-                    .flatMap(slice -> slice.cells.stream())
-                    .collect(Collectors.toList());
-            pizza.getCells().removeAll(cellsToRemove);
+            pizza.setCells(mushrooms);
         } else {
             startPositions = mushrooms.stream()
                     .map(Slice::new)
                     .collect(Collectors.toList());
-            List<Cell> cellsToRemove = startPositions.stream()
-                    .flatMap(slice -> slice.cells.stream())
-                    .collect(Collectors.toList());
-            pizza.getCells().removeAll(cellsToRemove);
+            pizza.setCells(tomatoes);
         }
         LOGGER.debug("pizza with removed start positions:"
                 + "\n" + pizza);
