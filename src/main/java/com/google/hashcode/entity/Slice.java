@@ -72,7 +72,7 @@ public class Slice {
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("slice : \n");
-        if (maxX()+maxY() < 20) { //output coordinates
+        if (maxX() + maxY() < 20) { //output coordinates
             int columnsCount = cells.stream().max(Comparator.comparingInt(Cell::getX)).get().getX();
             int rowsCount = cells.stream().max(Comparator.comparingInt(Cell::getY)).get().getY();
             //output columns coordinates

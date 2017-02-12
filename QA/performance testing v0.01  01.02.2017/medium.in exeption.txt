@@ -28,7 +28,7 @@ Caused by: java.lang.OutOfMemoryError: Java heap space
         at ch.qos.logback.classic.Logger.buildLoggingEventAndAppend(Logger.java:421)
         at ch.qos.logback.classic.Logger.filterAndLog_0_Or3Plus(Logger.java:383)
         at ch.qos.logback.classic.Logger.info(Logger.java:579)
-        at com.google.hashcode.utils.DFSMethods.getAvailableSteps(DFSMethods.java:40)
+        at com.google.hashcode.utils.SlicingMethods.getAvailableSteps(DFSMethods.java:40)
         at com.google.hashcode.App.slicePizza(App.java:38)
         at com.google.hashcode.App.main(App.java:26)
         ... 6 more

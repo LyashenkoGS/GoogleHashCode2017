@@ -7,26 +7,31 @@ import org.slf4j.LoggerFactory;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public abstract class DFSMethods {
-    private static final Logger LOGGER = LoggerFactory.getLogger(DFSMethods.class);
+public abstract class SlicingMethods {
+    private static final Logger LOGGER = LoggerFactory.getLogger(SlicingMethods.class);
 
-    private DFSMethods() {
+    private SlicingMethods() {
     }
 
     /**
-     * For each slice find all available steps.<br>
-     * If founded start position that haven't any steps and it is unvalid ->
-     * remove this slice from startPositions and add all it's cells to pizza.
+     * Find all available steps for a given start positions, considering:<br>
+     * * slice instructions for a given pizza<br>
+     * * start position + slices should form a rectangle<br>
+     * <p>
+     * If there is no steps fo a given start position:<br>
+     * 1. A start position is valid as a slice and can be cutted -> move it to output slices<br>
+     * 2. A start position ISN'T  valid as a slice -> remove it from startPositions and add all it cells back to a pizza
+     *
      * @param pizza          given pizza
-     * @param startPositions given slices in the pizza
-     * @param output
+     * @param startPositions given start positions in the pizza(a slice with cells number 1..max slice cells number)
+     * @param output         list of valid and cutted slices
      * @return available steps
      */
     public static Map<Slice, List<Step>> getAvailableSteps(Pizza pizza, List<Slice> startPositions, List<Slice> output) {
-        Map<Slice, List<Step>> groupedSteps = new HashMap<>();
-        Iterator iter = startPositions.iterator();
-        while (iter.hasNext()) {
-            Slice startPosition = (Slice) iter.next();
+        Map<Slice, List<Step>> groupedByAStartPositionSteps = new HashMap<>();
+        Iterator iterator = startPositions.iterator();
+        while (iterator.hasNext()) {
+            Slice startPosition = (Slice) iterator.next();
 
             List<Step> steps = new ArrayList<>();
             Step stepLeft = startPosition.generateStepLeft(pizza);
@@ -38,60 +43,57 @@ public abstract class DFSMethods {
             steps.add(stepLeft);
             steps.add(stepBelow);
             steps.add(stepAbove);
-            steps = steps.stream().filter(Objects::nonNull).collect(Collectors.toList());
-
-            if (steps.size() == 0) {
+            steps = steps.stream()
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toList());
+            LOGGER.debug("There is no steps fo a given start position !");
+            if (steps.isEmpty()) {
+                LOGGER.debug("A start position is valid as a slice and can be cutted ->" +
+                        " move it to output slices");
                 if (startPosition.isValid(pizza)) {
-                    // if slice is valid and have'nt any steps -> cut it from
-                    // startPositions
                     output.add(startPosition);
-                    iter.remove();
+                    iterator.remove();
                 } else {
-                    // if slice isn't valid and have'nt any steps -> return all
-                    // it cells to pizza
+                    LOGGER.warn("A start position ISN'T valid as a slice -> " +
+                            "remove it from startPositions and add all it cells");
                     pizza.getCells().addAll(startPosition.cells);
-                    iter.remove();
+                    iterator.remove();
                 }
             } else {
-                groupedSteps.put(startPosition, steps);
+                groupedByAStartPositionSteps.put(startPosition, steps);
             }
         }
         LOGGER.info("available steps for" +
                 "\npizza: " + pizza
-                + "\nsteps: " + groupedSteps);
-        return groupedSteps;
+                + "\nsteps: " + groupedByAStartPositionSteps);
+        return groupedByAStartPositionSteps;
     }
 
     /**
-     * Pick-ups a step with a minimal cells delta number,
-     * execute it(cut it from the pizza, and add to a slice)
+     * Performs a step with a minimal cells delta number and executes it (cut it from a pizza, and add to a slice)
      *
-     * @param pizza given pizza
-     * @param step  step to perform
-     * @param startPositions
-     *@param output @return formed slice that includes an original slice and delta from a step
+     * @param pizza          given pizza
+     * @param step           step to perform
+     * @param startPositions given start positions in the pizza(a slice with cells number 1..max slice cells number)
+     * @param output         list of valid and cutted slices
      */
     public static void performStep(Pizza pizza, Step step, List<Slice> startPositions, List<Slice> output) {
         //1. Pick ups a steps list with minimal total cells number
-        LOGGER.info("STEP TO PERFORM " + step);
-        //2. Cut all the step delta cells from pizza
-        LOGGER.info("pizza before step: " + pizza
+        LOGGER.debug("STEP TO PERFORM " + step);
+        //2. Cut all the step delta cells from a pizza
+        LOGGER.debug("pizza before step: " + pizza
                 + "\ndelta to remove from the pizza: " + step.delta);
         pizza.getCells().removeAll(step.delta.cells);
-
         //3. remove previous version start position from startPositions
         startPositions.remove(step.startPosition);
-
         List<Cell> returnedList = step.startPosition.cells;
         returnedList.addAll(step.delta.cells);
         Slice finalSlice = new Slice(returnedList);
-
-        LOGGER.info("PIZZA AFTER STEP:" + pizza);
+        LOGGER.debug("PIZZA AFTER STEP:" + pizza);
         //3. Add the step cells to an output slice
-
-        if(finalSlice.cells.size() == pizza.getSliceInstruction().getMaxNumberOfCellsPerSlice()){
+        if (finalSlice.cells.size() == pizza.getSliceInstruction().getMaxNumberOfCellsPerSlice()) {
             output.add(finalSlice);
-        } else{
+        } else {
             startPositions.add(finalSlice);
         }
     }
@@ -99,10 +101,11 @@ public abstract class DFSMethods {
     /**
      * Selects a step which start position has minimal delta in all the steps
      *
-     * @param steps
-     * @return
+     * @param steps available steps
+     * @return a step with minimal delta
      */
     public static Step selectStep(Map<Slice, List<Step>> steps) {
+        //TODO test and refactor this peace of shit properly !!
         List<Step> min = steps.values().stream()
                 .min(Comparator.comparingLong(value -> value.stream().map(step -> step.delta.cells.size()).count())).get();
         if (!min.isEmpty()) {
@@ -119,13 +122,15 @@ public abstract class DFSMethods {
     }
 
     /**
-     * Finds a cells type with minimal cells numbers and generates one cell slices from them
-     * Delete the slices from the pizza
+     * * Finds a cell type(tomato or mushroom) with minimal cells numbers<br>
+     * * Generates a list of one cell slices from them<br>
+     * * Deletes the slices from the pizza<br>
      *
      * @param pizza given pizza
-     * @return slices that are start positions for future slicing
+     * @return slices that are start positions for future slicing process
      */
     public static List<Slice> cutAllStartPositions(Pizza pizza) {
+        //1.Finds a cell type(tomato or mushroom) with minimal cells numbers
         List<Cell> mushrooms = pizza.getCells().stream()
                 .filter(cell -> cell.ingredient.equals(Ingredient.MUSHROOM))
                 .collect(Collectors.toList());
@@ -154,7 +159,7 @@ public abstract class DFSMethods {
                     .collect(Collectors.toList());
             pizza.getCells().removeAll(cellsToRemove);
         }
-        LOGGER.info("pizza without start positions:"
+        LOGGER.debug("pizza with removed start positions:"
                 + "\n" + pizza);
         return startPositions;
     }

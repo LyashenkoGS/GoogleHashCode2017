@@ -44,7 +44,7 @@ public class IoUtils {
             while ((fileLine = br.readLine()) != null) {
                 for (int column = 0; column < fileLine.length(); column++) {
                     Character literal = fileLine.charAt(column);
-                    counter ++;
+                    counter++;
                     System.out.println("letter " + literal + " counter = " + counter);
                     if (literal.toString().equals(Ingredient.TOMATO.toString())) {
                         cells.add(new Cell(row, column, Ingredient.TOMATO));

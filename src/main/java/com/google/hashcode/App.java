@@ -3,7 +3,7 @@ package com.google.hashcode;
 import com.google.hashcode.entity.Pizza;
 import com.google.hashcode.entity.Slice;
 import com.google.hashcode.entity.Step;
-import com.google.hashcode.utils.DFSMethods;
+import com.google.hashcode.utils.SlicingMethods;
 import com.google.hashcode.utils.IoUtils;
 import com.google.hashcode.utils.Profiler;
 import org.slf4j.Logger;
@@ -35,14 +35,14 @@ public class App {
         List<Slice> output = new ArrayList<>();
         Pizza pizza = new Pizza(new File(inputFile), IoUtils.parsePizza(inputFile), IoUtils.parseSliceInstructions(inputFile));
         //get start positions
-        startPositions = DFSMethods.cutAllStartPositions(pizza);
+        startPositions = SlicingMethods.cutAllStartPositions(pizza);
         //get All steps
-        Map<Slice, List<Step>> availableSteps = DFSMethods.getAvailableSteps(pizza, startPositions, output);
+        Map<Slice, List<Step>> availableSteps = SlicingMethods.getAvailableSteps(pizza, startPositions, output);
         while (!availableSteps.values().stream().allMatch(List::isEmpty)) {
-            Step step = DFSMethods.selectStep(availableSteps);
-            DFSMethods.performStep(pizza, step, startPositions, output);
+            Step step = SlicingMethods.selectStep(availableSteps);
+            SlicingMethods.performStep(pizza, step, startPositions, output);
             //TODO available steps should include merging slices to each other
-            availableSteps = DFSMethods.getAvailableSteps(pizza, startPositions, output);
+            availableSteps = SlicingMethods.getAvailableSteps(pizza, startPositions, output);
             LOGGER.info("OUTPUT AFTER A STEP: "
                     + "\n " + output);
         }
